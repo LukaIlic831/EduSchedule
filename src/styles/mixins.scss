@@ -1,0 +1,25 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin block-shadow {
+  box-shadow: 15px 15px 30px $shadow-light, -15px -15px 30px $background-light;
+}
+
+@mixin button-style {
+    position: relative;
+    padding: 15px 30px;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    background: $primary-color;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+    border: 2px solid $primary-color;
+    border-radius: 10px;
+}
