@@ -1,24 +1,30 @@
-
-@use '@angular/material' as mat;
-@use 'variables' as *;
-
+@use "@angular/material" as mat;
+@use "variables" as *;
 
 html {
-  @include mat.theme((
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
-  
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: $font-family-primary; }
-
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  background-color: $background-light;
+}
 
 p {
   margin: 0 !important;
@@ -29,5 +35,12 @@ a {
 }
 
 img {
+  width: 100%;
+}
+
+.main__wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
   width: 100%;
 }

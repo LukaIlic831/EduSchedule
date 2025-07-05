@@ -1,0 +1,64 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.dashboard {
+  &__title {
+    width: 100%;
+    @include flex-center();
+
+    h1 {
+      font-size: $font-size-large !important;
+      font-weight: bold;
+      color: $primary-text;
+    }
+  }
+
+  &__professor {
+    &--info {
+      &-title {
+        h1 {
+          font-size: $font-size-medium;
+        }
+      }
+
+      &-field {
+        margin-bottom: $spacing-xs;
+        p {
+          color: $primary-text;
+          font-weight: bold;
+        }
+
+        span {
+          color: $secondary-color;
+          font-weight: normal !important;
+          padding-left: $spacing-sm;
+        }
+      }
+
+      &-field:last-child {
+        margin-bottom: 0px !important;
+      }
+    }
+  }
+
+  &__classes {
+    width: 100%;
+    margin-top: $spacing-xxl;
+
+    &--title {
+      h1 {
+        font-size: $font-size-medium;
+      }
+    }
+  }
+
+  &__create-class {
+    width: 100%;
+    margin-top: $spacing-xl;
+    @include flex-center();
+    button {
+      max-width: 180px;
+      @include button-style();
+    }
+  }
+}
