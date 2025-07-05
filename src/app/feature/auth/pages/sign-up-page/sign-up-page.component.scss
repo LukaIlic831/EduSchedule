@@ -1,0 +1,157 @@
+@use "variables" as *;
+@use "mixins" as *;
+mat-form-field {
+  width: 100%;
+
+  + mat-form-field {
+    margin-left: $spacing-sm;
+  }
+
+  div {
+    background-color: $input-background;
+  }
+
+  button {
+    margin-right: $spacing-sm;
+  }
+}
+
+.auth__block {
+  width: 400px;
+  border-radius: 30px;
+  padding: $spacing-md;
+  background: $background-card;
+  margin: 0 $spacing-xl;
+  text-align: center;
+  @include block-shadow();
+  &--wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $background-light;
+    @include flex-center();
+  }
+
+  &--fields {
+    @include flex-center();
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &--email,
+  &--password,
+  &--username,
+  &--radio {
+    width: 100%;
+  }
+
+  &--radio {
+    margin-bottom: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+
+  &--confirm {
+    max-width: 200px;
+    @include button-style;
+
+    &:hover {
+      color: $primary-color;
+      background-color: transparent;
+    }
+  }
+}
+
+mat-card-header {
+  @include flex-center();
+}
+
+mat-card-title {
+  font-size: 24px !important;
+  font-weight: bold;
+  color: $primary-text;
+  margin-bottom: $spacing-xxl;
+}
+
+mat-card-footer {
+  flex-direction: column;
+  margin-bottom: $spacing-xs;
+  @include flex-center();
+
+  a {
+    color: $secondary-color;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: $spacing-xs;
+  }
+
+  div {
+    margin-top: $spacing-xxl;
+    @include flex-center();
+  }
+}
+
+mat-label {
+  color: $primary-text !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: $input-background !important;
+}
+
+::ng-deep {
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border-color-light !important;
+    }
+  }
+}
+
+::ng-deep {
+  .mdc-text-field--outlined:not(
+      .mdc-text-field--disabled
+    ).mdc-text-field--focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border-color-light !important;
+    }
+  }
+}
+
+::ng-deep {
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) {
+    .mdc-notched-outline {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-width: 1.5px !important;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .mdc-text-field--outlined:not(
+      .mdc-text-field--disabled
+    ).mdc-text-field--focused {
+    .mdc-floating-label {
+      color: $primary-text !important;
+    }
+  }
+}
+
+::ng-deep {
+  .mdc-text-field--outlined:not(
+      .mdc-text-field--disabled
+    ).mdc-text-field--invalid:not(.mdc-text-field--disabled):hover {
+    .mdc-floating-label {
+      color: red !important;
+    }
+  }
+}

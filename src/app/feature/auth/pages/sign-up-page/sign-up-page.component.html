@@ -1,0 +1,48 @@
+<div class="auth__block--wrapper">
+  <mat-card class="auth__block">
+    <mat-card-header>
+      <mat-card-title>Sign Up</mat-card-title>
+    </mat-card-header>
+    <form>
+      <mat-card-content>
+        <div class="auth__block--fields">
+          <div class="auth__block--username">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter username</mat-label>
+              <input matInput type="text" formControlName="username" />
+            </mat-form-field>
+          </div>
+          <div class="auth__block--email">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter email</mat-label>
+              <input matInput type="email" formControlName="email" />
+            </mat-form-field>
+          </div>
+          <div class="auth__block--password">
+            <mat-form-field appearance="outline">
+              <mat-label>Enter password</mat-label>
+              <input matInput type="password" formControlName="password" />
+              <button mat-icon-button matSuffix type="button">
+                <mat-icon>visibility_off</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="auth__block--radio">
+            <p>Select Role:</p>
+            <mat-radio-group aria-label="Select role">
+              <mat-radio-button value="Professor">Professor</mat-radio-button>
+              <mat-radio-button value="Student">Student</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+        <button class="auth__block--confirm" type="submit">Sign Up</button>
+        <div>
+          <p>Already have an account?</p>
+          <a routerLink="/sign-in">Sign in</a>
+        </div>
+      </mat-card-footer>
+    </form>
+  </mat-card>
+</div>
