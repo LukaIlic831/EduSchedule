@@ -1,0 +1,69 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.card {
+  font-family: "Arial";
+  padding: 16px;
+  cursor: pointer;
+  border-radius: 0.75rem;
+  background: #f1f1f3;
+  position: relative;
+  @include block-shadow();
+
+  &__content {
+    margin-top: $spacing-md;
+
+    p {
+      color: $primary-text;
+      font-size: $font-size-base;
+    }
+  }
+
+  &__sub-title {
+    p {
+      font-size: $font-size-base;
+      color: $secondary-color;
+    }
+  }
+
+  &__title {
+    h1 {
+      padding: 0;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 0px;
+    }
+  }
+
+  &__date {
+    font-size: 13px;
+    color: $secondary-text;
+    margin-top: $spacing-sm;
+  }
+
+  &__arrow {
+    position: absolute;
+    background: $primary-color;
+    padding: 6px;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    bottom: 0;
+    right: 0;
+    transition: 0.2s;
+    @include flex-center();
+  }
+
+  svg {
+    transition: 0.2s;
+  }
+
+  &:hover {
+    .card__arrow {
+      background: $primary-text;
+
+      svg {
+        transform: translateX(3px);
+      }
+    }
+  }
+}

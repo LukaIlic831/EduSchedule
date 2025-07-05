@@ -50,11 +50,19 @@
         font-size: $font-size-medium;
       }
     }
+
+    &--wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      grid-gap: 20px;
+    }
   }
 
   &__create-class {
     width: 100%;
-    margin-top: $spacing-xl;
+    margin-top: 40px;
+    padding-bottom: 20px;
     @include flex-center();
     button {
       max-width: 180px;
