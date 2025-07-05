@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 @mixin flex-center {
   display: flex;
@@ -11,15 +11,38 @@
 }
 
 @mixin button-style {
-    position: relative;
-    padding: 15px 30px;
-    text-align: center;
-    font-size: 16px;
-    text-decoration: none;
-    color: white;
-    background: $primary-color;
-    cursor: pointer;
-    transition: ease-in-out 0.2s;
-    border: 2px solid $primary-color;
-    border-radius: 10px;
+  position: relative;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+  color: white;
+  background: $primary-color;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+  border: 2px solid $primary-color;
+  border-radius: 10px;
+
+  &:hover {
+    color: $primary-color;
+    background-color: transparent;
+  }
+}
+
+@mixin mid-block {
+  width: 400px;
+  border-radius: 30px;
+  padding: $spacing-md;
+  background: $background-card;
+  margin: 0 $spacing-xl;
+  text-align: center;
+}
+
+@mixin mid-block-wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $background-light;
 }

@@ -17,20 +17,10 @@ mat-form-field {
 }
 
 .auth__block {
-  width: 400px;
-  border-radius: 30px;
-  padding: $spacing-md;
-  background: $background-card;
-  margin: 0 $spacing-xl;
-  text-align: center;
+  @include mid-block();
   @include block-shadow();
   &--wrapper {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: $background-light;
+    @include mid-block-wrapper();
     @include flex-center();
   }
 
@@ -47,12 +37,7 @@ mat-form-field {
 
   &--confirm {
     max-width: 200px;
-    @include button-style;
-
-    &:hover {
-      color: $primary-color;
-      background-color: transparent;
-    }
+    @include button-style();
   }
 }
 
