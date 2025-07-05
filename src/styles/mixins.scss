@@ -29,6 +29,20 @@
   }
 }
 
+@mixin cancel-button-style {
+  position: relative;
+  padding: 15px 30px;
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+  border-radius: 10px;
+  color: $secondary-color;
+  border: 2px solid $secondary-color;
+}
+
 @mixin mid-block {
   width: 400px;
   border-radius: 30px;

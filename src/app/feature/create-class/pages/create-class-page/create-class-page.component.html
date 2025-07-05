@@ -1,0 +1,80 @@
+<div class="create-class__block--wrapper">
+  <mat-card class="create-class__block">
+    <mat-card-header>
+      <mat-card-title>Create Class</mat-card-title>
+    </mat-card-header>
+    <form>
+      <mat-card-content>
+        <div class="create-class__block--fields">
+          <div class="create-class__block--title">
+            <mat-form-field>
+              <mat-label>Enter title</mat-label>
+              <input matInput type="text" required formControlName="title" />
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--desc">
+            <mat-form-field>
+              <mat-label>Enter description</mat-label>
+              <textarea
+                matInput
+                placeholder="This class is about..."
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--select">
+            <mat-form-field>
+              <mat-label>Study Program</mat-label>
+              <select matNativeControl required>
+                <option value="option1">option1</option>
+                <option value="option2">option2</option>
+                <option value="option3">option3</option>
+              </select>
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--select">
+            <mat-form-field>
+              <mat-label>Subject</mat-label>
+              <select matNativeControl required>
+                <option value="option1">option1</option>
+                <option value="option2">option2</option>
+                <option value="option3">option3</option>
+              </select>
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--select">
+            <mat-form-field>
+              <mat-label>Classroom</mat-label>
+              <select matNativeControl required>
+                <option value="option1">option1</option>
+                <option value="option2">option2</option>
+                <option value="option3">option3</option>
+              </select>
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--time-picker">
+            <mat-form-field>
+              <mat-label>Class date</mat-label>
+              <input matInput [matDatepicker]="datepicker" required />
+              <mat-datepicker #datepicker />
+              <mat-datepicker-toggle [for]="datepicker" matSuffix />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Class start time</mat-label>
+              <input matInput [matTimepicker]="timepicker" required />
+              <mat-timepicker #timepicker />
+              <mat-timepicker-toggle [for]="timepicker" matSuffix />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+        <button class="create-class__block--cancel" routerLink="/professor-dashboard">
+          Cancel
+        </button>
+        <button class="create-class__block--confirm" type="submit">
+          Confirm
+        </button>
+      </mat-card-footer>
+    </form>
+  </mat-card>
+</div>
