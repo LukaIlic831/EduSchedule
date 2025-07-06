@@ -36,9 +36,11 @@
   }
 
   &__date {
-    font-size: 13px;
-    color: $secondary-text;
     margin-top: $spacing-sm;
+    p {
+      font-size: 13px;
+      color: $secondary-text;
+    }
   }
 
   &__arrow {
