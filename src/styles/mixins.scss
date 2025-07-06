@@ -60,3 +60,10 @@
   right: 0;
   background: $background-light;
 }
+
+@mixin grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  grid-gap: 20px;
+}
