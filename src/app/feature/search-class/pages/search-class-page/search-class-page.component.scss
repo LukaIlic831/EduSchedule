@@ -31,12 +31,6 @@
     width: 100%;
     margin-top: $spacing-xxl;
 
-    &--title {
-      h1 {
-        font-size: $font-size-medium;
-      }
-    }
-
     &--wrapper {
       @include grid-wrapper();
     }

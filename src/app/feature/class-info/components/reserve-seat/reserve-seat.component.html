@@ -1,0 +1,29 @@
+<div class="class-reserve">
+  <div class="class-reserve__title">
+    <h1>Reserve your seat</h1>
+  </div>
+  <div class="class-reserve__sub-title">
+    <p>Classroom: K1</p>
+  </div>
+  <form>
+    <div class="class-reserve__wrapper">
+      <div
+        class="class-reserve__seats"
+        *ngFor="let groupNumber of numberOfGroups"
+      >
+        <div class="seat" *ngFor="let seatNumber of groupNumber"><p>{{seatNumber}}</p></div>
+      </div>
+    </div>
+    <div class="class-reserve__stage--wrapper">
+      <div class="class-reserve__stage">
+        <div class="class-reserve__stage--table"></div>
+        <div class="class-reserve__stage--stand"></div>
+      </div>
+    </div>
+    <div class="class-reserve__button">
+      <button class="class-reserve__button--confirm" type="submit">
+        Confirm
+      </button>
+    </div>
+  </form>
+</div>

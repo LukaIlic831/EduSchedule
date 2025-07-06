@@ -7,6 +7,7 @@ import { ProfessorDashboardPageComponent } from './feature/dashboard/pages/profe
 import { CreateClassPageComponent } from './feature/create-class/pages/create-class-page/create-class-page.component';
 import { SearchClassPageComponent } from './feature/search-class/pages/search-class-page/search-class-page.component';
 import { StudentProfilePageComponent } from './feature/profile/pages/student-profile-page/student-profile-page.component';
+import { ClassInfoPageComponent } from './feature/class-info/pages/class-info-page/class-info-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'create-class', component: CreateClassPageComponent },
   { path: 'search', component: SearchClassPageComponent },
   { path: 'student-profile', component: StudentProfilePageComponent },
+  { path: 'class-info', component: ClassInfoPageComponent },
 ];

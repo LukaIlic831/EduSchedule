@@ -1,0 +1,78 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.class-reserve {
+  @include sub-title();
+
+  &__wrapper {
+    @include flex-center();
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 20px 0;
+    background: $background-card;
+    margin-top: $spacing-md;
+  }
+
+  &__seats {
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid $border-color-light;
+    width: fit-content;
+    border-radius: 8px;
+    .seat {
+      width: 50px;
+      height: 50px;
+      border: 2px solid #555;
+      background-color: white;
+      @include flex-center();
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+
+      &:hover {
+        background-color: $input-background;
+      }
+    }
+  }
+
+  &__stage {
+    bottom: 100px;
+    @include flex-center();
+    flex-direction: column;
+    z-index: 10;
+
+    &--wrapper {
+      width: 100%;
+      padding: 20px 0;
+      background: $background-card;
+    }
+
+    &--table {
+      width: 120px;
+      height: 60px;
+      border: 2px solid black;
+      margin-bottom: 5px;
+    }
+    &--stand {
+      width: 40px;
+      height: 40px;
+      border: 2px solid black;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    margin-top: 40px;
+    padding-bottom: 20px;
+    @include flex-center();
+    &--confirm {
+      max-width: 200px;
+      @include button-style();
+    }
+  }
+}

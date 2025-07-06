@@ -73,12 +73,6 @@
     width: 100%;
     margin-top: $spacing-xxl;
 
-    &--title {
-      h1 {
-        font-size: $font-size-medium;
-      }
-    }
-
     &--wrapper {
       @include grid-wrapper();
     }
@@ -87,12 +81,6 @@
 
 @mixin user-info {
   &--info {
-    &-title {
-      h1 {
-        font-size: $font-size-medium;
-      }
-    }
-
     &-field {
       margin-bottom: $spacing-xs;
       p {
@@ -117,4 +105,13 @@
   padding: 16px 40px;
   background-color: $background-card;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@mixin sub-title {
+  &__sub-title {
+    p {
+      font-size: $font-size-base;
+      color: $secondary-color;
+    }
+  }
 }
