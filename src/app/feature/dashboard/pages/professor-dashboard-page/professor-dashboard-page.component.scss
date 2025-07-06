@@ -3,14 +3,14 @@
 
 .dashboard {
   &__title {
-    background-color: white;
-    width: 100%;
-    @include flex-center();
+    text-align: center;
+    @include nav-style();
 
     h1 {
-      font-size: $font-size-large !important;
+      font-size: $font-size-medium !important;
       font-weight: bold;
       color: $primary-text;
+      margin: 0px;
     }
   }
 
