@@ -6,6 +6,7 @@ import { StudentInfoPageComponent } from './feature/user-info/pages/student-info
 import { ProfessorDashboardPageComponent } from './feature/dashboard/pages/professor-dashboard-page/professor-dashboard-page.component';
 import { CreateClassPageComponent } from './feature/create-class/pages/create-class-page/create-class-page.component';
 import { SearchClassPageComponent } from './feature/search-class/pages/search-class-page/search-class-page.component';
+import { StudentProfilePageComponent } from './feature/profile/pages/student-profile-page/student-profile-page.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: 'professor-dashboard', component: ProfessorDashboardPageComponent },
   { path: 'create-class', component: CreateClassPageComponent },
   { path: 'search', component: SearchClassPageComponent },
+  { path: 'student-profile', component: StudentProfilePageComponent },
 ];

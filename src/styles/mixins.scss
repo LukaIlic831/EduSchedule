@@ -67,3 +67,48 @@
   justify-content: center;
   grid-gap: 20px;
 }
+
+@mixin classes-wrapper {
+  &__classes {
+    width: 100%;
+    margin-top: $spacing-xxl;
+
+    &--title {
+      h1 {
+        font-size: $font-size-medium;
+      }
+    }
+
+    &--wrapper {
+      @include grid-wrapper();
+    }
+  }
+}
+
+@mixin user-info {
+  &--info {
+    &-title {
+      h1 {
+        font-size: $font-size-medium;
+      }
+    }
+
+    &-field {
+      margin-bottom: $spacing-xs;
+      p {
+        color: $primary-text;
+        font-weight: bold;
+      }
+
+      span {
+        color: $secondary-color;
+        font-weight: normal !important;
+        padding-left: $spacing-sm;
+      }
+    }
+
+    &-field:last-child {
+      margin-bottom: 0px !important;
+    }
+  }
+}

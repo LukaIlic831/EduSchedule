@@ -15,47 +15,10 @@
   }
 
   &__professor {
-    &--info {
-      &-title {
-        h1 {
-          font-size: $font-size-medium;
-        }
-      }
-
-      &-field {
-        margin-bottom: $spacing-xs;
-        p {
-          color: $primary-text;
-          font-weight: bold;
-        }
-
-        span {
-          color: $secondary-color;
-          font-weight: normal !important;
-          padding-left: $spacing-sm;
-        }
-      }
-
-      &-field:last-child {
-        margin-bottom: 0px !important;
-      }
-    }
+    @include user-info();
   }
 
-  &__classes {
-    width: 100%;
-    margin-top: $spacing-xxl;
-
-    &--title {
-      h1 {
-        font-size: $font-size-medium;
-      }
-    }
-
-    &--wrapper {
-      @include grid-wrapper();
-    }
-  }
+  @include classes-wrapper();
 
   &__create-class {
     width: 100%;
