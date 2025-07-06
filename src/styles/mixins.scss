@@ -112,3 +112,9 @@
     }
   }
 }
+
+@mixin nav-style {
+  padding: 16px 40px;
+  background-color: $background-card;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

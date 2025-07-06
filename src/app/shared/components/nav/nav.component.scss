@@ -5,9 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 40px;
-  background-color: $background-card;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  @include nav-style();
 
   &__logo {
     font-size: $font-size-medium;
@@ -20,7 +18,7 @@
     align-items: center;
   }
 
-  &__icon{
+  &__icon {
     cursor: pointer;
   }
 }
