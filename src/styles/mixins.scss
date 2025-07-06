@@ -29,18 +29,25 @@
   }
 }
 
+@mixin logout-button-style {
+  @include button-style();
+  background: $secondary-color !important;
+  border-color: $secondary-color !important;
+
+  &:hover {
+    color: white !important;
+  }
+}
+
 @mixin cancel-button-style {
-  position: relative;
-  padding: 15px 30px;
-  text-align: center;
-  font-size: 16px;
-  text-decoration: none;
-  background: transparent;
-  cursor: pointer;
-  transition: ease-in-out 0.2s;
-  border-radius: 10px;
-  color: $secondary-color;
-  border: 2px solid $secondary-color;
+  @include button-style();
+  color: $secondary-color !important;
+  background: transparent !important;
+  border: 2px solid $secondary-color !important;
+
+  &:hover {
+    color: $secondary-color !important;
+  }
 }
 
 @mixin mid-block {
