@@ -12,6 +12,7 @@ import { SeatsModule } from './modules/seats/seats.module';
 import { StudyProgramsModule } from './modules/study-programs/study-programs.module';
 import { SubjectsModule } from './modules/subjects/subjects.module';
 import { UniversitiesModule } from './modules/universities/universities.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UniversitiesModule } from './modules/universities/universities.module';
     StudyProgramsModule,
     SubjectsModule,
     UniversitiesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
