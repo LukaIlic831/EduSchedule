@@ -56,6 +56,7 @@ export class SignInPageComponent {
         )
         .subscribe((error) => {
           this._snackBar.open(error?.message!, 'Dismiss', {
+            duration: 5000,
             verticalPosition: 'top',
             panelClass: ['snackbar-error'],
           });
