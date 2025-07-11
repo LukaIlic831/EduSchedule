@@ -17,4 +17,14 @@ export class AuthService {
     };
     return this.http.post(this.apiUrl + '/auth/log-in', userDataToSend);
   }
+
+  signUp(userData: any): Observable<any> {
+    const userDataToSend = {
+      username: userData.username,
+      email: userData.email,
+      password: userData.password,
+      role: userData.role
+    };
+    return this.http.post(this.apiUrl + '/auth/sign-up', userDataToSend);
+  }
 }
