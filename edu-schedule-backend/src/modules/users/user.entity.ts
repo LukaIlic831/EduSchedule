@@ -1,5 +1,12 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { University } from "../universities/university.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { University } from '../universities/university.entity';
 
 @Entity('users')
 export class User {
@@ -18,7 +25,7 @@ export class User {
   @Column()
   role: string;
 
-  @Column({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
   @ManyToOne(() => University, (university) => university.users)
