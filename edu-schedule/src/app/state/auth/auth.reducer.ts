@@ -3,7 +3,7 @@ import { signInFailure, signInSuccess } from './auth.actions';
 
 export interface AuthState {
   token: string | null;
-  error: string | null;
+  error: { status: number; message: string } | null;
 }
 
 

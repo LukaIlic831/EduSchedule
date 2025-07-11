@@ -6,17 +6,20 @@ import { AuthService } from '../../core/auth/services/auth.service';
 
 @Injectable()
 export class AuthEffects {
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService
-  ) {}
+  constructor(private actions$: Actions, private authService: AuthService) {}
   signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signIn),
       switchMap(({ email, password }) =>
         this.authService.signIn({ email, password }).pipe(
           map((response) => signInSuccess({ token: response.access_token })),
-          catchError((error) => of(signInFailure({ error })))
+          catchError((errorResponse) => {
+            const error = {
+              status: errorResponse?.status,
+              message: errorResponse?.error?.message,
+            };
+            return of(signInFailure({ error }));
+          })
         )
       )
     )

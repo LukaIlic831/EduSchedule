@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>Sign in</mat-card-title>
     </mat-card-header>
-    <form>
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <div class="auth__block--fields">
           <div class="auth__block--email">
@@ -15,9 +15,23 @@
           <div class="auth__block--password">
             <mat-form-field appearance="outline">
               <mat-label>Enter password</mat-label>
-              <input matInput type="password" required formControlName="password" />
-              <button mat-icon-button matSuffix type="button">
-                <mat-icon>visibility_off</mat-icon>
+              <input
+                matInput
+                required
+                formControlName="password"
+                [type]="hidePassword ? 'password' : 'text'"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="togglePassword($event)"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword"
+                type="button"
+              >
+                <mat-icon>{{
+                  hidePassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
               </button>
             </mat-form-field>
           </div>

@@ -12,5 +12,5 @@ export const signInSuccess = createAction(
 
 export const signInFailure = createAction(
   '[Auth] Sign In Failure',
-  props<{ error: string }>()
+ props<{ error: { status: number; message: string } }>()
 );
