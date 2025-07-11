@@ -11,3 +11,5 @@ export const SEATGROUPS = {
 };
 
 export const YEARS = ['I', 'II', 'III', 'IV'];
+
+export const APIURL = "http://localhost:3000";
