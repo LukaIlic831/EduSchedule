@@ -30,6 +30,10 @@ export class UsersService {
       throw new AppException('Email already taken', HttpStatus.CONFLICT);
     }
 
+    if(password.length < 8){
+       throw new AppException('Password must have at least 8 characters', HttpStatus.CONFLICT);
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({
       ...createUserDto,
