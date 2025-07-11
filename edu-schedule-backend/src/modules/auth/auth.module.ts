@@ -11,7 +11,6 @@ import { JwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     ConfigModule,
-    UsersModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -21,6 +20,7 @@ import { JwtStrategy } from './jwt.strategy';
         signOptions: { expiresIn: '1h' },
       }),
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
