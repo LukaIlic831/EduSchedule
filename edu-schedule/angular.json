@@ -33,7 +33,8 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
               "src/styles/variables.scss",
-              "src/styles/mixins.scss"
+              "src/styles/mixins.scss",
+              "src/styles/snackbar.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
