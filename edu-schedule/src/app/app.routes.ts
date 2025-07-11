@@ -11,7 +11,10 @@ import { ClassInfoPageComponent } from './feature/class-info/pages/class-info-pa
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
-  { path: 'sign-in', component: SignInPageComponent },
+  {
+    path: 'sign-in',
+    component: SignInPageComponent,
+  },
   { path: 'sign-up', component: SignUpPageComponent },
   { path: 'professor-info', component: ProfessorInfoPageComponent },
   { path: 'student-info', component: StudentInfoPageComponent },
