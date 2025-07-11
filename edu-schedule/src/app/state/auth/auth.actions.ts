@@ -7,7 +7,7 @@ export const signIn = createAction(
 
 export const signInSuccess = createAction(
   '[Auth] Sign In Success',
-  props<{ token: string }>()
+  props<{ token: string, role: string }>()
 );
 
 export const signInFailure = createAction(

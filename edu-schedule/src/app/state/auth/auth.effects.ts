@@ -12,7 +12,9 @@ export class AuthEffects {
       ofType(signIn),
       switchMap(({ email, password }) =>
         this.authService.signIn({ email, password }).pipe(
-          map((response) => signInSuccess({ token: response.access_token })),
+          map((response) =>
+            signInSuccess({ token: response.access_token, role: response.role })
+          ),
           catchError((errorResponse) => {
             const error = {
               status: errorResponse?.status,
