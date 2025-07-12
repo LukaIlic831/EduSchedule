@@ -16,7 +16,9 @@ export class AuthService {
       email: userData.email,
       password: userData.password,
     };
-    return this.http.post(this.apiUrl + '/auth/log-in',userDataToSend, {withCredentials: true});
+    return this.http.post(this.apiUrl + '/auth/log-in', userDataToSend, {
+      withCredentials: true,
+    });
   }
 
   signUp(userData: any): Observable<any> {
@@ -26,10 +28,20 @@ export class AuthService {
       password: userData.password,
       role: userData.role,
     };
-    return this.http.post(this.apiUrl + '/auth/sign-up', userDataToSend, {withCredentials: true});
+    return this.http.post(this.apiUrl + '/auth/sign-up', userDataToSend, {
+      withCredentials: true,
+    });
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.apiUrl + '/auth/user', {withCredentials: true});
+    return this.http.get<User>(this.apiUrl + '/auth/user', {
+      withCredentials: true,
+    });
+  }
+
+  signOutCurrentUser(): Observable<any> {
+    return this.http.get(this.apiUrl + '/auth/sign-out', {
+      withCredentials: true,
+    });
   }
 }
