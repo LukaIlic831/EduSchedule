@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   authFailure,
+  loadUser,
+  loadUserSuccess,
   signIn,
   signInSuccess,
   signUp,
@@ -59,6 +61,17 @@ export class AuthEffects {
             return of(authFailure({ error }));
           })
         )
+      )
+    )
+  );
+
+  loadUserEffect$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUser),
+      switchMap(() =>
+        this.authService
+          .getCurrentUser()
+          .pipe(map((user) => loadUserSuccess({ user })))
       )
     )
   );

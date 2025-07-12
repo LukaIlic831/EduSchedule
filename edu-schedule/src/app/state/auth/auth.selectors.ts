@@ -20,8 +20,7 @@ export const selectAuthRole = createSelector(
   (state) => state.role
 );
 
-export const selectAuthTokenAndRole = createSelector(
-  selectAuthToken,
-  selectAuthRole,
- (token, role) => ({ token, role })
+export const selectAuthUserUsername = createSelector(
+  selectAuthState,
+  (state) => state.user?.username!
 );
