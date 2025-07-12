@@ -6,6 +6,8 @@ import {
   loadUserSuccess,
   signIn,
   signInSuccess,
+  signOut,
+  signOutSuccess,
   signUp,
   signUpSuccess,
 } from './auth.actions';
@@ -82,7 +84,6 @@ export class AuthEffects {
         ofType(authFailure),
         filter(({ error }) => !!error && error.status !== 404),
         tap(({ error }) => {
-          console.log(error);
           this._snackBar.open(error!.message, 'Dismiss', {
             duration: 5000,
             verticalPosition: 'top',
@@ -128,6 +129,40 @@ export class AuthEffects {
           this.router.navigate([
             role === 'S' ? '/student-info' : '/professor-info',
           ]);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  signOut$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(signOut),
+      switchMap(() =>
+        this.authService.signOutCurrentUser().pipe(
+          map(() => signOutSuccess()),
+          catchError((errorResponse) => {
+            const error = {
+              status: errorResponse?.status,
+              message: errorResponse?.error?.message,
+            };
+            return of(authFailure({ error }));
+          })
+        )
+      )
+    )
+  );
+
+  signOutSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signOutSuccess),
+        tap(() => {
+          this.router.navigate(['/sign-in']);
+          this._snackBar.open('Signed out successfully!', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
         })
       ),
     { dispatch: false }
