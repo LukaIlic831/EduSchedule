@@ -10,11 +10,6 @@ export const signInSuccess = createAction(
   props<{ token: string, role: string }>()
 );
 
-export const signInFailure = createAction(
-  '[Auth] Sign In Failure',
- props<{ error: { status: number; message: string } }>()
-);
-
 export const signUp = createAction(
   '[Auth] Sign up',
   props<{ username:string, email: string; password: string, role:string }>()
@@ -25,7 +20,8 @@ export const signUpSuccess = createAction(
   props<{ token: string, role: string }>()
 );
 
-export const signUpFailure = createAction(
-  '[Auth] Sign up Failure',
+export const authFailure = createAction(
+  '[Auth] Auth Failure',
  props<{ error: { status: number; message: string } }>()
 );
+
