@@ -63,7 +63,6 @@ export class AuthEffects {
     )
   );
 
-
   authFailure$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -114,7 +113,7 @@ export class AuthEffects {
             panelClass: ['snackbar-success'],
           });
           this.router.navigate([
-            role === 'S' ? '/search' : '/professor-dashboard',
+            role === 'S' ? '/student-info' : '/professor-info',
           ]);
         })
       ),
