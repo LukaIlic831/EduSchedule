@@ -100,4 +100,24 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
+  signInSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signInSuccess),
+        filter(({ token }) => !!token),
+        take(1),
+        tap(({ role }) => {
+          this._snackBar.open('Signin successful!', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+          this.router.navigate([
+            role === 'S' ? '/search' : '/professor-dashboard',
+          ]);
+        })
+      ),
+    { dispatch: false }
+  );
 }
