@@ -34,3 +34,4 @@ export const loadUserSuccess = createAction(
 );
 
 export const signOut = createAction('[Auth] Sign Out');
+export const signOutSuccess = createAction('[Auth] Sign Out Success');
