@@ -32,3 +32,5 @@ export const loadUserSuccess = createAction(
   '[Auth] Load User Success',
   props<{ user: User }>()
 );
+
+export const signOut = createAction('[Auth] Sign Out');
