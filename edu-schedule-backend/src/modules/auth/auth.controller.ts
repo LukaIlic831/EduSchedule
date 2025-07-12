@@ -50,4 +50,12 @@ export class AuthController {
       maxAge: 3600000,
     });
   }
+
+  @Get('sign-out')
+  signout(@Res({ passthrough: true }) res: Response){
+   res.cookie('jwt', '', {
+      expires: new Date(Date.now()),
+    });
+    return {};
+  }
 }
