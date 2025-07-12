@@ -1,18 +1,25 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  authFailure,
   signIn,
-  signInFailure,
   signInSuccess,
   signUp,
   signUpSuccess,
 } from './auth.actions';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, filter, map, of, switchMap, take, tap } from 'rxjs';
 import { AuthService } from '../../core/auth/services/auth.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private authService: AuthService) {}
+  private _snackBar = inject(MatSnackBar);
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router
+  ) {}
   signIn$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signIn),
@@ -26,7 +33,7 @@ export class AuthEffects {
               status: errorResponse?.status,
               message: errorResponse?.error?.message,
             };
-            return of(signInFailure({ error }));
+            return of(authFailure({ error }));
           })
         )
       )
@@ -49,10 +56,48 @@ export class AuthEffects {
               status: errorResponse?.status,
               message: errorResponse?.error?.message,
             };
-            return of(signInFailure({ error }));
+            return of(authFailure({ error }));
           })
         )
       )
     )
+  );
+
+
+  authFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authFailure),
+        filter(({ error }) => !!error && error.status !== 404),
+        tap(({ error }) => {
+          console.log(error);
+          this._snackBar.open(error!.message, 'Dismiss', {
+            duration: 5000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-error'],
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  signUpSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signUpSuccess),
+        filter(({ token }) => !!token),
+        take(1),
+        tap(({ role }) => {
+          this._snackBar.open('Signup successful!', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+          this.router.navigate([
+            role === 'S' ? '/student-info' : '/professor-info',
+          ]);
+        })
+      ),
+    { dispatch: false }
   );
 }
