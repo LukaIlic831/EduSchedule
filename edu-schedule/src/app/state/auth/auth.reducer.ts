@@ -3,6 +3,7 @@ import {
   authFailure,
   loadUserSuccess,
   signInSuccess,
+  signOut,
   signUpSuccess,
 } from './auth.actions';
 import { User } from './models/user.model';
@@ -26,5 +27,6 @@ export const authReducer = createReducer(
   on(signInSuccess, (state, { token, role }) => ({ ...state, token, role })),
   on(authFailure, (state, { error }) => ({ ...state, error })),
   on(signUpSuccess, (state, { token, role }) => ({ ...state, token, role })),
-  on(loadUserSuccess, (state, { user }) => ({ ...state, user }))
+  on(loadUserSuccess, (state, { user }) => ({ ...state, user })),
+  on(signOut, () => initialState)
 );
