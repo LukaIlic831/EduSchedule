@@ -1,27 +1,34 @@
 <div class="info__block--wrapper">
   <mat-card class="info__block">
-    <app-info-title [username]="username"/>
-    <form>
+    <app-info-title [username]="username" />
+    <form [formGroup]="additionalDataForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <div class="info__block--fields">
           <div class="info__block--select">
             <mat-form-field>
               <mat-label>University</mat-label>
-              <select matNativeControl required>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
-              </select>
+              <mat-select
+                matNativeControl
+                required
+                formControlName="university"
+              >
+                <mat-option
+                  *ngFor="let university of universities | async"
+                  [value]="university.id"
+                >
+                  {{ university.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="info__block--select">
             <mat-form-field>
               <mat-label>Title</mat-label>
-              <select matNativeControl required>
-                <option value="Professor">Professor</option>
-                <option value="Assistant">Assistant</option>
-                <option value="Co-worker">Co-worker</option>
-              </select>
+              <mat-select matNativeControl formControlName="title" required>
+                <mat-option value="Professor">Professor</mat-option>
+                <mat-option value="Assistant">Assistant</mat-option>
+                <mat-option value="Co-worker">Co-worker</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
         </div>
