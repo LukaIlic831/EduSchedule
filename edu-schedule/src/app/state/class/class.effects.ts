@@ -4,7 +4,6 @@ import {
   catchError,
   filter,
   map,
-  mergeMap,
   switchMap,
   tap,
 } from 'rxjs/operators';
