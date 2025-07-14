@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>Create Class</mat-card-title>
     </mat-card-header>
-    <form>
+    <form [formGroup]="createClassDataForm" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <div class="create-class__block--fields">
           <div class="create-class__block--title">
@@ -18,49 +18,73 @@
               <textarea
                 matInput
                 placeholder="This class is about..."
+                formControlName="description"
               ></textarea>
             </mat-form-field>
           </div>
           <div class="create-class__block--select">
             <mat-form-field>
               <mat-label>Study Program</mat-label>
-              <select matNativeControl required>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
-              </select>
+              <mat-select
+                matNativeControl
+                required
+                formControlName="studyProgram"
+              >
+                <mat-option
+                  *ngFor="let studyProgram of studyPrograms | async"
+                  [value]="studyProgram.id"
+                >
+                  {{ studyProgram.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="create-class__block--select">
             <mat-form-field>
               <mat-label>Subject</mat-label>
-              <select matNativeControl required>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
-              </select>
+              <mat-select matNativeControl required formControlName="subject">
+                <mat-option
+                  *ngFor="let subject of subjects | async"
+                  [value]="subject.id"
+                >
+                  {{ subject.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="create-class__block--select">
             <mat-form-field>
               <mat-label>Classroom</mat-label>
-              <select matNativeControl required>
-                <option value="option1">option1</option>
-                <option value="option2">option2</option>
-                <option value="option3">option3</option>
-              </select>
+              <mat-select matNativeControl required formControlName="classroom">
+                <mat-option
+                  *ngFor="let classroom of classrooms | async"
+                  [value]="classroom.id"
+                >
+                  {{ classroom.name }}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div class="create-class__block--time-picker">
             <mat-form-field>
               <mat-label>Class date</mat-label>
-              <input matInput [matDatepicker]="datepicker" required />
+              <input
+                matInput
+                [matDatepicker]="datepicker"
+                required
+                formControlName="classDate"
+              />
               <mat-datepicker #datepicker />
               <mat-datepicker-toggle [for]="datepicker" matSuffix />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Class start time</mat-label>
-              <input matInput [matTimepicker]="timepicker" required />
+              <input
+                matInput
+                [matTimepicker]="timepicker"
+                required
+                formControlName="startTime"
+              />
               <mat-timepicker #timepicker />
               <mat-timepicker-toggle [for]="timepicker" matSuffix />
             </mat-form-field>
@@ -68,7 +92,10 @@
         </div>
       </mat-card-content>
       <mat-card-footer>
-        <button class="create-class__block--cancel" routerLink="/professor-dashboard">
+        <button
+          class="create-class__block--cancel"
+          routerLink="/professor-dashboard"
+        >
           Cancel
         </button>
         <button class="create-class__block--confirm" type="submit">

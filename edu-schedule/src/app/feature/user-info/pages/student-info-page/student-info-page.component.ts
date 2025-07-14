@@ -33,7 +33,7 @@ import {
 } from '@angular/forms';
 import { YEARS } from '../../../../data/data';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
-import { notZeroOrNullValidator } from '../../validators/not-zero-or-null.validator';
+import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
 
 @Component({
   selector: 'app-student-info-page',
