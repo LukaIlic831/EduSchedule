@@ -1,13 +1,24 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
+import { Class } from './class.entity';
+import { ClassDto } from './dto/class.dto';
 
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @Post('create')
-  async createClass(@Body() createClassDto: CreateClassDto) {
+  async createClass(
+    @Body() createClassDto: CreateClassDto,
+  ): Promise<Class | null> {
     return this.classesService.create(createClassDto);
+  }
+
+  @Get('professor')
+  getClassesByProfessorId(
+    @Query('professorId') professorId: number,
+  ): Promise<ClassDto[]> {
+    return this.classesService.findAllByProfessorId(professorId);
   }
 }

@@ -8,6 +8,7 @@ import { Professor } from '../professors/professor.entity';
 import { University } from '../universities/university.entity';
 import { CreateClassDto } from './dto/create-class.dto';
 import { AppException } from 'src/app-exception/app-exception';
+import { ClassDto } from './dto/class.dto';
 
 @Injectable()
 export class ClassesService {
@@ -29,6 +30,28 @@ export class ClassesService {
       where: { id: classId },
       relations: ['classroom', 'subject', 'professor', 'university'],
     });
+  }
+
+  async findAllByProfessorId(professorId: number): Promise<ClassDto[]> {
+    const professor = await this.professorRepository.findOneBy({
+      id: professorId,
+    });
+    if (!professor) {
+      throw new NotFoundException('Professor not found');
+    }
+    const classes = await this.classRepository.find({
+      where: { professor: professor },
+      relations: ['classroom', 'subject', 'professor.user', 'university'],
+    });
+
+    return classes.map((cls) => ({
+      ...cls,
+      professor: {
+        id: cls.professor.id,
+        title: cls.professor.title,
+        username: cls.professor.user.username,
+      },
+    }));
   }
 
   async create(createClassDto: CreateClassDto): Promise<Class | null> {
