@@ -1,0 +1,11 @@
+<div class="dashboard__classes">
+  <div class="dashboard__classes--title">
+    <h1>My classes</h1>
+  </div>
+  <div class="dashboard__classes--wrapper">
+    <app-class
+      *ngFor="let professorClass of professorClasses | async"
+      [loadedClass]="professorClass"
+    />
+  </div>
+</div>

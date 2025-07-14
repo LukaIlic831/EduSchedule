@@ -21,24 +21,17 @@
         </p>
       </div>
       <div class="dashboard__professor--info-field">
-        <p>University: <span>{{ currentUser.university?.name }}</span></p>
+        <p>
+          University: <span>{{ currentUser.university?.name }}</span>
+        </p>
       </div>
       <div class="dashboard__professor--info-field">
-        <p>Title: <span>{{ currentUser.professor?.title }}</span></p>
+        <p>
+          Title: <span>{{ currentUser.professor?.title }}</span>
+        </p>
       </div>
     </div>
-    <div class="dashboard__classes">
-      <div class="dashboard__classes--title">
-        <h1>My classes</h1>
-      </div>
-      <div class="dashboard__classes--wrapper">
-        <app-class />
-        <app-class />
-        <app-class />
-        <app-class />
-        <app-class />
-      </div>
-    </div>
+    <app-dashboard-classes [professorId]="currentUser.professor?.id!" />
     <div class="dashboard__create-class">
       <button routerLink="/create-class">Create Class</button>
     </div>

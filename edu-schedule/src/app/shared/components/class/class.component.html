@@ -1,14 +1,16 @@
 <div class="card">
   <div class="card__title">
-    <h1>Cas iz matematike</h1>
+    <h1>{{ loadedClass.lectureTitle }}</h1>
   </div>
   <div class="card__sub-title">
-    <p>Predmet</p>
+    <p>{{ loadedClass.subject.name }}</p>
   </div>
   <div class="card__content">
-    <p>Na ovom predmetu ce se diskutovati o...</p>
+    <p>{{ loadedClass.lectureDesc }}</p>
   </div>
-  <div class="card__date"><p>14:30 5/7/2025</p></div>
+  <div class="card__date">
+    <p>{{ loadedClass.dateAndTimeFormatted }}</p>
+  </div>
   <div class="card__arrow">
     <svg
       xmlns="http://www.w3.org/2000/svg"
