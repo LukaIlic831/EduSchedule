@@ -27,9 +27,6 @@ export class Classroom {
   @Column({ name: 'hasProjector' })
   hasProjector: boolean;
 
-  @Column()
-  reserved: boolean;
-
   @ManyToOne(() => University, (university) => university.classrooms)
   @JoinColumn({ name: 'university_id' })
   university: University;
