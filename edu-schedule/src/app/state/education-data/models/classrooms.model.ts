@@ -3,5 +3,4 @@ export interface Classroom {
   name: string;
   numberOfSeats: number;
   hasProjector: boolean;
-  reserved: boolean;
 }

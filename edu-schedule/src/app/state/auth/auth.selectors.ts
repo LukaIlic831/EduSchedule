@@ -30,6 +30,11 @@ export const selectAuthUserUserId = createSelector(
   (state) => state.user?.id!
 );
 
+export const selectAuthUserProfessorId = createSelector(
+  selectAuthState,
+  (state) => state.user?.professor?.id!
+);
+
 export const selectAuthUserUniversityId = createSelector(
   selectAuthState,
   (state) => state.user?.university?.id!
