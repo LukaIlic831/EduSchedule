@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { University } from '../../../state/education-data/models/university.model';
 import { Observable } from 'rxjs';
 import { StudyProgram } from '../../../state/education-data/models/study-program.model';
+import { Subject } from '../../../state/education-data/models/subject.model';
+import { Classroom } from '../../../state/education-data/models/classrooms.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +25,20 @@ export class EducationDataServiceService {
         params: { universityId: universityId },
       }
     );
+  }
+  getAllSubjectsByStudyProgramId(
+    studyProgramId: number
+  ): Observable<Subject[]> {
+    return this.http.get<Subject[]>(`${this.apiUrl}/subjects/study-program`, {
+      params: { studyProgramId: studyProgramId },
+    });
+  }
+
+  getAllClassroomsByUniversityId(
+    universityId: number
+  ): Observable<Classroom[]> {
+    return this.http.get<Classroom[]>(`${this.apiUrl}/classrooms/university`, {
+      params: { universityId: universityId },
+    });
   }
 }
