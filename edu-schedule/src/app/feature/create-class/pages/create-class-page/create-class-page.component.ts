@@ -22,7 +22,10 @@ import {
   loadAllStudyProgramsByUniversityId,
   loadAllSubjectsByStudyProgramId,
 } from '../../../../state/education-data/education-data.actions';
-import { selectAuthUserUniversityId } from '../../../../state/auth/auth.selectors';
+import {
+  selectAuthUserProfessorId,
+  selectAuthUserUniversityId,
+} from '../../../../state/auth/auth.selectors';
 import { Classroom } from '../../../../state/education-data/models/classrooms.model';
 import {
   selectEducationDataClassrooms,
@@ -31,6 +34,7 @@ import {
 } from '../../../../state/education-data/education-data.selectors';
 import { CommonModule } from '@angular/common';
 import { Subject } from '../../../../state/education-data/models/subject.model';
+import { createClass } from '../../../../state/class/class.actions';
 
 @Component({
   selector: 'app-create-class-page',
@@ -53,7 +57,9 @@ export class CreateClassPageComponent implements OnInit {
   studyPrograms: Observable<StudyProgram[]> = of([]);
   classrooms: Observable<Classroom[]> = of([]);
   subjects: Observable<Subject[]> = of([]);
-
+  profesorId = 0;
+  universityId = 0;
+  minDate = new Date();
   constructor(private store: Store, private fb: FormBuilder) {
     this.createClassDataForm = this.fb.group({
       title: new FormControl('', [Validators.required]),
@@ -65,14 +71,23 @@ export class CreateClassPageComponent implements OnInit {
       classroom: new FormControl(0, [notZeroOrNullValidator()]),
       classDate: new FormControl(null, [Validators.required]),
       startTime: new FormControl(null, [Validators.required]),
+      classDuration: new FormControl(45, [Validators.required]),
     });
   }
+
   ngOnInit() {
     this.studyPrograms = this.store.select(selectEducationDataStudyPrograms);
     this.classrooms = this.store.select(selectEducationDataClassrooms);
     this.subjects = this.store.select(selectEducationDataSubjects);
     this.handleUniversityIdSelect();
     this.handleSubjects();
+    this.store
+      .select(selectAuthUserProfessorId)
+      .pipe(
+        filter((profesorId) => !!profesorId),
+        take(1)
+      )
+      .subscribe((profesorId) => (this.profesorId = profesorId));
   }
 
   handleUniversityIdSelect() {
@@ -83,6 +98,7 @@ export class CreateClassPageComponent implements OnInit {
         take(1)
       )
       .subscribe((universityId) => {
+        this.universityId = universityId;
         this.store.dispatch(
           loadAllStudyProgramsByUniversityId({
             universityId: universityId,
@@ -113,5 +129,48 @@ export class CreateClassPageComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.createClassDataForm.valid) {
+      const {
+        title,
+        description,
+        subject,
+        classroom,
+        classDate,
+        startTime,
+        classDuration,
+      } = this.createClassDataForm.getRawValue();
+      const combinedStartDateAndTime = this.combineDateAndTime(
+        classDate,
+        startTime
+      );
+      const combinedEndDateAndTime = this.addMinutes(
+        combinedStartDateAndTime,
+        classDuration
+      );
+      this.store.dispatch(
+        createClass({
+          classDto: {
+            classroomId: classroom,
+            lectureDesc: description,
+            lectureTitle: title,
+            professorId: this.profesorId,
+            startTime: combinedStartDateAndTime.toISOString(),
+            subjectId: subject,
+            universityId: this.universityId,
+            endTime: combinedEndDateAndTime.toISOString(),
+          },
+        })
+      );
+    }
+  }
+
+  combineDateAndTime(date: Date, time: Date): Date {
+    const combinedDate = new Date(date);
+    combinedDate.setHours(time.getHours(), time.getMinutes(), 0, 0);
+    return combinedDate;
+  }
+
+  addMinutes(date: Date, minutes: number): Date {
+    return new Date(date.getTime() + minutes * 60000);
   }
 }

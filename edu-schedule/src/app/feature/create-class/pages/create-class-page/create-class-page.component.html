@@ -60,7 +60,9 @@
                   *ngFor="let classroom of classrooms | async"
                   [value]="classroom.id"
                 >
-                  {{ classroom.name }}
+                  {{ classroom.name }} (number of seats:
+                  {{ classroom.numberOfSeats
+                  }}<span *ngIf="classroom.hasProjector">, has projector</span>)
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -71,6 +73,7 @@
               <input
                 matInput
                 [matDatepicker]="datepicker"
+                [min]="minDate"
                 required
                 formControlName="classDate"
               />
@@ -85,8 +88,22 @@
                 required
                 formControlName="startTime"
               />
-              <mat-timepicker #timepicker />
+              <mat-timepicker #timepicker interval="15min" />
               <mat-timepicker-toggle [for]="timepicker" matSuffix />
+            </mat-form-field>
+          </div>
+          <div class="create-class__block--class-duration">
+            <mat-form-field>
+              <mat-label>Class duration in minutes (max 180)</mat-label>
+              <input
+                matInput
+                type="number"
+                pattern="[0-9]*"
+                max="180"
+                min="45"
+                inputmode="numeric"
+                formControlName="classDuration"
+              />
             </mat-form-field>
           </div>
         </div>

@@ -29,7 +29,9 @@ mat-form-field {
 
   &--select,
   &--title,
-  &--desc, &--time-picker {
+  &--desc,
+  &--time-picker,
+  &--class-duration {
     width: 100%;
   }
 
