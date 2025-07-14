@@ -47,7 +47,6 @@ export class SignUpPageComponent {
 
   onSubmit() {
     if (this.signUpForm.valid) {
-      console.log(this.signUpForm.value);
       const { username, email, password, role } = this.signUpForm.value;
       this.store.dispatch(signUp({ username, email, password, role }));
     }

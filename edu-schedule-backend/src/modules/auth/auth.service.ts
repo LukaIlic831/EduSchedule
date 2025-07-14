@@ -40,4 +40,8 @@ export class AuthService {
       role: user.role,
     };
   }
+
+  getUser(userId: number){
+    return this.usersService.findUserById(userId);
+  }
 }

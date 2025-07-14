@@ -24,3 +24,13 @@ export const selectAuthUserUsername = createSelector(
   selectAuthState,
   (state) => state.user?.username!
 );
+
+export const selectAuthUserUserId = createSelector(
+  selectAuthState,
+  (state) => state.user?.id!
+);
+
+export const selectAuthUser = createSelector(
+  selectAuthState,
+  (state) => state.user
+);

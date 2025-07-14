@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from './models/user.model';
+import { Professor } from './models/professor.model';
+import { Student } from './models/student.model';
+import { University } from '../education-data/models/university.model';
 
 export const signIn = createAction(
   '[Auth] Sign In',
@@ -35,3 +38,42 @@ export const loadUserSuccess = createAction(
 
 export const signOut = createAction('[Auth] Sign Out');
 export const signOutSuccess = createAction('[Auth] Sign Out Success');
+
+export const updateUserAndCreateProfessor = createAction(
+  '[Auth] Update User And Create Professor',
+  props<{
+    userId: number;
+    universityId: number;
+    professor: Omit<Professor, 'id'> & { userId: number };
+  }>()
+);
+
+export const updateUserAndCreateProfessorSuccess = createAction(
+  '[Auth] Update User And Create Professor Success',
+  props<{
+    university: University;
+    professor: Professor;
+  }>()
+);
+
+export const updateUserAndCreateStudent = createAction(
+  '[Auth] Update User And Create Student',
+  props<{
+    userId: number;
+    universityId: number;
+    student: (Student & { userId: number }) | null;
+  }>()
+);
+
+export const updateUserAndCreateStudentSuccess = createAction(
+  '[Auth] Update User And Create Student Success',
+  props<{
+    university: University;
+    student: Student;
+  }>()
+);
+
+export const updateUserFailure = createAction(
+  '[Auth] Update User Failure',
+  props<{ error: { status: number; message: string } }>()
+);

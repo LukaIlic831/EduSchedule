@@ -11,7 +11,8 @@ import { signOut } from '../../../../state/auth/auth.actions';
   styleUrl: './professor-dashboard-page.component.scss',
 })
 export class ProfessorDashboardPageComponent {
-  constructor(private store: Store) {}
+  constructor(private store: Store) {
+  }
   handleSignOut() {
     this.store.dispatch(signOut());
   }

@@ -7,10 +7,15 @@ import { ClassComponent } from '../../../../shared/components/class/class.compon
 
 @Component({
   selector: 'app-search-class-page',
-  imports: [NavComponent, MatFormFieldModule, MatIconModule, MatInputModule, ClassComponent],
+  imports: [
+    NavComponent,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    ClassComponent,
+  ],
   templateUrl: './search-class-page.component.html',
-  styleUrl: './search-class-page.component.scss'
+  styleUrl: './search-class-page.component.scss',
 })
 export class SearchClassPageComponent {
-
 }

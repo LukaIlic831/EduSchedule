@@ -1,7 +1,7 @@
 <div class="info__block--wrapper">
   <mat-card class="info__block">
     <app-info-title [username]="username" />
-    <form [formGroup]="additionalDataForm">
+    <form [formGroup]="additionalDataForm"  (ngSubmit)="onSubmit()">
       <mat-card-content>
         <div class="info__block--fields">
           <div class="info__block--select">

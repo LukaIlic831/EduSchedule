@@ -25,7 +25,6 @@ export class AuthController {
     return { token, role };
   }
 
-  
   @Post('sign-up')
   async signup(
     @Body() createUserDto: CreateUserDto,
@@ -39,7 +38,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('user')
   getUser(@Request() req) {
-    return req.user;
+    return this.authService.getUser(req.user.id);
   }
 
   setTokenInCookies(token: string, res: Response) {
@@ -52,8 +51,8 @@ export class AuthController {
   }
 
   @Get('sign-out')
-  signout(@Res({ passthrough: true }) res: Response){
-   res.cookie('jwt', '', {
+  signout(@Res({ passthrough: true }) res: Response) {
+    res.cookie('jwt', '', {
       expires: new Date(Date.now()),
     });
     return {};

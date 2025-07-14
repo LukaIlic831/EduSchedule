@@ -4,10 +4,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { InfoTitleComponent } from '../../components/info-title/info-title.component';
-import { Observable, of, take } from 'rxjs';
+import { filter, Observable, of, take } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { loadUser } from '../../../../state/auth/auth.actions';
-import { selectAuthUserUsername } from '../../../../state/auth/auth.selectors';
+import {
+  loadUser,
+  updateUserAndCreateStudent,
+} from '../../../../state/auth/auth.actions';
+import {
+  selectAuthUserUserId,
+  selectAuthUserUsername,
+} from '../../../../state/auth/auth.selectors';
 import { University } from '../../../../state/education-data/models/university.model';
 import {
   loadAllStudyProgramsByUniversityId,
@@ -27,6 +33,7 @@ import {
 } from '@angular/forms';
 import { YEARS } from '../../../../data/data';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
+import { notZeroOrNullValidator } from '../../validators/not-zero-or-null.validator';
 
 @Component({
   selector: 'app-student-info-page',
@@ -48,25 +55,31 @@ export class StudentInfoPageComponent {
   universities: Observable<University[]> = of([]);
   studyPrograms: Observable<StudyProgram[]> = of([]);
   years = YEARS;
+  userId = 0;
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.additionalDataForm = this.fb.group({
-      university: new FormControl(0, [Validators.required]),
-      year: new FormControl(0, [Validators.required]),
+      university: new FormControl(0, [notZeroOrNullValidator()]),
+      year: new FormControl(0, [notZeroOrNullValidator()]),
       studyProgram: new FormControl({ value: 0, disabled: true }, [
-        Validators.required,
+        notZeroOrNullValidator(),
       ]),
       index: new FormControl('', [Validators.required]),
     });
   }
   ngOnInit() {
-    this.store.dispatch(loadUser());
     this.username = this.store.select(selectAuthUserUsername);
-    this.store.dispatch(loadAllUniversities());
     this.universities = this.store.select(selectEducationDataUniversities);
     this.studyPrograms = this.store.select(selectEducationDataStudyPrograms);
     this.handleStudyPrograms();
     this.handleYear();
+    this.store
+      .select(selectAuthUserUserId)
+      .pipe(
+        filter((userId) => !!userId),
+        take(1)
+      )
+      .subscribe((userId) => (this.userId = userId));
   }
 
   handleStudyPrograms() {
@@ -106,5 +119,24 @@ export class StudentInfoPageComponent {
           this.additionalDataForm.get('studyProgram')?.enable();
         }
       });
+  }
+
+  onSubmit() {
+    if (this.additionalDataForm.valid) {
+      const { university, year, studyProgram, index } =
+        this.additionalDataForm.getRawValue();
+      this.store.dispatch(
+        updateUserAndCreateStudent({
+          userId: this.userId,
+          universityId: university,
+          student: {
+            index: index,
+            year: year,
+            studyProgram: studyProgram,
+            userId: this.userId,
+          },
+        })
+      );
+    }
   }
 }

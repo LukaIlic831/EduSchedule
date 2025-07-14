@@ -5,6 +5,9 @@ import {
   signInSuccess,
   signOutSuccess,
   signUpSuccess,
+  updateUserAndCreateProfessorSuccess,
+  updateUserAndCreateStudentSuccess,
+  updateUserFailure,
 } from './auth.actions';
 import { User } from './models/user.model';
 
@@ -26,7 +29,17 @@ export const authReducer = createReducer(
   initialState,
   on(signInSuccess, (state, { token, role }) => ({ ...state, token, role })),
   on(authFailure, (state, { error }) => ({ ...state, error })),
+  on(updateUserFailure, (state, { error }) => ({ ...state, error })),
   on(signUpSuccess, (state, { token, role }) => ({ ...state, token, role })),
   on(loadUserSuccess, (state, { user }) => ({ ...state, user })),
-  on(signOutSuccess, () => initialState)
+  on(signOutSuccess, () => initialState),
+  on(
+    updateUserAndCreateProfessorSuccess,
+    (state, { professor, university }) => ({ ...state, professor, university })
+  ),
+  on(updateUserAndCreateStudentSuccess, (state, { student, university }) => ({
+    ...state,
+    student,
+    university,
+  }))
 );
