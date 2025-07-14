@@ -17,7 +17,9 @@ import { EducationDataEffects } from './state/education-data/education-data.effe
 import { educationDataReducer } from './state/education-data/education-data.reducer';
 import { educationDataFeatureKey } from './state/education-data/education-data.selectors';
 import { ClassEffects } from './state/class/class.effects';
-import { classFeatureKey, classReducer } from './state/class/class.reducer';
+import { classReducer } from './state/class/class.reducer';
+import { classFeatureKey } from './state/class/class.selectors';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

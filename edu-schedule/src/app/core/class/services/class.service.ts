@@ -15,4 +15,10 @@ export class ClassService {
       classData
     );
   }
+
+  getAllProfessorClasses(professorId: number): Observable<ClassModel[]> {
+    return this.http.get<ClassModel[]>(`${this.apiUrl}/classes/professor`, {
+      params: { professorId: professorId },
+    });
+  }
 }
