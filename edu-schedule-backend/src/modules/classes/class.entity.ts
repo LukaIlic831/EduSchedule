@@ -1,7 +1,15 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Classroom } from "../classrooms/classroom.entity";
-import { Professor } from "../professors/professor.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Classroom } from '../classrooms/classroom.entity';
+import { Professor } from '../professors/professor.entity';
 import { Subject } from '../subjects/subject.entity';
+import { University } from '../universities/university.entity';
+import { StudyProgram } from '../study-programs/study-program.entity';
 
 @Entity('classes')
 export class Class {
@@ -31,4 +39,8 @@ export class Class {
   @ManyToOne(() => Professor, (professor) => professor.classes)
   @JoinColumn({ name: 'professor_id' })
   professor: Professor;
+
+  @ManyToOne(() => University, (university) => university.classes)
+  @JoinColumn({ name: 'university_id' })
+  university: University;
 }
