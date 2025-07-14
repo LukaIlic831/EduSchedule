@@ -3,20 +3,25 @@ import { University } from './models/university.model';
 import { StudyProgram } from './models/study-program.model';
 import { Subject } from './models/subject.model';
 import {
+  loadAllClassroomsByUniversityIdSuccess,
   loadAllStudyProgramsByUniversityIdSuccess,
+  loadAllSubjectsByStudyProgramIdSuccess,
   loadAllUniversitiesSuccess,
 } from './education-data.actions';
+import { Classroom } from './models/classrooms.model';
 
 export interface EducationDataState {
   universities: University[] | null;
   studyPrograms: StudyProgram[] | null;
   subjects: Subject[] | null;
+  classrooms: Classroom[] | null;
 }
 
 const initialState: EducationDataState = {
   universities: null,
   studyPrograms: null,
   subjects: null,
+  classrooms: null,
 };
 
 export const educationDataReducer = createReducer(
@@ -28,5 +33,13 @@ export const educationDataReducer = createReducer(
   on(loadAllStudyProgramsByUniversityIdSuccess, (state, { studyPrograms }) => ({
     ...state,
     studyPrograms,
+  })),
+  on(loadAllSubjectsByStudyProgramIdSuccess, (state, { subjects }) => ({
+    ...state,
+    subjects,
+  })),
+  on(loadAllClassroomsByUniversityIdSuccess, (state, { classrooms }) => ({
+    ...state,
+    classrooms,
   }))
 );

@@ -7,17 +7,17 @@ export const selectAuthState = createFeatureSelector<AuthState>(authFeatureKey);
 
 export const selectAuthError = createSelector(
   selectAuthState,
-  (state) => state.error
+  (state) => state.error!
 );
 
 export const selectAuthToken = createSelector(
   selectAuthState,
-  (state) => state.token
+  (state) => state.token!
 );
 
 export const selectAuthRole = createSelector(
   selectAuthState,
-  (state) => state.role
+  (state) => state.role!
 );
 
 export const selectAuthUserUsername = createSelector(
@@ -30,7 +30,12 @@ export const selectAuthUserUserId = createSelector(
   (state) => state.user?.id!
 );
 
+export const selectAuthUserUniversityId = createSelector(
+  selectAuthState,
+  (state) => state.user?.university?.id!
+);
+
 export const selectAuthUser = createSelector(
   selectAuthState,
-  (state) => state.user
+  (state) => state.user!
 );

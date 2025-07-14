@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  loadAllClassroomsByUniversityId,
+  loadAllClassroomsByUniversityIdSuccess,
   loadAllStudyProgramsByUniversityId,
   loadAllStudyProgramsByUniversityIdSuccess,
+  loadAllSubjectsByStudyProgramId,
+  loadAllSubjectsByStudyProgramIdSuccess,
   loadAllUniversities,
   loadAllUniversitiesSuccess,
 } from './education-data.actions';
@@ -32,12 +36,42 @@ export class EducationDataEffects {
   loadAllStudyPrograms$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAllStudyProgramsByUniversityId),
-      switchMap(({universityId}) =>
+      switchMap(({ universityId }) =>
         this.educationDataService
           .getAllStudyProgramsByUniversityId(universityId)
           .pipe(
             map((studyPrograms) =>
               loadAllStudyProgramsByUniversityIdSuccess({ studyPrograms })
+            )
+          )
+      )
+    )
+  );
+
+  loadAllSubjects$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAllSubjectsByStudyProgramId),
+      switchMap(({ studyProgramId }) =>
+        this.educationDataService
+          .getAllSubjectsByStudyProgramId(studyProgramId)
+          .pipe(
+            map((subjects) =>
+              loadAllSubjectsByStudyProgramIdSuccess({ subjects })
+            )
+          )
+      )
+    )
+  );
+
+  loadAllClassrooms$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAllClassroomsByUniversityId),
+      switchMap(({ universityId }) =>
+        this.educationDataService
+          .getAllClassroomsByUniversityId(universityId)
+          .pipe(
+            map((classrooms) =>
+              loadAllClassroomsByUniversityIdSuccess({ classrooms })
             )
           )
       )

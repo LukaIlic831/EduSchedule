@@ -15,3 +15,13 @@ export const selectEducationDataStudyPrograms = createSelector(
   selectEducationDataState,
   (state) => state.studyPrograms!
 );
+
+export const selectEducationDataSubjects = createSelector(
+  selectEducationDataState,
+  (state) => state.subjects!
+);
+
+export const selectEducationDataClassrooms = createSelector(
+  selectEducationDataState,
+  (state) => state.classrooms!
+);

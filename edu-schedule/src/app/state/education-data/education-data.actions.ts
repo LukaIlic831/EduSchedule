@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { StudyProgram } from './models/study-program.model';
 import { University } from './models/university.model';
+import { Subject } from './models/subject.model';
+import { Classroom } from './models/classrooms.model';
 
 export const loadAllUniversities = createAction(
   '[Education Data] Load All Universities'
@@ -21,8 +23,36 @@ export const loadAllStudyProgramsByUniversityId = createAction(
 );
 
 export const loadAllStudyProgramsByUniversityIdSuccess = createAction(
-  '[Education Data] Load All Study Programs By University IdSuccess',
+  '[Education Data] Load All Study Programs By University Id Success',
   props<{
     studyPrograms: StudyProgram[];
+  }>()
+);
+
+export const loadAllSubjectsByStudyProgramId = createAction(
+  '[Education Data] Load All Subjects By Study Program Id',
+  props<{
+    studyProgramId: number;
+  }>()
+);
+
+export const loadAllSubjectsByStudyProgramIdSuccess = createAction(
+  '[Education Data] Load All Subjects By Study Program Id Success',
+  props<{
+    subjects: Subject[];
+  }>()
+);
+
+export const loadAllClassroomsByUniversityId = createAction(
+  '[Education Data] Load All Study Programs By University Id',
+  props<{
+    universityId: number;
+  }>()
+);
+
+export const loadAllClassroomsByUniversityIdSuccess = createAction(
+  '[Education Data] Load All Classrooms By University Id Success',
+  props<{
+    classrooms: Classroom[];
   }>()
 );
