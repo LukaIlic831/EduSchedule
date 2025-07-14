@@ -1,17 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  filter,
-  map,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import {
   createClass,
   createClassFailure,
   createClassSuccess,
+  loadProfessorClasses,
+  loadProfessorClassesSuccess,
 } from './class.actions';
 import { ClassService } from '../../core/class/services/class.service';
 import { Router } from '@angular/router';
@@ -74,5 +70,36 @@ export class ClassEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  loadClasses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadProfessorClasses),
+      switchMap(({ professorId }) =>
+        this.classService.getAllProfessorClasses(professorId).pipe(
+          map((professorClasses) =>
+            professorClasses.map((professorClass) => {
+              const formattedDate = new Date(
+                professorClass.startTime
+              ).toLocaleDateString();
+              const formattedStartTime = new Date(
+                professorClass.startTime
+              ).toLocaleTimeString();
+              const formattedEndTime = new Date(
+                professorClass.endTime
+              ).toLocaleTimeString();
+
+              return {
+                ...professorClass,
+                dateAndTimeFormatted: `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`,
+              };
+            })
+          ),
+          map((formattedClasses) =>
+            loadProfessorClassesSuccess({ classes: formattedClasses })
+          )
+        )
+      )
+    )
   );
 }

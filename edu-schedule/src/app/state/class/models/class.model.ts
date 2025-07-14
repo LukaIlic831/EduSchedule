@@ -14,4 +14,5 @@ export interface ClassModel {
   subject: Subject;
   professor: Professor & Pick<User, 'username'>;
   university: University;
+  dateAndTimeFormatted: string;
 }

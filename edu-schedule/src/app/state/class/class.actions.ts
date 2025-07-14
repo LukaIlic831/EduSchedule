@@ -16,3 +16,13 @@ export const createClassFailure = createAction(
   '[Class] Create Class Failure',
   props<{ error: { status: number; message: string } }>()
 );
+
+export const loadProfessorClasses = createAction(
+  '[Class] Load Professor Classes',
+  props<{ professorId: number }>()
+);
+
+export const loadProfessorClassesSuccess = createAction(
+  '[Class] Load Professor Classes Success',
+  props<{ classes: ClassModel[] }>()
+);
