@@ -21,4 +21,10 @@ export class ClassService {
       params: { professorId: professorId },
     });
   }
+
+  deleteProfessorClass(classId: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/classes/delete`, {
+      params: { classId: classId },
+    });
+  }
 }
