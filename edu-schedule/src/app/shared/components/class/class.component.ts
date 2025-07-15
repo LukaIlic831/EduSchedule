@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClassModel } from '../../../state/class/models/class.model';
-import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { selectProfessorClassForDelete } from '../../../state/class/class.actions';
 
 @Component({
   selector: 'app-class',
@@ -11,4 +12,13 @@ import { CommonModule } from '@angular/common';
 })
 export class ClassComponent {
   @Input() loadedClass!: ClassModel;
+  @Input() canBeDeleted? = false;
+  @Output() handleClassDeleteClick = new EventEmitter<void>();
+
+  constructor(private store: Store) {}
+
+  handleDeleteClass(selectedClass: ClassModel) {
+    this.store.dispatch(selectProfessorClassForDelete({ selectedClass }));
+    this.handleClassDeleteClick.emit();
+  }
 }

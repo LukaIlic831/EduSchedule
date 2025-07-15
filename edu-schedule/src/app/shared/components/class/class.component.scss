@@ -2,7 +2,6 @@
 @use "mixins" as *;
 
 .card {
-  font-family: "Arial";
   padding: 16px;
   cursor: pointer;
   border-radius: 0.75rem;
@@ -31,8 +30,24 @@
       padding: 0;
       font-size: 20px;
       font-weight: bold;
+      word-break: break-all;
       margin-top: 0px;
     }
+
+    &--padding {
+    padding-right: 40px !important;
+  }
+  }
+
+  &__delete {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 50%;
   }
 
   &__date {

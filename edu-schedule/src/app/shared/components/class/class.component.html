@@ -1,6 +1,15 @@
 <div class="card">
-  <div class="card__title">
-    <h1>{{ loadedClass.lectureTitle }}</h1>
+  <div
+    class="card__delete"
+    *ngIf="canBeDeleted"
+    (click)="handleDeleteClass(loadedClass)"
+  >
+    x
+  </div>
+  <div class="card__title" [ngClass]="{ 'card__title--padding': canBeDeleted }">
+    <h1>
+      {{ loadedClass.lectureTitle }}
+    </h1>
   </div>
   <div class="card__sub-title">
     <p>{{ loadedClass.subject.name }}</p>

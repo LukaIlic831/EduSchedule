@@ -6,6 +6,12 @@
     <app-class
       *ngFor="let professorClass of professorClasses | async"
       [loadedClass]="professorClass"
+      (handleClassDeleteClick)="handleOnClickClassDelete()"
+      [canBeDeleted]="true"
     />
   </div>
 </div>
+<app-delete-class-block
+  *ngIf="isDeleteClassBlockVisible"
+  (handleCloseDeleteClassBlock)="handleOnClickClassDeleteBlockButton()"
+/>

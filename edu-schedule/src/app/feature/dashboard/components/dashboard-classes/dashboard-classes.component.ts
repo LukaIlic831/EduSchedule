@@ -6,21 +6,31 @@ import { selectAllClasses } from '../../../../state/class/class.selectors';
 import { Observable, of } from 'rxjs';
 import { ClassModel } from '../../../../state/class/models/class.model';
 import { CommonModule } from '@angular/common';
+import { DeleteClassBlockComponent } from './components/delete-class-block/delete-class-block.component';
 
 @Component({
   selector: 'app-dashboard-classes',
-  imports: [ClassComponent, CommonModule],
+  imports: [ClassComponent, CommonModule, DeleteClassBlockComponent],
   templateUrl: './dashboard-classes.component.html',
   styleUrl: './dashboard-classes.component.scss',
 })
 export class DashboardClassesComponent implements OnInit {
   @Input() professorId = 0;
   professorClasses: Observable<ClassModel[]> = of([]);
+  isDeleteClassBlockVisible = false;
   constructor(private store: Store) {}
   ngOnInit() {
     this.store.dispatch(
       loadProfessorClasses({ professorId: this.professorId })
     );
     this.professorClasses = this.store.select(selectAllClasses);
+  }
+
+  handleOnClickClassDelete() {
+    this.isDeleteClassBlockVisible = true;
+  }
+
+  handleOnClickClassDeleteBlockButton() {
+    this.isDeleteClassBlockVisible = false;
   }
 }

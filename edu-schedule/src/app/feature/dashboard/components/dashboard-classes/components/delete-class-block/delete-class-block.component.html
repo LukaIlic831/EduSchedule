@@ -1,0 +1,26 @@
+<div
+  class="delete-class__block--wrapper"
+  *ngIf="selectedClass | async as class"
+>
+  <div class="delete-class__block">
+    <div class="delete-class__block--title">
+      <h1>
+        Do you really want to delete class with title: {{ class.lectureTitle }}?
+      </h1>
+    </div>
+    <div class="delete-class__block--buttons">
+      <button
+        class="delete-class__block--buttons-button-no"
+        (click)="handleNoButtonClick()"
+      >
+        No
+      </button>
+      <button
+        class="delete-class__block--buttons-button-yes"
+        (click)="handleYesButtonClick(class.id)"
+      >
+        Yes
+      </button>
+    </div>
+  </div>
+</div>

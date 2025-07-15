@@ -1,0 +1,25 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.delete-class__block {
+  @include mid-block();
+  &--wrapper {
+    @include mid-block-wrapper();
+    @include flex-center();
+    background: #d5e1f871;
+    z-index: 100;
+  }
+
+  &--buttons {
+    &-button-no {
+      max-width: 200px;
+      @include button-style();
+    }
+
+    &-button-yes {
+      max-width: 200px;
+      margin-left: $spacing-sm;
+      @include cancel-button-style();
+    }
+  }
+}
