@@ -12,4 +12,11 @@ export class SubjectsController {
   ): Promise<Subject[]> {
     return this.subjectsService.getSubjectsByStudyProgramId(studyProgramId);
   }
+
+  @Get('university')
+  getSubjectsByUniversityId(
+    @Query('universityId') universityId: number,
+  ): Promise<Subject[]> {
+    return this.subjectsService.getSubjectsByUniversityId(universityId);
+  }
 }
