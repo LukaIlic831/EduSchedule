@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { Class } from './class.entity';
@@ -20,5 +20,10 @@ export class ClassesController {
     @Query('professorId') professorId: number,
   ): Promise<ClassDto[]> {
     return this.classesService.findAllByProfessorId(professorId);
+  }
+
+  @Delete('delete')
+  deleteClassById(@Query('classId') classId: number): Promise<void> {
+    return this.classesService.deleteClassById(classId);
   }
 }

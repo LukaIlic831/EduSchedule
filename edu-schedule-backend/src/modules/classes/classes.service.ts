@@ -32,6 +32,10 @@ export class ClassesService {
     });
   }
 
+  async deleteClassById(classId: number): Promise<void> {
+    await this.classRepository.delete(classId);
+  }
+
   async findAllByProfessorId(professorId: number): Promise<ClassDto[]> {
     const professor = await this.professorRepository.findOneBy({
       id: professorId,
