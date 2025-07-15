@@ -18,7 +18,8 @@ export class ClassComponent {
 
   constructor(private store: Store) {}
 
-  handleDeleteClass(selectedClass: ClassModel) {
+  handleDeleteClass(selectedClass: ClassModel, event: MouseEvent) {
+    event.stopPropagation();
     this.store.dispatch(selectProfessorClassForDelete({ selectedClass }));
     this.handleClassDeleteClick.emit();
   }

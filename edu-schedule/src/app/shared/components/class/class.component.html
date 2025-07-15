@@ -2,7 +2,7 @@
   <div
     class="card__delete"
     *ngIf="canBeDeleted"
-    (click)="handleDeleteClass(loadedClass)"
+    (click)="handleDeleteClass(loadedClass, $event)"
   >
     x
   </div>
