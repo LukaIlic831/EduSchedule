@@ -25,11 +25,28 @@ export class ClassesService {
     private universityRepository: Repository<University>,
   ) {}
 
-  async findByClassId(classId: number) {
-    return await this.classRepository.findOne({
+  async findByClassId(classId: number): Promise<ClassDto> {
+    const foundClass = await this.classRepository.findOne({
       where: { id: classId },
-      relations: ['classroom', 'subject', 'professor', 'university'],
+      relations: [
+        'classroom',
+        'subject.studyProgram',
+        'professor.user',
+        'university',
+      ],
     });
+
+    if (!foundClass) {
+      throw new NotFoundException(`Class not found`);
+    }
+    return {
+      ...foundClass,
+      professor: {
+        id: foundClass.professor.id,
+        title: foundClass.professor.title,
+        username: foundClass.professor.user.username,
+      },
+    };
   }
 
   async deleteClassById(classId: number): Promise<void> {
@@ -45,7 +62,12 @@ export class ClassesService {
     }
     const classes = await this.classRepository.find({
       where: { professor: professor },
-      relations: ['classroom', 'subject', 'professor.user', 'university'],
+      relations: [
+        'classroom',
+        'subject.studyProgram',
+        'professor.user',
+        'university',
+      ],
     });
 
     return classes.map((cls) => ({
@@ -58,7 +80,7 @@ export class ClassesService {
     }));
   }
 
-  async create(createClassDto: CreateClassDto): Promise<Class | null> {
+  async create(createClassDto: CreateClassDto): Promise<ClassDto> {
     const {
       lectureTitle,
       lectureDesc,

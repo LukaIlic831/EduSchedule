@@ -9,9 +9,7 @@ export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @Post('create')
-  async createClass(
-    @Body() createClassDto: CreateClassDto,
-  ): Promise<Class | null> {
+  async createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
     return this.classesService.create(createClassDto);
   }
 
@@ -25,5 +23,10 @@ export class ClassesController {
   @Delete('delete')
   deleteClassById(@Query('classId') classId: number): Promise<void> {
     return this.classesService.deleteClassById(classId);
+  }
+
+  @Get('class')
+  getClassById(@Query('classId') classId: number): Promise<ClassDto> {
+    return this.classesService.findByClassId(classId);
   }
 }

@@ -1,6 +1,7 @@
-import { Classroom } from "src/modules/classrooms/classroom.entity";
-import { Subject } from "src/modules/subjects/subject.entity";
-import { University } from "src/modules/universities/university.entity";
+import { Classroom } from 'src/modules/classrooms/classroom.entity';
+import { StudyProgram } from 'src/modules/study-programs/study-program.entity';
+import { Subject } from 'src/modules/subjects/subject.entity';
+import { University } from 'src/modules/universities/university.entity';
 
 export interface ClassDto {
   professor: {
@@ -14,6 +15,6 @@ export interface ClassDto {
   startTime: Date;
   endTime: Date;
   classroom: Classroom;
-  subject: Subject;
+  subject: Subject & { studyProgram: StudyProgram };
   university: University;
 }
