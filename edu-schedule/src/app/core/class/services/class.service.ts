@@ -22,8 +22,14 @@ export class ClassService {
     });
   }
 
-  deleteProfessorClass(classId: number): Observable<number> {
-    return this.http.delete<number>(`${this.apiUrl}/classes/delete`, {
+  deleteProfessorClass(classId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/classes/delete`, {
+      params: { classId: classId },
+    });
+  }
+
+  getClass(classId: number): Observable<ClassModel> {
+    return this.http.get<ClassModel>(`${this.apiUrl}/classes/class`, {
       params: { classId: classId },
     });
   }
