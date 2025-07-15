@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ClassModel } from '../../../../state/class/models/class.model';
 
 @Component({
   selector: 'app-reserve-seat',
@@ -17,6 +18,8 @@ export class ReserveSeatComponent implements OnInit {
     20, 21, 22, 23, 24, 7, 8, 9, 10, 11, 12,
   ];
   numberOfGroups = [this.firstGroupSeatNumbers];
+  @Input() selectedClass!: ClassModel;
+  @Input() isProfessor!: boolean;
 
   ngOnInit() {
     this.arrangeSeatNumbers();

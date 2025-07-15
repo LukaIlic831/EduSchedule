@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 
@@ -9,5 +9,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './nav.component.scss'
 })
 export class NavComponent {
-
+  @Input() isProfessor!: boolean;
 }

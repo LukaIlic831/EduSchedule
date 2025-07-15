@@ -3,10 +3,11 @@ import { ClassModel } from '../../../state/class/models/class.model';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { selectProfessorClassForDelete } from '../../../state/class/class.actions';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-class',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './class.component.html',
   styleUrl: './class.component.scss',
 })

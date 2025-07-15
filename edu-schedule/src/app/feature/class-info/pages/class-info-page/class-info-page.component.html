@@ -1,23 +1,29 @@
-<app-nav />
-<div class="main__wrapper">
+<app-nav [isProfessor]="(professor | async) !== null"/>
+<div class="main__wrapper" *ngIf="selectedClass | async as class">
   <div class="class-info">
     <div class="class-info__title">
-      <h1>Cas iz matematike</h1>
+      <h1>{{ class.lectureTitle }}</h1>
     </div>
     <div class="class-info__sub-title">
-      <p>University | Year | Study Program | Subject</p>
+      <p>
+        {{ class.university.name }} | {{ class.subject.studyProgram.name }} |
+        {{ class.subject.name }} | {{ class.subject.year }} year
+      </p>
     </div>
     <div class="class-info__desc">
-      <p>Na ovom predmetu ce se diskutovati o...</p>
+      <p>{{ class.lectureDesc }}</p>
     </div>
     <div class="class-info__footer">
       <div class="class-info__footer--date">
-        <p>14:30 5/7/2025</p>
+        <p>{{ class.dateAndTimeFormatted }}</p>
       </div>
       <div class="class-info__footer--professor">
-        <p>Scheduled by: Professor</p>
+        <p>Scheduled by: {{ class.professor.username }}</p>
       </div>
     </div>
   </div>
-  <app-reserve-seat />
+  <app-reserve-seat
+    [selectedClass]="class"
+    [isProfessor]="(professor | async) !== null"
+  />
 </div>

@@ -22,5 +22,5 @@ export const routes: Routes = [
   { path: 'create-class', component: CreateClassPageComponent },
   { path: 'search', component: SearchClassPageComponent },
   { path: 'student-profile', component: StudentProfilePageComponent },
-  { path: 'class-info', component: ClassInfoPageComponent },
+  { path: 'class-info/:id', component: ClassInfoPageComponent },
 ];
