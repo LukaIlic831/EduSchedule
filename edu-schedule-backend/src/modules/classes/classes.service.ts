@@ -80,7 +80,34 @@ export class ClassesService {
     }));
   }
 
-  async create(createClassDto: CreateClassDto): Promise<ClassDto> {
+  async findAllByUniversityId(universityId: number): Promise<ClassDto[]> {
+    const university = await this.universityRepository.findOneBy({
+      id: universityId,
+    });
+    if (!university) {
+      throw new NotFoundException('University not found');
+    }
+    const classes = await this.classRepository.find({
+      where: { university: university },
+      relations: [
+        'classroom',
+        'subject.studyProgram',
+        'professor.user',
+        'university',
+      ],
+    });
+
+    return classes.map((cls) => ({
+      ...cls,
+      professor: {
+        id: cls.professor.id,
+        title: cls.professor.title,
+        username: cls.professor.user.username,
+      },
+    }));
+  }
+
+  async createClass(createClassDto: CreateClassDto): Promise<ClassDto> {
     const {
       lectureTitle,
       lectureDesc,

@@ -10,7 +10,7 @@ export class ClassesController {
 
   @Post('create')
   async createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
-    return this.classesService.create(createClassDto);
+    return this.classesService.createClass(createClassDto);
   }
 
   @Get('professor')
@@ -18,6 +18,13 @@ export class ClassesController {
     @Query('professorId') professorId: number,
   ): Promise<ClassDto[]> {
     return this.classesService.findAllByProfessorId(professorId);
+  }
+
+  @Get('university')
+  getClassesByUniversityId(
+    @Query('universityId') universityId: number,
+  ): Promise<ClassDto[]> {
+    return this.classesService.findAllByUniversityId(universityId);
   }
 
   @Delete('delete')
