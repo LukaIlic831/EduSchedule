@@ -4,18 +4,21 @@ import { ClassModel } from './models/class.model';
 import {
   createClassFailure,
   createClassSuccess,
+  deleteProfessorClassSuccess,
   loadProfessorClassesSuccess,
+  selectProfessorClassForDelete,
 } from './class.actions';
 
 export interface ClassState extends EntityState<ClassModel> {
   error: { status: number; message: string } | null;
+  selectedClass: ClassModel | null;
 }
 
 export const classAdapter = createEntityAdapter<ClassModel>();
-export const classFeatureKey = 'class';
 
 export const initialState: ClassState = classAdapter.getInitialState({
   error: null,
+  selectedClass: null,
 });
 
 export const classReducer = createReducer(
@@ -29,5 +32,15 @@ export const classReducer = createReducer(
   })),
   on(loadProfessorClassesSuccess, (state, { classes }) =>
     classAdapter.setAll(classes, { ...state })
-  )
+  ),
+  on(deleteProfessorClassSuccess, (state) =>
+    classAdapter.removeOne(state.selectedClass?.id!, {
+      ...state,
+      selectedClass: null,
+    })
+  ),
+  on(selectProfessorClassForDelete, (state, { selectedClass }) => ({
+    ...state,
+    selectedClass,
+  }))
 );

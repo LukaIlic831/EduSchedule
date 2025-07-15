@@ -26,3 +26,17 @@ export const loadProfessorClassesSuccess = createAction(
   '[Class] Load Professor Classes Success',
   props<{ classes: ClassModel[] }>()
 );
+
+export const deleteProfessorClass = createAction(
+  '[Class] Delete Professor Class',
+  props<{ classId: number }>()
+);
+
+export const deleteProfessorClassSuccess = createAction(
+  '[Class] Delete Professor Class Success'
+);
+
+export const selectProfessorClassForDelete = createAction(
+  '[Class] Select Professor Class For Delete',
+  props<{ selectedClass: ClassModel }>()
+);

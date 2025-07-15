@@ -6,6 +6,8 @@ import {
   createClass,
   createClassFailure,
   createClassSuccess,
+  deleteProfessorClass,
+  deleteProfessorClassSuccess,
   loadProfessorClasses,
   loadProfessorClassesSuccess,
 } from './class.actions';
@@ -101,5 +103,31 @@ export class ClassEffects {
         )
       )
     )
+  );
+
+  deleteProfessorClass$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteProfessorClass),
+      switchMap(({ classId }) =>
+        this.classService
+          .deleteProfessorClass(classId)
+          .pipe(map(() => deleteProfessorClassSuccess()))
+      )
+    )
+  );
+
+  deleteProfessorClassSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteProfessorClassSuccess),
+        tap(() => {
+          this._snackBar.open('Class deleted successfully!', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+        })
+      ),
+    { dispatch: false }
   );
 }
