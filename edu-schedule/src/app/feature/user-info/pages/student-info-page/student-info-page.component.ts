@@ -88,6 +88,7 @@ export class StudentInfoPageComponent {
       ?.valueChanges.subscribe((selectedUniversityId: number) => {
         if (selectedUniversityId) {
           this.additionalDataForm.get('year')?.reset();
+             this.additionalDataForm.get('studyProgram')?.reset();
           this.additionalDataForm.get('studyProgram')?.enable();
           this.store.dispatch(
             loadAllStudyProgramsByUniversityId({
