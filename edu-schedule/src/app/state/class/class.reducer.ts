@@ -15,7 +15,10 @@ export interface ClassState extends EntityState<ClassModel> {
   selectedClass: ClassModel | null;
 }
 
-export const classAdapter = createEntityAdapter<ClassModel>();
+export const classAdapter = createEntityAdapter<ClassModel>({
+  sortComparer: (a, b) =>
+    new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+});
 
 export const initialState: ClassState = classAdapter.getInitialState({
   error: null,
