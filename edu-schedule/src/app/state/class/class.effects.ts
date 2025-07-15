@@ -8,12 +8,15 @@ import {
   createClassSuccess,
   deleteProfessorClass,
   deleteProfessorClassSuccess,
+  loadClassByClassId,
+  loadClassByClassIdSuccess,
   loadProfessorClasses,
   loadProfessorClassesSuccess,
 } from './class.actions';
 import { ClassService } from '../../core/class/services/class.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ClassModel } from './models/class.model';
 
 @Injectable()
 export class ClassEffects {
@@ -80,25 +83,11 @@ export class ClassEffects {
       switchMap(({ professorId }) =>
         this.classService.getAllProfessorClasses(professorId).pipe(
           map((professorClasses) =>
-            professorClasses.map((professorClass) => {
-              const formattedDate = new Date(
-                professorClass.startTime
-              ).toLocaleDateString();
-              const formattedStartTime = new Date(
-                professorClass.startTime
-              ).toLocaleTimeString();
-              const formattedEndTime = new Date(
-                professorClass.endTime
-              ).toLocaleTimeString();
-
-              return {
-                ...professorClass,
-                dateAndTimeFormatted: `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`,
-              };
+            loadProfessorClassesSuccess({
+              classes: professorClasses.map((professorClass) =>
+                this.handleFormatingDateAndTime(professorClass)
+              ),
             })
-          ),
-          map((formattedClasses) =>
-            loadProfessorClassesSuccess({ classes: formattedClasses })
           )
         )
       )
@@ -112,6 +101,21 @@ export class ClassEffects {
         this.classService
           .deleteProfessorClass(classId)
           .pipe(map(() => deleteProfessorClassSuccess()))
+      )
+    )
+  );
+
+  loadClass$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadClassByClassId),
+      switchMap(({ classId }) =>
+        this.classService.getClass(classId).pipe(
+          map((loadedClass) =>
+            loadClassByClassIdSuccess({
+              loadedClass: this.handleFormatingDateAndTime(loadedClass),
+            })
+          )
+        )
       )
     )
   );
@@ -130,4 +134,17 @@ export class ClassEffects {
       ),
     { dispatch: false }
   );
+
+  handleFormatingDateAndTime(loadedClass: ClassModel) {
+    const formattedDate = new Date(loadedClass.startTime).toLocaleDateString();
+    const formattedStartTime = new Date(
+      loadedClass.startTime
+    ).toLocaleTimeString();
+    const formattedEndTime = new Date(loadedClass.endTime).toLocaleTimeString();
+
+    return {
+      ...loadedClass,
+      dateAndTimeFormatted: `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`,
+    };
+  }
 }

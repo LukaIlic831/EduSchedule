@@ -40,3 +40,13 @@ export const selectProfessorClassForDelete = createAction(
   '[Class] Select Professor Class For Delete',
   props<{ selectedClass: ClassModel }>()
 );
+
+export const loadClassByClassId = createAction(
+  '[Class] Load Class By Class Id',
+  props<{ classId: number }>()
+);
+
+export const loadClassByClassIdSuccess = createAction(
+  '[Class] Load Class By Class Id Success',
+  props<{ loadedClass: ClassModel }>()
+);

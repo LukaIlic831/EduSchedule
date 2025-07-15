@@ -5,6 +5,7 @@ import {
   createClassFailure,
   createClassSuccess,
   deleteProfessorClassSuccess,
+  loadClassByClassIdSuccess,
   loadProfessorClassesSuccess,
   selectProfessorClassForDelete,
 } from './class.actions';
@@ -42,5 +43,9 @@ export const classReducer = createReducer(
   on(selectProfessorClassForDelete, (state, { selectedClass }) => ({
     ...state,
     selectedClass,
+  })),
+  on(loadClassByClassIdSuccess, (state, { loadedClass }) => ({
+    ...state,
+    selectedClass: loadedClass,
   }))
 );
