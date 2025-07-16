@@ -43,13 +43,18 @@ export class SubjectsService {
       throw new NotFoundException('Study Program not found');
     }
 
-    return this.subjectRepository.find({
-      where: {
-        studyProgram: {
-          id: studyProgram.id,
-          university: university,
+    return this.subjectRepository
+      .createQueryBuilder('subject')
+      .leftJoinAndSelect('subject.studyProgram', 'studyProgram')
+      .leftJoinAndSelect('studyProgram.university', 'university')
+      .where(
+        '(studyProgram.id = :studyProgramId OR (studyProgram.name = :opstiName AND university.id = :universityId))',
+        {
+          studyProgramId: studyProgram.id,
+          opstiName: 'opsti',
+          universityId: university.id,
         },
-      },
-    });
+      )
+      .getMany();
   }
 }
