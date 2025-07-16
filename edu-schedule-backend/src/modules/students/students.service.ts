@@ -23,30 +23,50 @@ export class StudentsService {
   }
 
   async createStudent(createStudentDto: CreateStudentDto): Promise<Student> {
-    const { index, userId, studyProgramId, year } = createStudentDto;
-    const user = await this.userRepo.findOneBy({ id: userId });
-    if (!user) throw new NotFoundException('User not found');
+    const { index, userId, studyProgramId, year, universityId } = createStudentDto;
+    const user = await this.userRepo.findOne({
+      where: { id: userId },
+      relations: ['university'],
+    });
 
     const program = await this.programRepo.findOneBy({
       id: studyProgramId,
     });
+    if (!user) throw new NotFoundException('User not found');
     if (!program) throw new NotFoundException('Study program not found');
 
-    const userWithSameIndex = await this.findByIndex(index);
-    if (userWithSameIndex)
+    const existingStudent = await this.findByIndexAndUniversity(
+      index,
+      universityId,
+    );
+    if (existingStudent) {
       throw new AppException(
-        'User with that index already exists',
+        'Student with that index already exists at this university',
         HttpStatus.CONFLICT,
       );
+    }
 
     const student = this.studentRepo.create({
-      index: index,
-      year: year,
+      index,
+      year,
       user,
       studyProgram: program,
     });
 
     await this.studentRepo.save(student);
     return student;
+  }
+
+  async findByIndexAndUniversity(
+    index: number,
+    universityId: number,
+  ): Promise<Student | null> {
+    return this.studentRepo
+      .createQueryBuilder('student')
+      .leftJoinAndSelect('student.user', 'user')
+      .leftJoin('user.university', 'university')
+      .where('student.index = :index', { index })
+      .andWhere('university.id = :universityId', { universityId })
+      .getOne();
   }
 }
