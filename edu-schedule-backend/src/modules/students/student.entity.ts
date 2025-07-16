@@ -16,6 +16,9 @@ export class Student {
   @PrimaryColumn()
   index: number;
 
+  @PrimaryColumn()
+  user_id: number;
+
   @Column()
   year: number;
 
