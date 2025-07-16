@@ -29,6 +29,22 @@ export const loadAllStudyProgramsByUniversityIdSuccess = createAction(
   }>()
 );
 
+export const loadAllStudyProgramsByUniversityIdAndSelectedYear = createAction(
+  '[Education Data] Load All Study Programs By University Id',
+  props<{
+    universityId: number;
+    selectedYear: number;
+  }>()
+);
+
+export const loadAllStudyProgramsByUniversityIdAndSelectedYearSuccess =
+  createAction(
+    '[Education Data] Load All Study Programs By University Id And Selected Year Success',
+    props<{
+      studyPrograms: StudyProgram[];
+    }>()
+  );
+
 export const loadAllSubjectsByStudyProgramId = createAction(
   '[Education Data] Load All Subjects By Study Program Id',
   props<{

@@ -4,6 +4,7 @@ import { StudyProgram } from './models/study-program.model';
 import { Subject } from './models/subject.model';
 import {
   loadAllClassroomsByUniversityIdSuccess,
+  loadAllStudyProgramsByUniversityIdAndSelectedYearSuccess,
   loadAllStudyProgramsByUniversityIdSuccess,
   loadAllSubjectsByStudyProgramIdSuccess,
   loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess,
@@ -43,8 +44,15 @@ export const educationDataReducer = createReducer(
     ...state,
     classrooms,
   })),
-  on(loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess, (state, { subjects }) => ({
-    ...state,
-    subjects,
-  }))
+  on(
+    loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess,
+    (state, { subjects }) => ({
+      ...state,
+      subjects,
+    })
+  ),
+  on(
+    loadAllStudyProgramsByUniversityIdAndSelectedYearSuccess,
+    (state, { studyPrograms }) => ({ ...state, studyPrograms })
+  )
 );
