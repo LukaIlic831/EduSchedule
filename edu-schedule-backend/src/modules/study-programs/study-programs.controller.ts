@@ -6,7 +6,18 @@ import { StudyProgram } from './study-program.entity';
 export class StudyProgramsController {
   constructor(private readonly studyProgramsService: StudyProgramsService) {}
 
-  @Get('university/')
+  @Get('university/year')
+  getStudyProgramsByUniversityIdAndYear(
+    @Query('universityId') universityId: number,
+    @Query('year') year: number,
+  ): Promise<StudyProgram[]> {
+    return this.studyProgramsService.getStudyProgramsByUniversityIdAndYear(
+      universityId,
+      year,
+    );
+  }
+
+  @Get('university')
   getStudyProgramsByUniversityId(
     @Query('universityId') universityId: number,
   ): Promise<StudyProgram[]> {
