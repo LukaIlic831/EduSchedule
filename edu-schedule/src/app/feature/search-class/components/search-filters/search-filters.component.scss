@@ -1,0 +1,23 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.search {
+  &__filters {
+    width: 100%;
+    @include flex-center();
+  }
+  &__filter {
+    &--fields {
+      width: 100%;
+      display: flex;
+    }
+
+    &--select:first-child {
+      margin-right: $spacing-xl;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: white !important;
+}

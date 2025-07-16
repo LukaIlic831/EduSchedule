@@ -1,46 +1,16 @@
 <app-nav />
-<div class="main__wrapper">
-  <div class="search__input">
-    <mat-form-field appearance="outline">
-      <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Find class" />
-    </mat-form-field>
-  </div>
-  <div class="search__filters">
-    <div class="search__filter--fields">
-      <div class="search__filter--select">
-        <mat-form-field>
-          <mat-label>Year</mat-label>
-          <select matNativeControl>
-            <option value="I">I</option>
-            <option value="II">II</option>
-            <option value="III">III</option>
-            <option value="IV">IV</option>
-          </select>
-        </mat-form-field>
-      </div>
-      <div class="search__filter--select">
-        <mat-form-field>
-          <mat-label>Subject</mat-label>
-          <select matNativeControl>
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-            <option value="option3">option3</option>
-          </select>
-        </mat-form-field>
-      </div>
+<ng-container *ngIf="universityId | async as uniId">
+  <ng-container *ngIf="studyProgramId | async as sProgramId">
+    <div class="main__wrapper">
+      <app-search-input />
+      <app-search-filters
+        [universityId]="uniId"
+        [studyProgramId]="sProgramId"
+      />
+      <app-search-classes
+        [universityId]="uniId"
+        [studyProgramId]="sProgramId"
+      />
     </div>
-  </div>
-  <div class="search__classes">
-    <div class="search__classes--title">
-      <h1>Results</h1>
-    </div>
-    <div class="search__classes--wrapper">
-      <app-class />
-      <app-class />
-      <app-class />
-      <app-class />
-      <app-class />
-    </div>
-  </div>
-</div>
+  </ng-container>
+</ng-container>

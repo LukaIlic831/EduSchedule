@@ -1,0 +1,19 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+
+.search {
+  &__input {
+    width: 100%;
+    @include flex-center();
+    margin-top: $spacing-xxl;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: white !important;
+}

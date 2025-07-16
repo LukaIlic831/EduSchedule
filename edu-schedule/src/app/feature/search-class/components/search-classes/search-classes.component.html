@@ -1,0 +1,17 @@
+<div class="search__classes">
+  <div class="search__classes--title">
+    <h1>Results</h1>
+  </div>
+  <div
+    class="search__classes--wrapper"
+    *ngIf="universityClasses | async as classes"
+  >
+    <app-class
+      *ngFor="let universityClass of classes"
+      [loadedClass]="universityClass"
+    />
+    <div *ngIf="classes.length === 0">
+      <p>No classes found.</p>
+    </div>
+  </div>
+</div>

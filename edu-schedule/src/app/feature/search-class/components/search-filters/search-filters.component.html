@@ -1,0 +1,37 @@
+<div class="search__filters">
+  <div class="search__filter--fields">
+    <div class="search__filter--select">
+      <mat-form-field>
+        <mat-label>Year</mat-label>
+        <mat-select
+          matNativeControl
+          [value]="selectedYear | async"
+          (selectionChange)="handleOnYearSelect($event.value)"
+        >
+          <mat-option
+            *ngFor="let year of years; let i = index"
+            [value]="i + 1"
+            >{{ year }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="search__filter--select">
+      <mat-form-field>
+        <mat-label>Subject</mat-label>
+        <mat-select
+          matNativeControl
+          [value]="selectedSubjectId | async"
+          (selectionChange)="handleOnSubjectSelect($event.value)"
+        >
+          <mat-option
+            *ngFor="let subject of subjects | async"
+            [value]="subject.id"
+          >
+            {{ subject.name }}
+          </mat-option></mat-select
+        >
+      </mat-form-field>
+    </div>
+  </div>
+</div>
