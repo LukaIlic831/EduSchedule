@@ -151,6 +151,16 @@ export class AuthEffects {
     )
   );
 
+  afterUserInfoUpdate$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        updateUserAndCreateStudentSuccess,
+        updateUserAndCreateProfessorSuccess
+      ),
+      map(() => loadUser())
+    )
+  );
+
   signOut$ = createEffect(() =>
     this.actions$.pipe(
       ofType(signOut),

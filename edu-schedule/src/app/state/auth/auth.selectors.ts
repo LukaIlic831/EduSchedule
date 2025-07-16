@@ -40,6 +40,18 @@ export const selectAuthUserProfessorId = createSelector(
   (state) => state.user?.professor?.id!
 );
 
+export const selectAuthUserStudent = createSelector(
+  selectAuthState,
+  (state) => state.user?.student ?? null
+);
+
+export const selectAuthUserStudentStudyProgramId = createSelector(
+  selectAuthUserStudent,
+  (student) => {
+    return student?.studyProgram.id ?? null;
+  }
+);
+
 export const selectAuthUserUniversityId = createSelector(
   selectAuthState,
   (state) => state.user?.university?.id!
