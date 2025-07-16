@@ -41,4 +41,13 @@ export class EducationDataServiceService {
       params: { universityId: universityId },
     });
   }
+
+  getAllSubjectsByUniversityIdAndStudyProgramId(
+    universityId: number,
+    studyProgramId: number
+  ): Observable<Subject[]> {
+    return this.http.get<Subject[]>(`${this.apiUrl}/subjects/university/study-program`, {
+      params: { universityId: universityId, studyProgramId: studyProgramId },
+    });
+  }
 }
