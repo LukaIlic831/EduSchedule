@@ -57,9 +57,10 @@ export class CreateClassPageComponent implements OnInit {
   studyPrograms: Observable<StudyProgram[]> = of([]);
   classrooms: Observable<Classroom[]> = of([]);
   subjects: Observable<Subject[]> = of([]);
-  profesorId = 0;
+  professorId: Observable<number | null> = of(null);
   universityId = 0;
   minDate = new Date();
+
   constructor(private store: Store, private fb: FormBuilder) {
     this.createClassDataForm = this.fb.group({
       title: new FormControl('', [Validators.required]),
@@ -79,15 +80,9 @@ export class CreateClassPageComponent implements OnInit {
     this.studyPrograms = this.store.select(selectEducationDataStudyPrograms);
     this.classrooms = this.store.select(selectEducationDataClassrooms);
     this.subjects = this.store.select(selectEducationDataSubjects);
+    this.professorId = this.store.select(selectAuthUserProfessorId);
     this.handleUniversityIdSelect();
-    this.handleSubjects();
-    this.store
-      .select(selectAuthUserProfessorId)
-      .pipe(
-        filter((profesorId) => !!profesorId),
-        take(1)
-      )
-      .subscribe((profesorId) => (this.profesorId = profesorId));
+    this.handleOnChangeStudyProgram();
   }
 
   handleUniversityIdSelect() {
@@ -110,7 +105,7 @@ export class CreateClassPageComponent implements OnInit {
       });
   }
 
-  handleSubjects() {
+  handleOnChangeStudyProgram() {
     this.createClassDataForm
       .get('studyProgram')
       ?.valueChanges.subscribe((selectedStudyProgramId: number) => {
@@ -128,7 +123,7 @@ export class CreateClassPageComponent implements OnInit {
       });
   }
 
-  onSubmit() {
+  onSubmit(professorId: number) {
     if (this.createClassDataForm.valid) {
       const {
         title,
@@ -153,7 +148,7 @@ export class CreateClassPageComponent implements OnInit {
             classroomId: classroom,
             lectureDesc: description,
             lectureTitle: title,
-            professorId: this.profesorId,
+            professorId,
             startTime: combinedStartDateAndTime.toISOString(),
             subjectId: subject,
             universityId: this.universityId,

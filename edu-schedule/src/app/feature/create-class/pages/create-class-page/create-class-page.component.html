@@ -1,9 +1,9 @@
 <div class="create-class__block--wrapper">
-  <mat-card class="create-class__block">
+  <mat-card class="create-class__block" *ngIf="professorId | async as id">
     <mat-card-header>
       <mat-card-title>Create Class</mat-card-title>
     </mat-card-header>
-    <form [formGroup]="createClassDataForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="createClassDataForm" (ngSubmit)="onSubmit(id)">
       <mat-card-content>
         <div class="create-class__block--fields">
           <div class="create-class__block--title">

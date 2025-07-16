@@ -10,12 +10,13 @@ export class UserInfoService {
   private apiUrl = APIURL;
   constructor(private http: HttpClient) {}
 
-  createStudent(studentData: any): Observable<any> {
+  createStudent(studentData: any, universityId: number): Observable<any> {
     const dataToSend = {
       index: studentData.index,
       userId: studentData.userId,
       studyProgramId: studentData.studyProgram,
       year: studentData.year,
+      universityId,
     };
     return this.http.post(`${this.apiUrl}/students/create`, dataToSend);
   }

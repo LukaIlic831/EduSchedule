@@ -16,6 +16,17 @@ export class EducationDataServiceService {
   getAllUniversities(): Observable<University[]> {
     return this.http.get<University[]>(this.apiUrl + '/universities');
   }
+  getAllStudyProgramsByUniversityIdAndSelectedYear(
+    universityId: number,
+    selectedYear: number
+  ): Observable<University[]> {
+    return this.http.get<StudyProgram[]>(
+      `${this.apiUrl}/study-programs/university/year`,
+      {
+        params: { universityId: universityId, year: selectedYear },
+      }
+    );
+  }
   getAllStudyProgramsByUniversityId(
     universityId: number
   ): Observable<University[]> {
@@ -26,6 +37,7 @@ export class EducationDataServiceService {
       }
     );
   }
+
   getAllSubjectsByStudyProgramId(
     studyProgramId: number
   ): Observable<Subject[]> {
@@ -46,8 +58,11 @@ export class EducationDataServiceService {
     universityId: number,
     studyProgramId: number
   ): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${this.apiUrl}/subjects/university/study-program`, {
-      params: { universityId: universityId, studyProgramId: studyProgramId },
-    });
+    return this.http.get<Subject[]>(
+      `${this.apiUrl}/subjects/university/study-program`,
+      {
+        params: { universityId: universityId, studyProgramId: studyProgramId },
+      }
+    );
   }
 }

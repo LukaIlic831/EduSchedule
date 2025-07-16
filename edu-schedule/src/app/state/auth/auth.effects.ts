@@ -224,7 +224,7 @@ export class AuthEffects {
       switchMap(({ student, universityId, userId }) =>
         zip(
           this.userService.updateCurrentUserUniversity(userId, universityId),
-          this.userInfoService.createStudent(student)
+          this.userInfoService.createStudent(student, universityId)
         ).pipe(
           map(([university, student]) =>
             updateUserAndCreateStudentSuccess({ university, student })
