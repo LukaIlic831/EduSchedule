@@ -13,10 +13,11 @@ export class SubjectsController {
     return this.subjectsService.getSubjectsByStudyProgramId(studyProgramId);
   }
 
-  @Get('university')
-  getSubjectsByUniversityId(
+  @Get('university/study-program')
+  getAllSubjectsByUniversityIdAndStudyProgramId(
     @Query('universityId') universityId: number,
+      @Query('studyProgramId') studyProgramId: number,
   ): Promise<Subject[]> {
-    return this.subjectsService.getSubjectsByUniversityId(universityId);
+    return this.subjectsService.getAllSubjectsByUniversityIdAndStudyProgramId(universityId, studyProgramId);
   }
 }

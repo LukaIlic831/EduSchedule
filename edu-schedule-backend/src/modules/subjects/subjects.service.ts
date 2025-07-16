@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Subject } from './subject.entity';
 import { Repository } from 'typeorm';
 import { University } from '../universities/university.entity';
+import { StudyProgram } from '../study-programs/study-program.entity';
 
 @Injectable()
 export class SubjectsService {
@@ -11,6 +12,8 @@ export class SubjectsService {
     private readonly subjectRepository: Repository<Subject>,
     @InjectRepository(University)
     private readonly universityRepository: Repository<University>,
+    @InjectRepository(StudyProgram)
+    private readonly studyProgramRepository: Repository<StudyProgram>,
   ) {}
 
   getSubjectsByStudyProgramId(studyProgramId: number): Promise<Subject[]> {
@@ -23,16 +26,27 @@ export class SubjectsService {
     });
   }
 
-  async getSubjectsByUniversityId(universityId: number): Promise<Subject[]> {
+  async getAllSubjectsByUniversityIdAndStudyProgramId(
+    universityId: number,
+    studyProgramId: number,
+  ): Promise<Subject[]> {
     const university = await this.universityRepository.findOneBy({
       id: universityId,
+    });
+    const studyProgram = await this.studyProgramRepository.findOneBy({
+      id: studyProgramId,
     });
     if (!university) {
       throw new NotFoundException('University not found');
     }
+    if (!studyProgram) {
+      throw new NotFoundException('Study Program not found');
+    }
+
     return this.subjectRepository.find({
       where: {
         studyProgram: {
+          id: studyProgram.id,
           university: university,
         },
       },
