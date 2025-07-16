@@ -1,7 +1,7 @@
 import {
   ApplicationConfig,
-  importProvidersFrom,
   provideZoneChangeDetection,
+  isDevMode,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -19,6 +19,7 @@ import { educationDataFeatureKey } from './state/education-data/education-data.s
 import { ClassEffects } from './state/class/class.effects';
 import { classReducer } from './state/class/class.reducer';
 import { classFeatureKey } from './state/class/class.selectors';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,13 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideNativeDateAdapter(),
     provideStore(),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: false,
+      traceLimit: 75,
+    }),
     provideEffects([AuthEffects, EducationDataEffects, ClassEffects]),
     provideState({ name: authFeatureKey, reducer: authReducer }),
     provideState({
