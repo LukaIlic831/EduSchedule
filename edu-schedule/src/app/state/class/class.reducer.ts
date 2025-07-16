@@ -7,12 +7,19 @@ import {
   deleteProfessorClassSuccess,
   loadClassByClassIdSuccess,
   loadProfessorClassesSuccess,
+  loadUniveristyClassesSuccess,
   selectProfessorClassForDelete,
+  setSearchQuery,
+  setSelectedSubject,
+  setSelectedYear,
 } from './class.actions';
 
 export interface ClassState extends EntityState<ClassModel> {
   error: { status: number; message: string } | null;
   selectedClass: ClassModel | null;
+  searchQuery: string;
+  selectedYear: number | null;
+  selectedSubjectId: number | null;
 }
 
 export const classAdapter = createEntityAdapter<ClassModel>({
@@ -23,6 +30,9 @@ export const classAdapter = createEntityAdapter<ClassModel>({
 export const initialState: ClassState = classAdapter.getInitialState({
   error: null,
   selectedClass: null,
+  searchQuery: '',
+  selectedYear: null,
+  selectedSubjectId: null,
 });
 
 export const classReducer = createReducer(
@@ -50,5 +60,22 @@ export const classReducer = createReducer(
   on(loadClassByClassIdSuccess, (state, { loadedClass }) => ({
     ...state,
     selectedClass: loadedClass,
+  })),
+  on(loadUniveristyClassesSuccess, (state, { classes }) =>
+    classAdapter.setAll(classes, { ...state })
+  ),
+  on(setSearchQuery, (state, { searchQuery }) => ({
+    ...state,
+    searchQuery,
+  })),
+
+  on(setSelectedYear, (state, { selectedYear }) => ({
+    ...state,
+    selectedYear,
+  })),
+
+  on(setSelectedSubject, (state, { selectedSubjectId }) => ({
+    ...state,
+    selectedSubjectId,
   }))
 );

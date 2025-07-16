@@ -12,6 +12,8 @@ import {
   loadClassByClassIdSuccess,
   loadProfessorClasses,
   loadProfessorClassesSuccess,
+  loadUniveristyClasses,
+  loadUniveristyClassesSuccess,
 } from './class.actions';
 import { ClassService } from '../../core/class/services/class.service';
 import { Router } from '@angular/router';
@@ -86,6 +88,23 @@ export class ClassEffects {
             loadProfessorClassesSuccess({
               classes: professorClasses.map((professorClass) =>
                 this.handleFormatingDateAndTime(professorClass)
+              ),
+            })
+          )
+        )
+      )
+    )
+  );
+
+  loadUniversityClasses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUniveristyClasses),
+      switchMap(({ universityId, studyProgramId }) =>
+        this.classService.getAllUniversityClassesByStudyProgramId(universityId, studyProgramId).pipe(
+          map((universityClasses) =>
+            loadUniveristyClassesSuccess({
+              classes: universityClasses.map((universityClass) =>
+                this.handleFormatingDateAndTime(universityClass)
               ),
             })
           )

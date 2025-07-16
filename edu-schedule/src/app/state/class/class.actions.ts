@@ -50,3 +50,28 @@ export const loadClassByClassIdSuccess = createAction(
   '[Class] Load Class By Class Id Success',
   props<{ loadedClass: ClassModel }>()
 );
+
+export const loadUniveristyClasses = createAction(
+  '[Class] Load University Classes',
+  props<{ universityId: number, studyProgramId: number }>()
+);
+
+export const loadUniveristyClassesSuccess = createAction(
+  '[Class] Load University Classes Success',
+  props<{ classes: ClassModel[] }>()
+);
+
+export const setSearchQuery = createAction(
+  '[Class] Set Search Query',
+  props<{ searchQuery: string }>()
+);
+
+export const setSelectedYear = createAction(
+  '[Class] Set Selected Year',
+  props<{ selectedYear: number }>()
+);
+
+export const setSelectedSubject = createAction(
+  '[Class] Set Selected Subject',
+  props<{ selectedSubjectId: number }>()
+);

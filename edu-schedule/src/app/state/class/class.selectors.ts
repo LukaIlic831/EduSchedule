@@ -17,3 +17,40 @@ export const selectSelectedClass = createSelector(
   selectClassState,
   (state: ClassState) => state.selectedClass
 );
+
+export const selectSearchQuery = createSelector(
+  selectClassState,
+  (state) => state.searchQuery
+);
+
+export const selectSelectedYear = createSelector(
+  selectClassState,
+  (state) => state.selectedYear
+);
+
+export const selectSelectedSubjectId = createSelector(
+  selectClassState,
+  (state) => state.selectedSubjectId
+);
+
+export const selectFilteredClasses = createSelector(
+  selectAllClasses,
+  selectSearchQuery,
+  selectSelectedYear,
+  selectSelectedSubjectId,
+  (classes, query, year, subject) => {
+    return classes.filter((cls) => {
+      const matchesQueryInTitle =
+        !query || cls.lectureTitle.toLowerCase().includes(query.toLowerCase());
+      const matchesQueryInDescription =
+        !query || cls.lectureTitle.toLowerCase().includes(query.toLowerCase());
+      const matchesYear = !year || cls.subject.year === year;
+      const matchesSubject = !subject || cls.subject.id === subject;
+      return (
+        (matchesQueryInTitle || matchesQueryInDescription) &&
+        matchesYear &&
+        matchesSubject
+      );
+    });
+  }
+);
