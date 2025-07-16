@@ -22,6 +22,18 @@ export class ClassService {
     });
   }
 
+  getAllUniversityClassesByStudyProgramId(
+    universityId: number,
+    studyProgramId: number
+  ): Observable<ClassModel[]> {
+    return this.http.get<ClassModel[]>(
+      `${this.apiUrl}/classes/university/study-program`,
+      {
+        params: { universityId: universityId, studyProgramId: studyProgramId },
+      }
+    );
+  }
+
   deleteProfessorClass(classId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/classes/delete`, {
       params: { classId: classId },
