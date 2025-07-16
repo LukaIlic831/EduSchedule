@@ -56,3 +56,19 @@ export const loadAllClassroomsByUniversityIdSuccess = createAction(
     classrooms: Classroom[];
   }>()
 );
+
+export const loadAllSubjectsByUniversityIdAndStudyProgramId = createAction(
+  '[Education Data] Load All Subjects By University Id And Study Program Id',
+  props<{
+    universityId: number;
+    studyProgramId: number;
+  }>()
+);
+
+export const loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess =
+  createAction(
+    '[Education Data] Load All Subjects By University And Study Program Id Id Success',
+    props<{
+      subjects: Subject[];
+    }>()
+  );

@@ -7,6 +7,8 @@ import {
   loadAllStudyProgramsByUniversityIdSuccess,
   loadAllSubjectsByStudyProgramId,
   loadAllSubjectsByStudyProgramIdSuccess,
+  loadAllSubjectsByUniversityIdAndStudyProgramId,
+  loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess,
   loadAllUniversities,
   loadAllUniversitiesSuccess,
 } from './education-data.actions';
@@ -57,6 +59,21 @@ export class EducationDataEffects {
           .pipe(
             map((subjects) =>
               loadAllSubjectsByStudyProgramIdSuccess({ subjects })
+            )
+          )
+      )
+    )
+  );
+
+  loadAllSubjectsByUniversityIdAndStudyProgramId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAllSubjectsByUniversityIdAndStudyProgramId),
+      switchMap(({ universityId, studyProgramId }) =>
+        this.educationDataService
+          .getAllSubjectsByUniversityIdAndStudyProgramId(universityId, studyProgramId)
+          .pipe(
+            map((subjects) =>
+              loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess({ subjects })
             )
           )
       )

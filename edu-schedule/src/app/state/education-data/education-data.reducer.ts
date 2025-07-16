@@ -6,6 +6,7 @@ import {
   loadAllClassroomsByUniversityIdSuccess,
   loadAllStudyProgramsByUniversityIdSuccess,
   loadAllSubjectsByStudyProgramIdSuccess,
+  loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess,
   loadAllUniversitiesSuccess,
 } from './education-data.actions';
 import { Classroom } from './models/classrooms.model';
@@ -41,5 +42,9 @@ export const educationDataReducer = createReducer(
   on(loadAllClassroomsByUniversityIdSuccess, (state, { classrooms }) => ({
     ...state,
     classrooms,
+  })),
+  on(loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess, (state, { subjects }) => ({
+    ...state,
+    subjects,
   }))
 );
