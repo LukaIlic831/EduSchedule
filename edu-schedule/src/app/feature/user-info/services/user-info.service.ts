@@ -14,7 +14,7 @@ export class UserInfoService {
     const dataToSend = {
       index: studentData.index,
       userId: studentData.userId,
-      studyProgramId: studentData.studyProgramId,
+      studyProgramId: studentData.studyProgram,
       year: studentData.year,
     };
     return this.http.post(`${this.apiUrl}/students/create`, dataToSend);
