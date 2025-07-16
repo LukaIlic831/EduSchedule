@@ -43,7 +43,7 @@ export const selectFilteredClasses = createSelector(
       const matchesQueryInTitle =
         !query || cls.lectureTitle.toLowerCase().includes(query.toLowerCase());
       const matchesQueryInDescription =
-        !query || cls.lectureTitle.toLowerCase().includes(query.toLowerCase());
+        !query || cls.lectureDesc.toLowerCase().includes(query.toLowerCase());
       const matchesYear = !year || cls.subject.year === year;
       const matchesSubject = !subject || cls.subject.id === subject;
       return (
