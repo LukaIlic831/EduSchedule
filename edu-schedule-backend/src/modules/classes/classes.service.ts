@@ -9,6 +9,7 @@ import { University } from '../universities/university.entity';
 import { CreateClassDto } from './dto/create-class.dto';
 import { AppException } from 'src/app-exception/app-exception';
 import { ClassDto } from './dto/class.dto';
+import { StudyProgram } from '../study-programs/study-program.entity';
 
 @Injectable()
 export class ClassesService {
@@ -23,6 +24,8 @@ export class ClassesService {
     private professorRepository: Repository<Professor>,
     @InjectRepository(University)
     private universityRepository: Repository<University>,
+    @InjectRepository(StudyProgram)
+    private studyProgramRepository: Repository<StudyProgram>,
   ) {}
 
   async findByClassId(classId: number): Promise<ClassDto> {
@@ -80,15 +83,28 @@ export class ClassesService {
     }));
   }
 
-  async findAllByUniversityId(universityId: number): Promise<ClassDto[]> {
+  async findAllByUniversityIdAndStudyProgram(
+    universityId: number,
+    studyProgramId: number,
+  ): Promise<ClassDto[]> {
     const university = await this.universityRepository.findOneBy({
       id: universityId,
+    });
+    const studyProgram = await this.studyProgramRepository.findOneBy({
+      id: studyProgramId,
     });
     if (!university) {
       throw new NotFoundException('University not found');
     }
+    if (!studyProgram) {
+      throw new NotFoundException('Study Program not found');
+    }
+
     const classes = await this.classRepository.find({
-      where: { university: university },
+      where: {
+        university: university,
+        subject: { studyProgram: studyProgram },
+      },
       relations: [
         'classroom',
         'subject.studyProgram',

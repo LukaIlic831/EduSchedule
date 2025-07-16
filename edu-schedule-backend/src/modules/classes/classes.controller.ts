@@ -20,11 +20,12 @@ export class ClassesController {
     return this.classesService.findAllByProfessorId(professorId);
   }
 
-  @Get('university')
-  getClassesByUniversityId(
+  @Get('university/study-program')
+  getClassesByStudyProgramId(
     @Query('universityId') universityId: number,
+        @Query('studyProgramId') studyProgramId: number,
   ): Promise<ClassDto[]> {
-    return this.classesService.findAllByUniversityId(universityId);
+    return this.classesService.findAllByUniversityIdAndStudyProgram(universityId, studyProgramId);
   }
 
   @Delete('delete')
