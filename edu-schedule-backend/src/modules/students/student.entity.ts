@@ -16,8 +16,8 @@ export class Student {
   @PrimaryColumn()
   index: number;
 
-  @PrimaryColumn()
-  user_id: number;
+  @PrimaryColumn({ name: 'user_id' })
+  userId: number;
 
   @Column()
   year: number;

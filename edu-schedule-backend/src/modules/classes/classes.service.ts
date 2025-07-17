@@ -10,6 +10,7 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { AppException } from 'src/app-exception/app-exception';
 import { ClassDto } from './dto/class.dto';
 import { StudyProgram } from '../study-programs/study-program.entity';
+import { SeatDto } from '../seats/dto/seat.dto';
 
 @Injectable()
 export class ClassesService {
@@ -32,7 +33,8 @@ export class ClassesService {
     const foundClass = await this.classRepository.findOne({
       where: { id: classId },
       relations: [
-        'classroom',
+        'classroom.reservedSeats',
+        'classroom.reservedSeats.student',
         'subject.studyProgram',
         'professor.user',
         'university',
@@ -42,12 +44,21 @@ export class ClassesService {
     if (!foundClass) {
       throw new NotFoundException(`Class not found`);
     }
+
     return {
       ...foundClass,
       professor: {
         id: foundClass.professor.id,
         title: foundClass.professor.title,
         username: foundClass.professor.user.username,
+      },
+      classroom: {
+        ...foundClass.classroom,
+        reservedSeats: foundClass.classroom.reservedSeats.map((seat) => ({
+          id: seat.id,
+          numberOfSeat: seat.numberOfSeat,
+          studentIndex: seat.student.index,
+        })),
       },
     };
   }
@@ -66,7 +77,8 @@ export class ClassesService {
     const classes = await this.classRepository.find({
       where: { professor: professor },
       relations: [
-        'classroom',
+        'classroom.reservedSeats',
+        'classroom.reservedSeats.student',
         'subject.studyProgram',
         'professor.user',
         'university',
@@ -79,6 +91,14 @@ export class ClassesService {
         id: cls.professor.id,
         title: cls.professor.title,
         username: cls.professor.user.username,
+      },
+      classroom: {
+        ...cls.classroom,
+        reservedSeats: cls.classroom.reservedSeats.map((seat) => ({
+          id: seat.id,
+          numberOfSeat: seat.numberOfSeat,
+          studentIndex: seat.student.index,
+        })),
       },
     }));
   }
@@ -106,7 +126,8 @@ export class ClassesService {
         subject: { studyProgram: studyProgram },
       },
       relations: [
-        'classroom',
+        'classroom.reservedSeats',
+        'classroom.reservedSeats.student',
         'subject.studyProgram',
         'professor.user',
         'university',
@@ -119,6 +140,14 @@ export class ClassesService {
         id: cls.professor.id,
         title: cls.professor.title,
         username: cls.professor.user.username,
+      },
+      classroom: {
+        ...cls.classroom,
+        reservedSeats: cls.classroom.reservedSeats.map((seat) => ({
+          id: seat.id,
+          numberOfSeat: seat.numberOfSeat,
+          studentIndex: seat.student.index,
+        })),
       },
     }));
   }

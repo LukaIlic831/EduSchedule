@@ -21,6 +21,9 @@ export class Seat {
   classroom: Classroom;
 
   @ManyToOne(() => Student, (student) => student.reservedSeats)
-  @JoinColumn({ name: 'student_index' })
+  @JoinColumn([
+    { name: 'student_index', referencedColumnName: 'index' },
+    { name: 'student_user_id', referencedColumnName: 'userId' },
+  ])
   student: Student;
 }
