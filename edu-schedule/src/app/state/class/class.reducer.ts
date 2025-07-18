@@ -8,6 +8,7 @@ import {
   loadClassByClassIdSuccess,
   loadProfessorClassesSuccess,
   loadUniveristyClassesSuccess,
+  reserveSeatInClassSuccess,
   selectProfessorClassForDelete,
   setSearchQuery,
   setSelectedSubject,
@@ -73,9 +74,22 @@ export const classReducer = createReducer(
     ...state,
     selectedYear,
   })),
-
   on(setSelectedSubject, (state, { selectedSubjectId }) => ({
     ...state,
     selectedSubjectId,
+  })),
+  on(reserveSeatInClassSuccess, (state, { reservedSeat }) => ({
+    ...state,
+    selectedClass: {
+      ...state.selectedClass!,
+      classroom: {
+        ...state.selectedClass!.classroom,
+        availableSeats: state.selectedClass?.classroom.availableSeats! - 1,
+        reservedSeats: [
+          ...state.selectedClass!.classroom.reservedSeats,
+          reservedSeat,
+        ],
+      },
+    },
   }))
 );

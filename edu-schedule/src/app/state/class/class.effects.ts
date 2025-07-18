@@ -14,11 +14,14 @@ import {
   loadProfessorClassesSuccess,
   loadUniveristyClasses,
   loadUniveristyClassesSuccess,
+  reserveSeatInClass,
+  reserveSeatInClassSuccess,
 } from './class.actions';
 import { ClassService } from '../../core/class/services/class.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClassModel } from './models/class.model';
+import { ClassInfoService } from '../../feature/class-info/service/class-info.service';
 
 @Injectable()
 export class ClassEffects {
@@ -26,6 +29,7 @@ export class ClassEffects {
   constructor(
     private actions$: Actions,
     private classService: ClassService,
+    private clasInfoService: ClassInfoService,
     private router: Router
   ) {}
 
@@ -100,15 +104,17 @@ export class ClassEffects {
     this.actions$.pipe(
       ofType(loadUniveristyClasses),
       switchMap(({ universityId, studyProgramId }) =>
-        this.classService.getAllUniversityClassesByStudyProgramId(universityId, studyProgramId).pipe(
-          map((universityClasses) =>
-            loadUniveristyClassesSuccess({
-              classes: universityClasses.map((universityClass) =>
-                this.handleFormatingDateAndTime(universityClass)
-              ),
-            })
+        this.classService
+          .getAllUniversityClassesByStudyProgramId(universityId, studyProgramId)
+          .pipe(
+            map((universityClasses) =>
+              loadUniveristyClassesSuccess({
+                classes: universityClasses.map((universityClass) =>
+                  this.handleFormatingDateAndTime(universityClass)
+                ),
+              })
+            )
           )
-        )
       )
     )
   );
@@ -145,6 +151,34 @@ export class ClassEffects {
         ofType(deleteProfessorClassSuccess),
         tap(() => {
           this._snackBar.open('Class deleted successfully!', 'Dismiss', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  reserveSeatInClass$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(reserveSeatInClass),
+      switchMap(({ seatForReservation }) =>
+        this.clasInfoService
+          .createSeat(seatForReservation)
+          .pipe(
+            map((reservedSeat) => reserveSeatInClassSuccess({ reservedSeat }))
+          )
+      )
+    )
+  );
+
+  reserveSeatInClassSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(reserveSeatInClassSuccess),
+        tap(() => {
+          this._snackBar.open('Seat reserved successfully!', 'Dismiss', {
             duration: 3000,
             verticalPosition: 'top',
             panelClass: ['snackbar-success'],

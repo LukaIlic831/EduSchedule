@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { ClassModel } from './models/class.model';
 import { ClassDto } from './models/class-dto.model';
+import { createSeatDto } from './dto/create-seat.dto';
+import { Seat } from '../education-data/models/seat.model';
 
 export const createClass = createAction(
   '[Class] Create Class',
@@ -53,7 +55,7 @@ export const loadClassByClassIdSuccess = createAction(
 
 export const loadUniveristyClasses = createAction(
   '[Class] Load University Classes',
-  props<{ universityId: number, studyProgramId: number }>()
+  props<{ universityId: number; studyProgramId: number }>()
 );
 
 export const loadUniveristyClassesSuccess = createAction(
@@ -74,4 +76,18 @@ export const setSelectedYear = createAction(
 export const setSelectedSubject = createAction(
   '[Class] Set Selected Subject',
   props<{ selectedSubjectId: number }>()
+);
+
+export const reserveSeatInClass = createAction(
+  '[Class] Reserve Seat In Class',
+  props<{ seatForReservation: createSeatDto }>()
+);
+
+export const reserveSeatInClassSuccess = createAction(
+  '[Class] Reserve Seat In Class Success',
+  props<{ reservedSeat: Seat }>()
+);
+
+export const reserveSeatInClassFailure = createAction(
+  '[Class] Reserve Seat In Class Failure'
 );
