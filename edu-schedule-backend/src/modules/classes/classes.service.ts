@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Class } from './class.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Classroom } from '../classrooms/classroom.entity';
 import { Subject } from '../subjects/subject.entity';
 import { Professor } from '../professors/professor.entity';
@@ -120,10 +120,21 @@ export class ClassesService {
       throw new NotFoundException('Study Program not found');
     }
 
+    const studyProgramOpsti = await this.studyProgramRepository.findOneBy({
+      university: university,
+      name: 'opsti',
+    });
+
+    if (!studyProgramOpsti) {
+      throw new NotFoundException('Study Program not found');
+    }
+
+    const studyPrograms = [studyProgram.id, studyProgramOpsti.id];
+
     const classes = await this.classRepository.find({
       where: {
         university: university,
-        subject: { studyProgram: studyProgram },
+        subject: { studyProgram: In(studyPrograms) },
       },
       relations: [
         'classroom.reservedSeats',
