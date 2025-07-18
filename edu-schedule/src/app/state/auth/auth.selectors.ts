@@ -52,6 +52,13 @@ export const selectAuthUserStudentStudyProgramId = createSelector(
   }
 );
 
+export const selectAuthUserStudentIndex = createSelector(
+  selectAuthUserStudent,
+  (student) => {
+    return student?.index ?? null;
+  }
+);
+
 export const selectAuthUserUniversityId = createSelector(
   selectAuthState,
   (state) => state.user?.university?.id!
