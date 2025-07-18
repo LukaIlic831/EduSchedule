@@ -31,7 +31,7 @@ export const loadProfessorClassesSuccess = createAction(
 
 export const deleteProfessorClass = createAction(
   '[Class] Delete Professor Class',
-  props<{ classId: number }>()
+  props<{ classId: number; reservedSeatsIds: number[] }>()
 );
 
 export const deleteProfessorClassSuccess = createAction(

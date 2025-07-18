@@ -83,7 +83,7 @@ export const loadAllSubjectsByUniversityIdAndStudyProgramId = createAction(
 
 export const loadAllSubjectsByUniversityIdAndStudyProgramIdSuccess =
   createAction(
-    '[Education Data] Load All Subjects By University And Study Program Id Id Success',
+    '[Education Data] Load All Subjects By University And Study Program Id Success',
     props<{
       subjects: Subject[];
     }>()

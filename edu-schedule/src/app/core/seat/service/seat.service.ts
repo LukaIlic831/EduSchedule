@@ -8,7 +8,7 @@ import { Seat } from '../../../state/education-data/models/seat.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ClassInfoService {
+export class SeatService {
   private apiUrl = APIURL;
   constructor(private http: HttpClient) {}
 
@@ -17,5 +17,11 @@ export class ClassInfoService {
       `${this.apiUrl}/seats/create`,
       seatForReservation
     );
+  }
+
+  removeSeats(reservedSeatsIds: number[]): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/seats/remove`, {
+      body: reservedSeatsIds,
+    });
   }
 }

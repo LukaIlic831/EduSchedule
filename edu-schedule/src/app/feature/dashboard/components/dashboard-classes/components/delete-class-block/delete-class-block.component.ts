@@ -5,6 +5,7 @@ import { selectSelectedClass } from '../../../../../../state/class/class.selecto
 import { Observable, of } from 'rxjs';
 import { ClassModel } from '../../../../../../state/class/models/class.model';
 import { CommonModule } from '@angular/common';
+import { Seat } from '../../../../../../state/education-data/models/seat.model';
 
 @Component({
   selector: 'app-delete-class-block',
@@ -21,9 +22,10 @@ export class DeleteClassBlockComponent implements OnInit {
     this.selectedClass = this.store.select(selectSelectedClass);
   }
 
-  handleYesButtonClick(classId: number) {
+  handleYesButtonClick(classId: number, reservedSeats: Seat[]) {
+    const reservedSeatsIds = reservedSeats.map((seat) => seat.id);
     this.handleCloseDeleteClassBlock.emit();
-    this.store.dispatch(deleteProfessorClass({ classId }));
+    this.store.dispatch(deleteProfessorClass({ classId, reservedSeatsIds }));
   }
 
   handleNoButtonClick() {

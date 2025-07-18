@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, zip } from 'rxjs';
 import {
   createClass,
   createClassFailure,
@@ -21,7 +21,7 @@ import { ClassService } from '../../core/class/services/class.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClassModel } from './models/class.model';
-import { ClassInfoService } from '../../feature/class-info/service/class-info.service';
+import { SeatService } from '../../core/seat/service/seat.service';
 
 @Injectable()
 export class ClassEffects {
@@ -29,7 +29,7 @@ export class ClassEffects {
   constructor(
     private actions$: Actions,
     private classService: ClassService,
-    private clasInfoService: ClassInfoService,
+    private seatService: SeatService,
     private router: Router
   ) {}
 
@@ -122,10 +122,11 @@ export class ClassEffects {
   deleteProfessorClass$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteProfessorClass),
-      switchMap(({ classId }) =>
-        this.classService
-          .deleteProfessorClass(classId)
-          .pipe(map(() => deleteProfessorClassSuccess()))
+      switchMap(({ classId, reservedSeatsIds }) =>
+        zip(
+          this.classService.deleteProfessorClass(classId),
+          this.seatService.removeSeats(reservedSeatsIds)
+        ).pipe(map(() => deleteProfessorClassSuccess()))
       )
     )
   );
@@ -164,7 +165,7 @@ export class ClassEffects {
     this.actions$.pipe(
       ofType(reserveSeatInClass),
       switchMap(({ seatForReservation }) =>
-        this.clasInfoService
+        this.seatService
           .createSeat(seatForReservation)
           .pipe(
             map((reservedSeat) => reserveSeatInClassSuccess({ reservedSeat }))
