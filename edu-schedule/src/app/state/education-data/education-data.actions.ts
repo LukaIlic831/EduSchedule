@@ -30,7 +30,7 @@ export const loadAllStudyProgramsByUniversityIdSuccess = createAction(
 );
 
 export const loadAllStudyProgramsByUniversityIdAndSelectedYear = createAction(
-  '[Education Data] Load All Study Programs By University Id',
+  '[Education Data] Load All Study Programs By University Id And Selected Year',
   props<{
     universityId: number;
     selectedYear: number;
