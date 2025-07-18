@@ -18,7 +18,11 @@
     align-items: center;
   }
 
-  &__icon {
+  &__icon--profile, &__icon--search {
     cursor: pointer;
+  }
+
+  &__icon--search{
+    margin-right: 10px;
   }
 }

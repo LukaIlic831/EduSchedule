@@ -2,7 +2,14 @@
   <div class="navbar__logo">EduSchedule</div>
   <div class="navbar__profile">
     <mat-icon
-      class="navbar__icon"
+      *ngIf="!isProfessor"
+      class="navbar__icon--search"
+      routerLink="/search"
+      matPrefix
+      >search</mat-icon
+    >
+    <mat-icon
+      class="navbar__icon--profile"
       [routerLink]="isProfessor ? '/professor-dashboard' : '/student-profile'"
       >account_circle</mat-icon
     >
