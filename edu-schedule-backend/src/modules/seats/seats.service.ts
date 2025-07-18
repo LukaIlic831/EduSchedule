@@ -50,4 +50,9 @@ export class SeatsService {
       studentIndex: reservedSeat.student.index,
     };
   }
+
+  async removeSeats(reservedSeatIds: number[]): Promise<void> {
+    console.log(reservedSeatIds);
+    await this.seatRepository.delete(reservedSeatIds);
+  }
 }
