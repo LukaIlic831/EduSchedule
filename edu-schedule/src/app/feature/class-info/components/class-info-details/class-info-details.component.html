@@ -1,0 +1,23 @@
+<div class="class-info">
+  <div class="class-info__title">
+    <h1>{{ selectedClass.lectureTitle }}</h1>
+  </div>
+  <div class="class-info__sub-title">
+    <p>
+      {{ selectedClass.university.name }} |
+      {{ selectedClass.subject.studyProgram.name }} |
+      {{ selectedClass.subject.name }} | {{ selectedClass.subject.year }} year
+    </p>
+  </div>
+  <div class="class-info__desc">
+    <p>{{ selectedClass.lectureDesc }}</p>
+  </div>
+  <div class="class-info__footer">
+    <div class="class-info__footer--date">
+      <p>{{ selectedClass.dateAndTimeFormatted }}</p>
+    </div>
+    <div class="class-info__footer--professor">
+      <p>Scheduled by: {{ selectedClass.professor.username }}</p>
+    </div>
+  </div>
+</div>

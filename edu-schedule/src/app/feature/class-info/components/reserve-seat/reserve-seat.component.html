@@ -2,17 +2,37 @@
   <div class="class-reserve__title">
     <h1>{{ isProfessor ? "All seats" : "Reserve your seat" }}</h1>
   </div>
-  <div class="class-reserve__sub-title">
-    <p>Classroom: {{ selectedClass.classroom.name }}</p>
+  <div class="class-reserve-header">
+    <div class="class-reserve__sub-title">
+      <p>Classroom: {{ selectedClass?.classroom?.name! }}</p>
+    </div>
+    <div class="class-reserve__available-seats">
+      <p>
+        {{ selectedClass?.classroom?.availableSeats! }} /
+        {{ selectedClass?.classroom?.numberOfSeats! }}
+      </p>
+    </div>
   </div>
-  <form>
+  <app-reserve-legend />
+  <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit()">
     <div class="class-reserve__wrapper">
       <div
         class="class-reserve__seats"
-        *ngFor="let groupNumber of numberOfGroups"
+        *ngFor="let groupOfSeats of numberOfGroups"
       >
-        <div class="seat" *ngFor="let seatNumber of groupNumber">
-          <p>{{ seatNumber }}</p>
+        <div
+          class="seat"
+          *ngFor="let seat of groupOfSeats"
+          [class.available]="seat.status === 'available'"
+          [class.selected]="seat.status === 'selected'"
+          [class.reserved]="seat.status === 'reserved'"
+          [class.this-user-reserved-seat]="
+            seat.studentIndex === currentStudent?.index
+          "
+          [class.blocked]="isThisClassReservedByThisUser() || isProfessor"
+          (click)="selectSeat(seat)"
+        >
+          <p>{{ seat.seatNumber }}</p>
         </div>
       </div>
     </div>
@@ -22,7 +42,10 @@
         <div class="class-reserve__stage--stand"></div>
       </div>
     </div>
-    <div class="class-reserve__button" *ngIf="!isProfessor">
+    <div
+      class="class-reserve__button"
+      *ngIf="!isThisClassReservedByThisUser() && !isProfessor"
+    >
       <button class="class-reserve__button--confirm" type="submit">
         Confirm
       </button>

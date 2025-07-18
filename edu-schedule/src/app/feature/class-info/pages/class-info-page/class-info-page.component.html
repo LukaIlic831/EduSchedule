@@ -1,29 +1,8 @@
-<app-nav [isProfessor]="(professor | async) !== null"/>
+<app-nav [isProfessor]="(professor | async) !== null" />
 <div class="main__wrapper" *ngIf="selectedClass | async as class">
-  <div class="class-info">
-    <div class="class-info__title">
-      <h1>{{ class.lectureTitle }}</h1>
-    </div>
-    <div class="class-info__sub-title">
-      <p>
-        {{ class.university.name }} | {{ class.subject.studyProgram.name }} |
-        {{ class.subject.name }} | {{ class.subject.year }} year
-      </p>
-    </div>
-    <div class="class-info__desc">
-      <p>{{ class.lectureDesc }}</p>
-    </div>
-    <div class="class-info__footer">
-      <div class="class-info__footer--date">
-        <p>{{ class.dateAndTimeFormatted }}</p>
-      </div>
-      <div class="class-info__footer--professor">
-        <p>Scheduled by: {{ class.professor.username }}</p>
-      </div>
-    </div>
-  </div>
+  <app-class-info-details [selectedClass]="class" />
   <app-reserve-seat
-    [selectedClass]="class"
     [isProfessor]="(professor | async) !== null"
+    [currentStudent]="student | async"
   />
 </div>

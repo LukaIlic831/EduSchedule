@@ -1,0 +1,39 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.class-reserve {
+  &__legend {
+    margin-top: $spacing-sm;
+
+    &--block {
+      display: flex;
+      align-items: center;
+
+      &:nth-of-type(1) &-color {
+        background-color: $this-user-reserved-seat;
+      }
+
+      &:nth-of-type(2) &-color {
+        background-color: $reserved-seat;
+      }
+
+      &:nth-of-type(3) &-color {
+        background-color: $selected-seat;
+      }
+
+      &:nth-of-type(4) &-color {
+        background-color: white;
+      }
+
+      &-color {
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+      }
+      p {
+        font-size: 14px;
+        padding-bottom: 2px;
+      }
+    }
+  }
+}

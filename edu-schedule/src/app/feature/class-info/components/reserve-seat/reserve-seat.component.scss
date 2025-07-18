@@ -3,7 +3,6 @@
 
 .class-reserve {
   @include sub-title();
-
   &__wrapper {
     @include flex-center();
     justify-content: space-evenly;
@@ -11,6 +10,19 @@
     padding: 20px 0;
     background: $background-card;
     margin-top: $spacing-md;
+  }
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__available-seats {
+    p {
+      font-size: 18px;
+    }
   }
 
   &__seats {
@@ -26,16 +38,44 @@
       width: 50px;
       height: 50px;
       border: 2px solid #555;
-      background-color: white;
       @include flex-center();
       font-size: 14px;
       font-weight: bold;
-      cursor: pointer;
       border-radius: 5px;
       transition: background-color 0.2s ease, border-color 0.2s ease;
 
-      &:hover {
-        background-color: $input-background;
+      &.available {
+        background-color: white;
+        cursor: pointer;
+        &:hover {
+          background-color: $input-background;
+        }
+      }
+
+      &.reserved,
+      &.selected {
+        color: white;
+      }
+
+      &.reserved {
+        background-color: $reserved-seat;
+      }
+
+      &.selected {
+        background-color: $selected-seat;
+      }
+
+      &.this-user-reserved-seat {
+        background-color: $this-user-reserved-seat !important;
+      }
+
+      &.reserved,
+      &.blocked {
+        pointer-events: none;
+      }
+
+      &.blocked {
+        cursor: default !important;
       }
     }
   }
@@ -73,6 +113,41 @@
     &--confirm {
       max-width: 200px;
       @include button-style();
+    }
+  }
+
+  &__legend {
+    margin-top: $spacing-sm;
+
+    &--block {
+      display: flex;
+      align-items: center;
+
+      &:nth-of-type(1) &-color {
+        background-color: $this-user-reserved-seat;
+      }
+
+      &:nth-of-type(2) &-color {
+        background-color: $reserved-seat;
+      }
+
+      &:nth-of-type(3) &-color {
+        background-color: $selected-seat;
+      }
+
+      &:nth-of-type(4) &-color {
+        background-color: white;
+      }
+
+      &-color {
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+      }
+      p {
+        font-size: 14px;
+        padding-bottom: 2px;
+      }
     }
   }
 }
