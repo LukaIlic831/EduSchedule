@@ -4,6 +4,7 @@ export interface Classroom {
   id: number;
   name: string;
   numberOfSeats: number;
+  availableSeats:number;
   hasProjector: boolean;
-  reservedSeats?: Seat[];
+  reservedSeats: Seat[];
 }
