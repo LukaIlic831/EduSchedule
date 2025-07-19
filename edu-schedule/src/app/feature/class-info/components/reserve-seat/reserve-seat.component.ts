@@ -31,7 +31,7 @@ export class ReserveSeatComponent implements OnInit {
   selectedClass: ClassModel | null = null;
   @Input() isProfessor!: boolean;
   @Input() currentStudent: Student | null = null;
-private destroyRef = inject(DestroyRef);
+  private destroyRef = inject(DestroyRef);
   constructor(private store: Store, private fb: FormBuilder) {
     this.reserveSeatForm = this.fb.group({
       seatNumber: [0, notZeroOrNullValidator()],
@@ -64,7 +64,7 @@ private destroyRef = inject(DestroyRef);
   }
 
   updateStatus() {
-    const reservedSeats = this.selectedClass?.classroom.reservedSeats!;
+    const reservedSeats = this.selectedClass?.reservedSeats!;
     this.firstGroupOfSeats = this.setSeatsStatusAndIndex(
       this.firstGroupOfSeats,
       reservedSeats
@@ -116,6 +116,7 @@ private destroyRef = inject(DestroyRef);
             classroomId: this.selectedClass?.classroom.id!,
             studentIndex: this.currentStudent?.index!,
             userId: this.currentStudent?.userId!,
+            classId: this.selectedClass?.id!,
           },
         })
       );

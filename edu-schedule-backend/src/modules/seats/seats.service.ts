@@ -7,6 +7,7 @@ import { Classroom } from '../classrooms/classroom.entity';
 import { createSeatDto } from './dto/create-seat.dto';
 import { SeatDto } from './dto/seat.dto';
 import { AppException } from 'src/app-exception/app-exception';
+import { Class } from '../classes/class.entity';
 
 @Injectable()
 export class SeatsService {
@@ -17,10 +18,13 @@ export class SeatsService {
     private readonly StudentRepository: Repository<Student>,
     @InjectRepository(Classroom)
     private readonly classroomRepository: Repository<Classroom>,
+    @InjectRepository(Class)
+    private readonly ClassRepository: Repository<Class>,
   ) {}
 
   async createSeat(createSeatDto: createSeatDto): Promise<SeatDto> {
-    const { classroomId, studentIndex, numberOfSeat, userId } = createSeatDto;
+    const { classroomId, studentIndex, numberOfSeat, userId, classId } =
+      createSeatDto;
     const classroom = await this.classroomRepository.findOneBy({
       id: classroomId,
     });
@@ -28,20 +32,24 @@ export class SeatsService {
       index: studentIndex,
       userId: userId,
     });
-    if (!classroom) {
-      throw new AppException('Classroom not found', HttpStatus.NOT_FOUND);
-    }
-    if (!student) {
-      throw new AppException('Student not found', HttpStatus.NOT_FOUND);
+    const foundClass = await this.ClassRepository.findOneBy({
+      id: classId,
+    });
+    if (!classroom || !foundClass || !student) {
+      throw new AppException(
+        'One or more related entities not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
     const reservedSeat = this.seatRepository.create({
       classroom,
       numberOfSeat,
       student,
+      class: foundClass,
     });
     await this.seatRepository.save(reservedSeat);
-    await this.classroomRepository.decrement(
-      { id: classroomId },
+    await this.ClassRepository.decrement(
+      { id: foundClass.id },
       'availableSeats',
       1,
     );

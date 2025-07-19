@@ -32,8 +32,9 @@ export class ClassesService {
     const foundClass = await this.classRepository.findOne({
       where: { id: classId },
       relations: [
-        'classroom.reservedSeats',
-        'classroom.reservedSeats.student',
+        'reservedSeats',
+        'reservedSeats.student',
+        'classroom',
         'subject.studyProgram',
         'professor.user',
         'university',
@@ -43,7 +44,6 @@ export class ClassesService {
     if (!foundClass) {
       throw new AppException('Class not found', HttpStatus.NOT_FOUND);
     }
-
     return {
       ...foundClass,
       professor: {
@@ -51,14 +51,11 @@ export class ClassesService {
         title: foundClass.professor.title,
         username: foundClass.professor.user.username,
       },
-      classroom: {
-        ...foundClass.classroom,
-        reservedSeats: foundClass.classroom.reservedSeats.map((seat) => ({
-          id: seat.id,
-          numberOfSeat: seat.numberOfSeat,
-          studentIndex: seat.student.index,
-        })),
-      },
+      reservedSeats: foundClass.reservedSeats.map((seat) => ({
+        id: seat.id,
+        numberOfSeat: seat.numberOfSeat,
+        studentIndex: seat.student.index,
+      })),
     };
   }
 
@@ -76,11 +73,12 @@ export class ClassesService {
     const classes = await this.classRepository.find({
       where: { professor: professor },
       relations: [
-        'classroom.reservedSeats',
-        'classroom.reservedSeats.student',
+        'reservedSeats',
+        'reservedSeats.student',
         'subject.studyProgram',
         'professor.user',
         'university',
+        'classroom',
       ],
     });
 
@@ -91,14 +89,11 @@ export class ClassesService {
         title: cls.professor.title,
         username: cls.professor.user.username,
       },
-      classroom: {
-        ...cls.classroom,
-        reservedSeats: cls.classroom.reservedSeats.map((seat) => ({
-          id: seat.id,
-          numberOfSeat: seat.numberOfSeat,
-          studentIndex: seat.student.index,
-        })),
-      },
+      reservedSeats: cls.reservedSeats.map((seat) => ({
+        id: seat.id,
+        numberOfSeat: seat.numberOfSeat,
+        studentIndex: seat.student.index,
+      })),
     }));
   }
 
@@ -139,11 +134,12 @@ export class ClassesService {
         subject: { studyProgram: In(studyPrograms) },
       },
       relations: [
-        'classroom.reservedSeats',
-        'classroom.reservedSeats.student',
+        'reservedSeats',
+        'reservedSeats.student',
         'subject.studyProgram',
         'professor.user',
         'university',
+        'classroom',
       ],
     });
 
@@ -154,14 +150,11 @@ export class ClassesService {
         title: cls.professor.title,
         username: cls.professor.user.username,
       },
-      classroom: {
-        ...cls.classroom,
-        reservedSeats: cls.classroom.reservedSeats.map((seat) => ({
-          id: seat.id,
-          numberOfSeat: seat.numberOfSeat,
-          studentIndex: seat.student.index,
-        })),
-      },
+      reservedSeats: cls.reservedSeats.map((seat) => ({
+        id: seat.id,
+        numberOfSeat: seat.numberOfSeat,
+        studentIndex: seat.student.index,
+      })),
     }));
   }
 
@@ -216,6 +209,7 @@ export class ClassesService {
       subject,
       professor,
       university,
+      availableSeats: classroom.numberOfSeats,
     });
 
     await this.classRepository.save(newClass);

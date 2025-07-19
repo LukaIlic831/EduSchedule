@@ -82,14 +82,8 @@ export const classReducer = createReducer(
     ...state,
     selectedClass: {
       ...state.selectedClass!,
-      classroom: {
-        ...state.selectedClass!.classroom,
-        availableSeats: state.selectedClass?.classroom.availableSeats! - 1,
-        reservedSeats: [
-          ...state.selectedClass!.classroom.reservedSeats!,
-          reservedSeat,
-        ],
-      },
+      reservedSeats: [...state.selectedClass?.reservedSeats!, reservedSeat],
+      availableSeats: state.selectedClass?.availableSeats! - 1,
     },
   }))
 );

@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Seat } from './seat.entity';
 import { Student } from '../students/student.entity';
 import { Classroom } from '../classrooms/classroom.entity';
+import { Class } from '../classes/class.entity';
 
 @Module({
   providers: [SeatsService],
   controllers: [SeatsController],
-  imports: [TypeOrmModule.forFeature([Seat, Student, Classroom])],
+  imports: [TypeOrmModule.forFeature([Seat, Student, Classroom, Class])],
 })
 export class SeatsModule {}

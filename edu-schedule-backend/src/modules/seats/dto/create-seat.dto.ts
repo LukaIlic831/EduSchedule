@@ -3,4 +3,5 @@ export interface createSeatDto {
   classroomId: number;
   studentIndex: number;
   userId: number;
+  classId: number;
 }

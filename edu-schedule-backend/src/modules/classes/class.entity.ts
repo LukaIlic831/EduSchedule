@@ -3,12 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Classroom } from '../classrooms/classroom.entity';
 import { Professor } from '../professors/professor.entity';
 import { Subject } from '../subjects/subject.entity';
 import { University } from '../universities/university.entity';
+import { Seat } from '../seats/seat.entity';
 
 @Entity('classes')
 export class Class {
@@ -31,6 +33,9 @@ export class Class {
   @JoinColumn({ name: 'classroom_id' })
   classroom: Classroom;
 
+  @Column({ name: 'available_seats' })
+  availableSeats: number;
+
   @ManyToOne(() => Subject, (subject) => subject.classes)
   @JoinColumn({ name: 'subject_id' })
   subject: Subject;
@@ -42,4 +47,7 @@ export class Class {
   @ManyToOne(() => University, (university) => university.classes)
   @JoinColumn({ name: 'university_id' })
   university: University;
+
+  @OneToMany(() => Seat, (seat) => seat.class)
+  reservedSeats: Seat[];
 }

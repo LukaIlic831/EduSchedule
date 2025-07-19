@@ -21,9 +21,6 @@ export class Classroom {
   @Column({ name: 'number_of_seats' })
   numberOfSeats: number;
 
-  @Column({ name: 'available_seats' })
-  availableSeats: number;
-
   @Column({ name: 'hasProjector' })
   hasProjector: boolean;
 

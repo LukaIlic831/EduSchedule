@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Classroom } from '../classrooms/classroom.entity';
 import { Student } from '../students/student.entity';
+import { Class } from '../classes/class.entity';
 
 @Entity('seats')
 export class Seat {
@@ -26,4 +27,8 @@ export class Seat {
     { name: 'student_user_id', referencedColumnName: 'userId' },
   ])
   student: Student;
+
+  @ManyToOne(() => Class, (cls) => cls.reservedSeats)
+  @JoinColumn({ name: 'class_id' })
+  class: Class;
 }
