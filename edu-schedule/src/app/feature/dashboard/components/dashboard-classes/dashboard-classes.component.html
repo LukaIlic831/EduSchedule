@@ -2,13 +2,19 @@
   <div class="dashboard__classes--title">
     <h1>My classes</h1>
   </div>
-  <div class="dashboard__classes--wrapper">
+  <div
+    class="dashboard__classes--wrapper"
+    *ngIf="professorClasses | async as classes"
+  >
     <app-class
-      *ngFor="let professorClass of professorClasses | async"
+      *ngFor="let professorClass of classes"
       [loadedClass]="professorClass"
       (handleClassDeleteClick)="handleOnClickClassDelete()"
       [canBeDeleted]="true"
     />
+    <div *ngIf="classes.length === 0">
+      <p>No classes found.</p>
+    </div>
   </div>
 </div>
 <app-delete-class-block
