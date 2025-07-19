@@ -9,24 +9,24 @@ import { CreateProfessorDto } from './dto/create-professor.dto';
 export class ProfessorsService {
   constructor(
     @InjectRepository(Professor)
-    private readonly professorRepo: Repository<Professor>,
+    private readonly professorRepository: Repository<Professor>,
     @InjectRepository(User)
-    private readonly userRepo: Repository<User>,
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async createProfessor(
     createProfessorDto: CreateProfessorDto,
+    userId: number,
   ): Promise<Professor> {
-    const { title, userId } = createProfessorDto;
-    const user = await this.userRepo.findOneBy({
+    const { title } = createProfessorDto;
+    const user = await this.userRepository.findOneBy({
       id: userId,
     });
     if (!user) throw new NotFoundException('User not found');
-    const professor = this.professorRepo.create({
+    const professor = this.professorRepository.create({
       title: title,
       user,
     });
-    await this.professorRepo.save(professor);
-    return professor;
+    return await this.professorRepository.save(professor);
   }
 }

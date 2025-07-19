@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ClassModel } from './models/class.model';
 import {
-  createClassFailure,
+  classFailure,
   createClassSuccess,
   deleteProfessorClassSuccess,
   loadClassByClassIdSuccess,
@@ -41,7 +41,7 @@ export const classReducer = createReducer(
   on(createClassSuccess, (state, { createdClass }) =>
     classAdapter.addOne(createdClass, { ...state })
   ),
-  on(createClassFailure, (state, { error }) => ({
+  on(classFailure, (state, { error }) => ({
     ...state,
     error,
   })),
@@ -86,7 +86,7 @@ export const classReducer = createReducer(
         ...state.selectedClass!.classroom,
         availableSeats: state.selectedClass?.classroom.availableSeats! - 1,
         reservedSeats: [
-          ...state.selectedClass!.classroom.reservedSeats,
+          ...state.selectedClass!.classroom.reservedSeats!,
           reservedSeat,
         ],
       },

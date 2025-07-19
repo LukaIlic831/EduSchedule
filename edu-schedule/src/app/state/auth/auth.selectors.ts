@@ -7,27 +7,27 @@ export const selectAuthState = createFeatureSelector<AuthState>(authFeatureKey);
 
 export const selectAuthError = createSelector(
   selectAuthState,
-  (state) => state.error!
+  (state) => state.error ?? null
 );
 
 export const selectAuthToken = createSelector(
   selectAuthState,
-  (state) => state.token!
+  (state) => state.token
 );
 
 export const selectAuthRole = createSelector(
   selectAuthState,
-  (state) => state.role!
+  (state) => state.role
 );
 
 export const selectAuthUserUsername = createSelector(
   selectAuthState,
-  (state) => state.user?.username!
+  (state) => state.user?.username ?? null
 );
 
 export const selectAuthUserUserId = createSelector(
   selectAuthState,
-  (state) => state.user?.id!
+  (state) => state.user?.id ?? null
 );
 
 export const selectAuthUserProfessor = createSelector(
@@ -37,7 +37,7 @@ export const selectAuthUserProfessor = createSelector(
 
 export const selectAuthUserProfessorId = createSelector(
   selectAuthState,
-  (state) => state.user?.professor?.id!
+  (state) => state.user?.professor?.id ?? null
 );
 
 export const selectAuthUserStudent = createSelector(
@@ -47,9 +47,7 @@ export const selectAuthUserStudent = createSelector(
 
 export const selectAuthUserStudentStudyProgramId = createSelector(
   selectAuthUserStudent,
-  (student) => {
-    return student?.studyProgram.id ?? null;
-  }
+  (student) => student?.studyProgram.id ?? null
 );
 
 export const selectAuthUserStudentIndex = createSelector(
@@ -61,10 +59,10 @@ export const selectAuthUserStudentIndex = createSelector(
 
 export const selectAuthUserUniversityId = createSelector(
   selectAuthState,
-  (state) => state.user?.university?.id!
+  (state) => state.user?.university?.id ?? null
 );
 
 export const selectAuthUser = createSelector(
   selectAuthState,
-  (state) => state.user!
+  (state) => state.user ?? null
 );

@@ -18,19 +18,19 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('log-in')
-  async login(@Request() req, @Res({ passthrough: true }) res: Response) {
-    const { token, role } = await this.authService.login(req.user);
+  @Post('sign-in')
+  async signIn(@Request() req, @Res({ passthrough: true }) res: Response) {
+    const { token, role } = await this.authService.signIn(req.user);
     this.setTokenInCookies(token, res);
     return { token, role };
   }
 
   @Post('sign-up')
-  async signup(
+  async signUp(
     @Body() createUserDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const { token, role } = await this.authService.signup(createUserDto);
+    const { token, role } = await this.authService.signUp(createUserDto);
     this.setTokenInCookies(token, res);
     return { token, role };
   }
@@ -51,10 +51,9 @@ export class AuthController {
   }
 
   @Get('sign-out')
-  signout(@Res({ passthrough: true }) res: Response) {
+  signOut(@Res({ passthrough: true }) res: Response) {
     res.cookie('jwt', '', {
       expires: new Date(Date.now()),
     });
-    return {};
   }
 }

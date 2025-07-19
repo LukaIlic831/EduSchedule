@@ -1,39 +1,41 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from './models/user.model';
-import { Professor } from './models/professor.model';
-import { Student } from './models/student.model';
-import { University } from '../education-data/models/university.model';
+import {
+  AuthFailurePayload,
+  LoadUserSuccessPayload,
+  SignInPayload,
+  SignInSuccessPayload,
+  SignUpPayload,
+  SignUpSuccessPayload,
+  UpdateUserAndCreateProfessorPayload,
+  UpdateUserAndCreateProfessorSuccessPayload,
+  UpdateUserAndCreateStudentPayload,
+  UpdateUserAndCreateStudentSuccessPayload,
+} from './models/auth.actions.payload';
 
-export const signIn = createAction(
-  '[Auth] Sign In',
-  props<{ email: string; password: string }>()
-);
+export const signIn = createAction('[Auth] Sign In', props<SignInPayload>());
 
 export const signInSuccess = createAction(
   '[Auth] Sign In Success',
-  props<{ token: string; role: string }>()
+  props<SignInSuccessPayload>()
 );
 
-export const signUp = createAction(
-  '[Auth] Sign Up',
-  props<{ username: string; email: string; password: string; role: string }>()
-);
+export const signUp = createAction('[Auth] Sign Up', props<SignUpPayload>());
 
 export const signUpSuccess = createAction(
   '[Auth] Sign Up Success',
-  props<{ token: string; role: string }>()
+  props<SignUpSuccessPayload>()
 );
 
 export const authFailure = createAction(
   '[Auth] Auth Failure',
-  props<{ error: { status: number; message: string } }>()
+  props<AuthFailurePayload>()
 );
 
 export const loadUser = createAction('[Auth] Load User');
 
 export const loadUserSuccess = createAction(
   '[Auth] Load User Success',
-  props<{ user: User }>()
+  props<LoadUserSuccessPayload>()
 );
 
 export const signOut = createAction('[Auth] Sign Out');
@@ -41,36 +43,22 @@ export const signOutSuccess = createAction('[Auth] Sign Out Success');
 
 export const updateUserAndCreateProfessor = createAction(
   '[Auth] Update User And Create Professor',
-  props<{
-    userId: number;
-    universityId: number;
-    professor: Omit<Professor, 'id'> & { userId: number };
-  }>()
+  props<UpdateUserAndCreateProfessorPayload>()
 );
 
 export const updateUserAndCreateProfessorSuccess = createAction(
   '[Auth] Update User And Create Professor Success',
-  props<{
-    university: University;
-    professor: Professor;
-  }>()
+  props<UpdateUserAndCreateProfessorSuccessPayload>()
 );
 
 export const updateUserAndCreateStudent = createAction(
   '[Auth] Update User And Create Student',
-  props<{
-    userId: number;
-    universityId: number;
-    student: (Student & { userId: number }) | null;
-  }>()
+  props<UpdateUserAndCreateStudentPayload>()
 );
 
 export const updateUserAndCreateStudentSuccess = createAction(
   '[Auth] Update User And Create Student Success',
-  props<{
-    university: University;
-    student: Student;
-  }>()
+  props<UpdateUserAndCreateStudentSuccessPayload>()
 );
 
 export const updateUserFailure = createAction(

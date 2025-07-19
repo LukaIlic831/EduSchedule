@@ -3,6 +3,7 @@ import { University } from './models/university.model';
 import { StudyProgram } from './models/study-program.model';
 import { Subject } from './models/subject.model';
 import {
+  educationDataFailure,
   loadAllClassroomsByUniversityIdSuccess,
   loadAllStudyProgramsByUniversityIdAndSelectedYearSuccess,
   loadAllStudyProgramsByUniversityIdSuccess,
@@ -13,21 +14,27 @@ import {
 import { Classroom } from './models/classrooms.model';
 
 export interface EducationDataState {
-  universities: University[] | null;
-  studyPrograms: StudyProgram[] | null;
-  subjects: Subject[] | null;
-  classrooms: Classroom[] | null;
+  universities: University[];
+  studyPrograms: StudyProgram[];
+  subjects: Subject[];
+  classrooms: Classroom[];
+  error: { status: number; message: string } | null;
 }
 
 const initialState: EducationDataState = {
-  universities: null,
-  studyPrograms: null,
-  subjects: null,
-  classrooms: null,
+  universities: [],
+  studyPrograms: [],
+  subjects: [],
+  classrooms: [],
+  error: null,
 };
 
 export const educationDataReducer = createReducer(
   initialState,
+  on(educationDataFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
   on(loadAllUniversitiesSuccess, (state, { universities }) => ({
     ...state,
     universities,

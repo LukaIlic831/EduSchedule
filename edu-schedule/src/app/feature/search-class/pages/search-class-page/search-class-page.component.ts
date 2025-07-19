@@ -26,8 +26,8 @@ import { SearchInputComponent } from '../../components/search-input/search-input
 })
 export class SearchClassPageComponent {
   years = YEARS;
-  universityId: Observable<number | null> = of(null);
-  studyProgramId: Observable<number | null> = of(null);
+  universityId: Observable<number | null> = of(0);
+  studyProgramId: Observable<number | null> = of(0);
   constructor(private store: Store) {
     this.universityId = this.store.select(selectAuthUserUniversityId);
     this.studyProgramId = this.store.select(

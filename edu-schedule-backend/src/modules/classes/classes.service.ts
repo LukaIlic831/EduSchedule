@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Class } from './class.entity';
 import { In, Repository } from 'typeorm';
@@ -10,7 +10,6 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { AppException } from 'src/app-exception/app-exception';
 import { ClassDto } from './dto/class.dto';
 import { StudyProgram } from '../study-programs/study-program.entity';
-import { SeatDto } from '../seats/dto/seat.dto';
 
 @Injectable()
 export class ClassesService {
@@ -42,7 +41,7 @@ export class ClassesService {
     });
 
     if (!foundClass) {
-      throw new NotFoundException(`Class not found`);
+      throw new AppException('Class not found', HttpStatus.NOT_FOUND);
     }
 
     return {
@@ -67,12 +66,12 @@ export class ClassesService {
     await this.classRepository.delete(classId);
   }
 
-  async findAllByProfessorId(professorId: number): Promise<ClassDto[]> {
+  async getAllClassesByProfessorId(professorId: number): Promise<ClassDto[]> {
     const professor = await this.professorRepository.findOneBy({
       id: professorId,
     });
     if (!professor) {
-      throw new NotFoundException('Professor not found');
+      throw new AppException('Professor not found', HttpStatus.NOT_FOUND);
     }
     const classes = await this.classRepository.find({
       where: { professor: professor },
@@ -103,7 +102,7 @@ export class ClassesService {
     }));
   }
 
-  async findAllByUniversityIdAndStudyProgram(
+  async getAllUniversityClassesByStudyProgramId(
     universityId: number,
     studyProgramId: number,
   ): Promise<ClassDto[]> {
@@ -114,10 +113,10 @@ export class ClassesService {
       id: studyProgramId,
     });
     if (!university) {
-      throw new NotFoundException('University not found');
+      throw new AppException('University not found', HttpStatus.NOT_FOUND);
     }
     if (!studyProgram) {
-      throw new NotFoundException('Study Program not found');
+      throw new AppException('Study Program not found', HttpStatus.NOT_FOUND);
     }
 
     const studyProgramOpsti = await this.studyProgramRepository.findOneBy({
@@ -126,7 +125,10 @@ export class ClassesService {
     });
 
     if (!studyProgramOpsti) {
-      throw new NotFoundException('Study Program not found');
+      throw new AppException(
+        'Study Program Opsti not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     const studyPrograms = [studyProgram.id, studyProgramOpsti.id];
@@ -186,7 +188,10 @@ export class ClassesService {
     });
 
     if (!classroom || !subject || !professor || !university) {
-      throw new NotFoundException('One or more related entities not found.');
+      throw new AppException(
+        'One or more related entities not found',
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     if (

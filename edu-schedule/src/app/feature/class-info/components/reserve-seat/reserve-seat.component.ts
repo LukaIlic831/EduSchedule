@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
 import { ClassModel } from '../../../../state/class/models/class.model';
 import { Seat } from '../../../../state/education-data/models/seat.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +9,7 @@ import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.
 import { reserveSeatInClass } from '../../../../state/class/class.actions';
 import { selectSelectedClass } from '../../../../state/class/class.selectors';
 import { ReserveLegendComponent } from './reserve-legend/reserve-legend.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface DisplaySeat {
   seatNumber: number;
@@ -30,7 +31,7 @@ export class ReserveSeatComponent implements OnInit {
   selectedClass: ClassModel | null = null;
   @Input() isProfessor!: boolean;
   @Input() currentStudent: Student | null = null;
-
+private destroyRef = inject(DestroyRef);
   constructor(private store: Store, private fb: FormBuilder) {
     this.reserveSeatForm = this.fb.group({
       seatNumber: [0, notZeroOrNullValidator()],
@@ -38,13 +39,16 @@ export class ReserveSeatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(selectSelectedClass).subscribe((selectedClass) => {
-      this.selectedClass = selectedClass;
-      this.initializeGroups();
-      this.updateGroups();
-      this.updateStatus();
-      this.buildNumberOfGroups();
-    });
+    this.store
+      .select(selectSelectedClass)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedClass) => {
+        this.selectedClass = selectedClass;
+        this.initializeGroups();
+        this.updateGroups();
+        this.updateStatus();
+        this.buildNumberOfGroups();
+      });
   }
 
   updateGroups() {

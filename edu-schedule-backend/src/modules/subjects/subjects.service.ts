@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subject } from './subject.entity';
 import { Repository } from 'typeorm';
 import { University } from '../universities/university.entity';
 import { StudyProgram } from '../study-programs/study-program.entity';
+import { AppException } from 'src/app-exception/app-exception';
 
 @Injectable()
 export class SubjectsService {
@@ -16,14 +17,21 @@ export class SubjectsService {
     private readonly studyProgramRepository: Repository<StudyProgram>,
   ) {}
 
-  getSubjectsByStudyProgramId(studyProgramId: number): Promise<Subject[]> {
-    return this.subjectRepository.find({
+  async getAllSubjectsByStudyProgramId(
+    studyProgramId: number,
+  ): Promise<Subject[]> {
+    const studyProgram = await this.studyProgramRepository.findOneBy({
+      id: studyProgramId,
+    });
+    if (!studyProgram) {
+      throw new AppException('Study Program not found', HttpStatus.NOT_FOUND);
+    }
+    const subjects = await this.subjectRepository.find({
       where: {
-        studyProgram: {
-          id: studyProgramId,
-        },
+        studyProgram: studyProgram,
       },
     });
+    return subjects;
   }
 
   async getAllSubjectsByUniversityIdAndStudyProgramId(
@@ -37,18 +45,18 @@ export class SubjectsService {
       id: studyProgramId,
     });
     if (!university) {
-      throw new NotFoundException('University not found');
+      throw new AppException('University not found', HttpStatus.NOT_FOUND);
     }
     if (!studyProgram) {
-      throw new NotFoundException('Study Program not found');
+      throw new AppException('Study Program not found', HttpStatus.NOT_FOUND);
     }
 
-    return this.subjectRepository
+    const subjects = await this.subjectRepository
       .createQueryBuilder('subject')
       .leftJoinAndSelect('subject.studyProgram', 'studyProgram')
       .leftJoinAndSelect('studyProgram.university', 'university')
       .where(
-        '(studyProgram.id = :studyProgramId OR (studyProgram.name = :opstiName AND university.id = :universityId))',
+        '(university.id = :universityId AND (studyProgram.id = :studyProgramId OR studyProgram.name = :opstiName))',
         {
           studyProgramId: studyProgram.id,
           opstiName: 'opsti',
@@ -56,5 +64,6 @@ export class SubjectsService {
         },
       )
       .getMany();
+    return subjects;
   }
 }

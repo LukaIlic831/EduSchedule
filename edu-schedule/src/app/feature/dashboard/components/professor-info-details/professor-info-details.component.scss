@@ -1,0 +1,21 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.dashboard {
+  &__professor {
+    @include user-info();
+
+    &--info {
+      &-container {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+      }
+      &-sign-out {
+        max-width: 200px;
+        @include logout-button-style();
+      }
+    }
+  }
+}

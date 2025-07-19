@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
-import { Class } from './class.entity';
 import { ClassDto } from './dto/class.dto';
 
 @Controller('classes')
@@ -9,23 +8,26 @@ export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
   @Post('create')
-  async createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
+  createClass(@Body() createClassDto: CreateClassDto): Promise<ClassDto> {
     return this.classesService.createClass(createClassDto);
   }
 
   @Get('professor')
-  getClassesByProfessorId(
+  getAllClassesByProfessorId(
     @Query('professorId') professorId: number,
   ): Promise<ClassDto[]> {
-    return this.classesService.findAllByProfessorId(professorId);
+    return this.classesService.getAllClassesByProfessorId(professorId);
   }
 
   @Get('university/study-program')
-  getClassesByStudyProgramId(
+  getAllClassesByStudyProgramId(
     @Query('universityId') universityId: number,
-        @Query('studyProgramId') studyProgramId: number,
+    @Query('studyProgramId') studyProgramId: number,
   ): Promise<ClassDto[]> {
-    return this.classesService.findAllByUniversityIdAndStudyProgram(universityId, studyProgramId);
+    return this.classesService.getAllUniversityClassesByStudyProgramId(
+      universityId,
+      studyProgramId,
+    );
   }
 
   @Delete('delete')

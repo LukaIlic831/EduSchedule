@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { deleteProfessorClass } from '../../../../../../state/class/class.actions';
 import { selectSelectedClass } from '../../../../../../state/class/class.selectors';

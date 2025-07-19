@@ -3,35 +3,8 @@
     <h1>Welcome {{ currentUser.username }}!</h1>
   </div>
   <div class="main__wrapper">
-    <div class="dashboard__professor--info">
-      <div class="dashboard__professor--info-container">
-        <div class="dashboard__professor--info-title">
-          <h1>My profile</h1>
-        </div>
-        <button
-          class="dashboard__professor--info-sign-out"
-          (click)="handleSignOut()"
-        >
-          Sign out
-        </button>
-      </div>
-      <div class="dashboard__professor--info-field">
-        <p>
-          Email: <span>{{ currentUser.email }}</span>
-        </p>
-      </div>
-      <div class="dashboard__professor--info-field">
-        <p>
-          University: <span>{{ currentUser.university?.name }}</span>
-        </p>
-      </div>
-      <div class="dashboard__professor--info-field">
-        <p>
-          Title: <span>{{ currentUser.professor?.title }}</span>
-        </p>
-      </div>
-    </div>
-    <app-dashboard-classes [professorId]="currentUser.professor?.id!" />
+    <app-professor-info-details [currentUser]="currentUser" />
+    <app-dashboard-classes [professorId]="currentUser.professor?.id ?? null" />
     <div class="dashboard__create-class">
       <button routerLink="/create-class">Create Class</button>
     </div>

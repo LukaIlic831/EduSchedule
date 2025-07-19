@@ -1,6 +1,9 @@
 <div class="info__block--wrapper" *ngIf="userId | async as id">
   <mat-card class="info__block">
-    <app-info-title [username]="username" />
+    <app-info-title
+      *ngIf="username | async as username"
+      [username]="username"
+    />
     <form [formGroup]="additionalDataForm" (ngSubmit)="onSubmit(id)">
       <mat-card-content>
         <div class="info__block--fields">

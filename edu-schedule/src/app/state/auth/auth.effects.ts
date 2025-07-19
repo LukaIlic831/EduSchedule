@@ -17,11 +17,12 @@ import {
   updateUserFailure,
 } from './auth.actions';
 import { catchError, filter, map, of, switchMap, take, tap, zip } from 'rxjs';
-import { AuthService } from '../../core/auth/services/auth.service';
+import { AuthService } from '../../core/auth/service/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from '../../core/user/services/user.service';
+import { UserService } from '../../core/user/service/user.service';
 import { UserInfoService } from '../../feature/user-info/services/user-info.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class AuthEffects {
@@ -41,12 +42,15 @@ export class AuthEffects {
           map((response) =>
             signInSuccess({ token: response.token, role: response.role })
           ),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(authFailure({ error }));
+          catchError((errorResponse: HttpErrorResponse) => {
+            return of(
+              authFailure({
+                error: {
+                  message: errorResponse.error.message,
+                  status: errorResponse.status,
+                },
+              })
+            );
           })
         )
       )
@@ -64,13 +68,7 @@ export class AuthEffects {
               role: response.role,
             })
           ),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(authFailure({ error }));
-          })
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -80,9 +78,10 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(loadUser),
       switchMap(() =>
-        this.authService
-          .getCurrentUser()
-          .pipe(map((user) => loadUserSuccess({ user })))
+        this.authService.getCurrentUser().pipe(
+          map((user) => loadUserSuccess({ user })),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
+        )
       )
     )
   );
@@ -91,7 +90,6 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(authFailure),
-        filter(({ error }) => !!error && error.status !== 404),
         tap(({ error }) => {
           this._snackBar.open(error!.message, 'Dismiss', {
             duration: 5000,
@@ -108,7 +106,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(signUpSuccess),
         filter(({ token }) => !!token),
-        take(1),
         tap(({ role }) => {
           this._snackBar.open('Signup successful!', 'Dismiss', {
             duration: 3000,
@@ -128,7 +125,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(signInSuccess),
         filter(({ token }) => !!token),
-        take(1),
         tap(({ role }) => {
           this._snackBar.open('Signin successful!', 'Dismiss', {
             duration: 3000,
@@ -167,13 +163,7 @@ export class AuthEffects {
       switchMap(() =>
         this.authService.signOutCurrentUser().pipe(
           map(() => signOutSuccess()),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(authFailure({ error }));
-          })
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -201,18 +191,12 @@ export class AuthEffects {
       switchMap(({ professor, universityId, userId }) =>
         zip(
           this.userService.updateCurrentUserUniversity(userId, universityId),
-          this.userInfoService.createProfessor(professor)
+          this.userInfoService.createProfessor(professor, userId)
         ).pipe(
           map(([university, professor]) =>
             updateUserAndCreateProfessorSuccess({ university, professor })
           ),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(updateUserFailure({ error }));
-          })
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -224,18 +208,12 @@ export class AuthEffects {
       switchMap(({ student, universityId, userId }) =>
         zip(
           this.userService.updateCurrentUserUniversity(userId, universityId),
-          this.userInfoService.createStudent(student, universityId)
+          this.userInfoService.createStudent(student, universityId, userId)
         ).pipe(
           map(([university, student]) =>
             updateUserAndCreateStudentSuccess({ university, student })
           ),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(updateUserFailure({ error }));
-          })
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -288,4 +266,15 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
+
+  errorHandling(errorResponse: HttpErrorResponse) {
+    return of(
+      authFailure({
+        error: {
+          message: errorResponse.error.message,
+          status: errorResponse.status,
+        },
+      })
+    );
+  }
 }

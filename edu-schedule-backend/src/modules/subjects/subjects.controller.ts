@@ -7,17 +7,20 @@ export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
 
   @Get('study-program')
-  getSubjectsByStudyProgramId(
+  getAllSubjectsByStudyProgramId(
     @Query('studyProgramId') studyProgramId: number,
   ): Promise<Subject[]> {
-    return this.subjectsService.getSubjectsByStudyProgramId(studyProgramId);
+    return this.subjectsService.getAllSubjectsByStudyProgramId(studyProgramId);
   }
 
   @Get('university/study-program')
   getAllSubjectsByUniversityIdAndStudyProgramId(
     @Query('universityId') universityId: number,
-      @Query('studyProgramId') studyProgramId: number,
+    @Query('studyProgramId') studyProgramId: number,
   ): Promise<Subject[]> {
-    return this.subjectsService.getAllSubjectsByUniversityIdAndStudyProgramId(universityId, studyProgramId);
+    return this.subjectsService.getAllSubjectsByUniversityIdAndStudyProgramId(
+      universityId,
+      studyProgramId,
+    );
   }
 }

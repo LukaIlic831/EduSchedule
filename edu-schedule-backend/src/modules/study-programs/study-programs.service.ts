@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudyProgram } from './study-program.entity';
 import { Not, Repository } from 'typeorm';
 import { University } from '../universities/university.entity';
+import { AppException } from 'src/app-exception/app-exception';
 
 @Injectable()
 export class StudyProgramsService {
@@ -13,23 +14,24 @@ export class StudyProgramsService {
     private readonly universityRepository: Repository<University>,
   ) {}
 
-  async getStudyProgramsByUniversityId(
+  async getAllStudyProgramsByUniversityId(
     universityId: number,
   ): Promise<StudyProgram[]> {
     const university = await this.universityRepository.findOneBy({
       id: universityId,
     });
     if (!university) {
-      throw new NotFoundException('University not found');
+      throw new AppException('University not found', HttpStatus.NOT_FOUND);
     }
-    return this.studyProgramRepository.find({
+    const studyPrograms = await this.studyProgramRepository.find({
       where: {
         university: university,
       },
     });
+    return studyPrograms;
   }
 
-  async getStudyProgramsByUniversityIdAndYear(
+  async getAllStudyProgramsByUniversityIdAndYear(
     universityId: number,
     year: number,
   ): Promise<StudyProgram[]> {
@@ -37,22 +39,24 @@ export class StudyProgramsService {
       id: universityId,
     });
     if (!university) {
-      throw new NotFoundException('University not found');
+      throw new AppException('University not found', HttpStatus.NOT_FOUND);
     }
+    let studyPrograms: StudyProgram[] = [];
     if (Number(year) === 1) {
-      return this.studyProgramRepository.find({
+      studyPrograms = await this.studyProgramRepository.find({
         where: {
           university: university,
           name: 'opsti',
         },
       });
     } else {
-      return this.studyProgramRepository.find({
+      studyPrograms = await this.studyProgramRepository.find({
         where: {
           university: university,
           name: Not('opsti'),
         },
       });
     }
+    return studyPrograms;
   }
 }

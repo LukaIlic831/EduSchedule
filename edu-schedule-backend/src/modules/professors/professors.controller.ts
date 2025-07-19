@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Query } from '@nestjs/common';
 import { ProfessorsService } from './professors.service';
 import { CreateProfessorDto } from './dto/create-professor.dto';
 
@@ -6,7 +6,13 @@ import { CreateProfessorDto } from './dto/create-professor.dto';
 export class ProfessorsController {
   constructor(private professorsService: ProfessorsService) {}
   @Post('create')
-  async createProfessor(@Body() createProfessorDto: CreateProfessorDto) {
-    return this.professorsService.createProfessor(createProfessorDto);
+  createProfessor(
+    @Body() createProfessorDto: CreateProfessorDto,
+    @Query('userId') userId: number,
+  ) {
+    return this.professorsService.createProfessor(
+      createProfessorDto,
+      userId,
+    );
   }
 }

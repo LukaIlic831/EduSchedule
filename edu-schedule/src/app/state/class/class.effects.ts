@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { of, zip } from 'rxjs';
 import {
+  classFailure,
   createClass,
-  createClassFailure,
   createClassSuccess,
   deleteProfessorClass,
   deleteProfessorClassSuccess,
@@ -17,11 +17,12 @@ import {
   reserveSeatInClass,
   reserveSeatInClassSuccess,
 } from './class.actions';
-import { ClassService } from '../../core/class/services/class.service';
+import { ClassService } from '../../core/class/service/class.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClassModel } from './models/class.model';
 import { SeatService } from '../../core/seat/service/seat.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class ClassEffects {
@@ -36,16 +37,10 @@ export class ClassEffects {
   createClass$ = createEffect(() =>
     this.actions$.pipe(
       ofType(createClass),
-      switchMap(({ classDto }) =>
-        this.classService.createClass(classDto).pipe(
+      switchMap(({ classForCreate }) =>
+        this.classService.createClass(classForCreate).pipe(
           map((createdClass) => createClassSuccess({ createdClass })),
-          catchError((errorResponse) => {
-            const error = {
-              status: errorResponse?.status,
-              message: errorResponse?.error?.message,
-            };
-            return of(createClassFailure({ error }));
-          })
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -67,11 +62,10 @@ export class ClassEffects {
     { dispatch: false }
   );
 
-  createClassFailure$ = createEffect(
+  classFailure$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(createClassFailure),
-        filter(({ error }) => !!error && error.status !== 404),
+        ofType(classFailure),
         tap(({ error }) => {
           this._snackBar.open(error!.message, 'Dismiss', {
             duration: 5000,
@@ -94,7 +88,8 @@ export class ClassEffects {
                 this.handleFormatingDateAndTime(professorClass)
               ),
             })
-          )
+          ),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -113,7 +108,8 @@ export class ClassEffects {
                   this.handleFormatingDateAndTime(universityClass)
                 ),
               })
-            )
+            ),
+            catchError((errorResponse) => this.errorHandling(errorResponse))
           )
       )
     )
@@ -125,8 +121,11 @@ export class ClassEffects {
       switchMap(({ classId, reservedSeatsIds }) =>
         zip(
           this.classService.deleteProfessorClass(classId),
-          this.seatService.removeSeats(reservedSeatsIds)
-        ).pipe(map(() => deleteProfessorClassSuccess()))
+          this.seatService.deleteReservedSeats(reservedSeatsIds)
+        ).pipe(
+          map(() => deleteProfessorClassSuccess()),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
+        )
       )
     )
   );
@@ -140,7 +139,8 @@ export class ClassEffects {
             loadClassByClassIdSuccess({
               loadedClass: this.handleFormatingDateAndTime(loadedClass),
             })
-          )
+          ),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
     )
@@ -165,11 +165,10 @@ export class ClassEffects {
     this.actions$.pipe(
       ofType(reserveSeatInClass),
       switchMap(({ seatForReservation }) =>
-        this.seatService
-          .createSeat(seatForReservation)
-          .pipe(
-            map((reservedSeat) => reserveSeatInClassSuccess({ reservedSeat }))
-          )
+        this.seatService.createSeat(seatForReservation).pipe(
+          map((reservedSeat) => reserveSeatInClassSuccess({ reservedSeat })),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
+        )
       )
     )
   );
@@ -200,5 +199,16 @@ export class ClassEffects {
       ...loadedClass,
       dateAndTimeFormatted: `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`,
     };
+  }
+
+  errorHandling(errorResponse: HttpErrorResponse) {
+    return of(
+      classFailure({
+        error: {
+          message: errorResponse.error.message,
+          status: errorResponse.status,
+        },
+      })
+    );
   }
 }

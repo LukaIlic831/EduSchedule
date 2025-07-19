@@ -1,37 +1,45 @@
 import { createAction, props } from '@ngrx/store';
-import { ClassModel } from './models/class.model';
-import { ClassDto } from './models/class-dto.model';
-import { createSeatDto } from './dto/create-seat.dto';
-import { Seat } from '../education-data/models/seat.model';
+import {
+  ClassFailurePayload,
+  CreateClassPayload,
+  CreateClassSuccessPayload,
+  DeleteProfessorClassPayload,
+  LoadClassByClassIdPayload,
+  LoadClassByClassIdSuccessPayload,
+  LoadProfessorClassesPayload,
+  LoadProfessorClassesSuccessPayload,
+  LoadUniversityClassesPayload,
+  LoadUniversityClassesSuccessPayload,
+  ReserveSeatInClassPayload,
+  ReserveSeatInClassSuccessPayload,
+  SelectProfessorClassForDeletePayload,
+  SetSearchQueryPayload,
+  SetSelectedSubjectPayload,
+  SetSelectedYearPayload,
+} from './models/class.actions.payload';
 
 export const createClass = createAction(
   '[Class] Create Class',
-  props<{
-    classDto: ClassDto;
-  }>()
+  props<CreateClassPayload>()
 );
 export const createClassSuccess = createAction(
   '[Class] Create Class Success',
-  props<{ createdClass: ClassModel }>()
-);
-export const createClassFailure = createAction(
-  '[Class] Create Class Failure',
-  props<{ error: { status: number; message: string } }>()
+  props<CreateClassSuccessPayload>()
 );
 
 export const loadProfessorClasses = createAction(
   '[Class] Load Professor Classes',
-  props<{ professorId: number }>()
+  props<LoadProfessorClassesPayload>()
 );
 
 export const loadProfessorClassesSuccess = createAction(
   '[Class] Load Professor Classes Success',
-  props<{ classes: ClassModel[] }>()
+  props<LoadProfessorClassesSuccessPayload>()
 );
 
 export const deleteProfessorClass = createAction(
   '[Class] Delete Professor Class',
-  props<{ classId: number; reservedSeatsIds: number[] }>()
+  props<DeleteProfessorClassPayload>()
 );
 
 export const deleteProfessorClassSuccess = createAction(
@@ -40,54 +48,54 @@ export const deleteProfessorClassSuccess = createAction(
 
 export const selectProfessorClassForDelete = createAction(
   '[Class] Select Professor Class For Delete',
-  props<{ selectedClass: ClassModel }>()
+  props<SelectProfessorClassForDeletePayload>()
 );
 
 export const loadClassByClassId = createAction(
   '[Class] Load Class By Class Id',
-  props<{ classId: number }>()
+  props<LoadClassByClassIdPayload>()
 );
 
 export const loadClassByClassIdSuccess = createAction(
   '[Class] Load Class By Class Id Success',
-  props<{ loadedClass: ClassModel }>()
+  props<LoadClassByClassIdSuccessPayload>()
 );
 
 export const loadUniveristyClasses = createAction(
   '[Class] Load University Classes',
-  props<{ universityId: number; studyProgramId: number }>()
+  props<LoadUniversityClassesPayload>()
 );
 
 export const loadUniveristyClassesSuccess = createAction(
   '[Class] Load University Classes Success',
-  props<{ classes: ClassModel[] }>()
+  props<LoadUniversityClassesSuccessPayload>()
 );
 
 export const setSearchQuery = createAction(
   '[Class] Set Search Query',
-  props<{ searchQuery: string }>()
+  props<SetSearchQueryPayload>()
 );
 
 export const setSelectedYear = createAction(
   '[Class] Set Selected Year',
-  props<{ selectedYear: number }>()
+  props<SetSelectedYearPayload>()
 );
 
 export const setSelectedSubject = createAction(
   '[Class] Set Selected Subject',
-  props<{ selectedSubjectId: number }>()
+  props<SetSelectedSubjectPayload>()
 );
-
 export const reserveSeatInClass = createAction(
   '[Class] Reserve Seat In Class',
-  props<{ seatForReservation: createSeatDto }>()
+  props<ReserveSeatInClassPayload>()
 );
 
 export const reserveSeatInClassSuccess = createAction(
   '[Class] Reserve Seat In Class Success',
-  props<{ reservedSeat: Seat }>()
+  props<ReserveSeatInClassSuccessPayload>()
 );
 
-export const reserveSeatInClassFailure = createAction(
-  '[Class] Reserve Seat In Class Failure'
+export const classFailure = createAction(
+  '[Class] Class Failure',
+  props<ClassFailurePayload>()
 );

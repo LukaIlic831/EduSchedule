@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { APIURL } from '../../../data/data';
 import { Observable } from 'rxjs';
 import { ClassModel } from '../../../state/class/models/class.model';
+import { CreateClassDto } from '../../../dto/class/create-class.dto';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class ClassService {
-  private apiUrl = APIURL;
+  private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
-  createClass(classData: any): Observable<ClassModel> {
+  createClass(classData: CreateClassDto): Observable<ClassModel> {
     return this.http.post<ClassModel>(
       `${this.apiUrl}/classes/create`,
       classData
@@ -18,7 +19,7 @@ export class ClassService {
 
   getAllProfessorClasses(professorId: number): Observable<ClassModel[]> {
     return this.http.get<ClassModel[]>(`${this.apiUrl}/classes/professor`, {
-      params: { professorId: professorId },
+      params: { professorId },
     });
   }
 

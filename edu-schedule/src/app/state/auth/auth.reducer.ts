@@ -12,15 +12,15 @@ import {
 import { User } from './models/user.model';
 
 export interface AuthState {
-  token: string | null;
-  role: string | null;
+  token: string;
+  role: string;
   error: { status: number; message: string } | null;
   user: User | null;
 }
 
 const initialState: AuthState = {
-  token: null,
-  role: null,
+  token: '',
+  role: '',
   error: null,
   user: null,
 };
@@ -35,11 +35,21 @@ export const authReducer = createReducer(
   on(signOutSuccess, () => initialState),
   on(
     updateUserAndCreateProfessorSuccess,
-    (state, { professor, university }) => ({ ...state, professor, university })
+    (state, { professor, university }) => ({
+      ...state,
+      user: {
+        ...state.user!,
+        professor,
+        university,
+      },
+    })
   ),
   on(updateUserAndCreateStudentSuccess, (state, { student, university }) => ({
     ...state,
-    student,
-    university,
+    user: {
+      ...state.user!,
+      student,
+      university,
+    },
   }))
 );

@@ -10,5 +10,5 @@ import { Observable, of } from 'rxjs';
   styleUrl: './info-title.component.scss',
 })
 export class InfoTitleComponent {
-  @Input() username: Observable<string> = of('');
+  @Input() username!: string;
 }

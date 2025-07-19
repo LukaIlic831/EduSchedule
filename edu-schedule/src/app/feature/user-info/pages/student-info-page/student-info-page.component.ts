@@ -1,15 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { InfoTitleComponent } from '../../components/info-title/info-title.component';
-import { combineLatest, filter, map, Observable, of, take } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import {
-  loadUser,
-  updateUserAndCreateStudent,
-} from '../../../../state/auth/auth.actions';
+import { updateUserAndCreateStudent } from '../../../../state/auth/auth.actions';
 import {
   selectAuthUserUserId,
   selectAuthUserUsername,
@@ -26,11 +23,11 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { YEARS } from '../../../../data/data';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
 import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-student-info-page',
@@ -48,13 +45,13 @@ import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.
 })
 export class StudentInfoPageComponent {
   additionalDataForm: FormGroup;
-  username: Observable<string> = of('');
+  username: Observable<string | null> = of('');
   universities: Observable<University[]> = of([]);
   studyPrograms: Observable<StudyProgram[]> = of([]);
   filteredStudyPrograms: Observable<StudyProgram[]> = of([]);
   years = YEARS;
-  userId: Observable<number | null> = of(null);
-
+  userId: Observable<number | null> = of(0);
+  private destroyRef = inject(DestroyRef);
   constructor(private store: Store, private fb: FormBuilder) {
     this.additionalDataForm = this.fb.group({
       university: new FormControl(0, [notZeroOrNullValidator()]),
@@ -79,7 +76,8 @@ export class StudentInfoPageComponent {
   handleOnUniversityChange() {
     this.additionalDataForm
       .get('university')
-      ?.valueChanges.subscribe((selectedUniversityId: number) => {
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedUniversityId: number) => {
         if (selectedUniversityId) {
           this.additionalDataForm.get('year')?.reset();
           this.additionalDataForm.get('year')?.enable();
@@ -87,6 +85,7 @@ export class StudentInfoPageComponent {
           this.additionalDataForm.get('studyProgram')?.disable();
         } else {
           this.additionalDataForm.get('year')?.disable();
+          this.additionalDataForm.get('studyProgram')?.disable();
         }
       });
   }
@@ -94,7 +93,8 @@ export class StudentInfoPageComponent {
   handleOnYearChange() {
     this.additionalDataForm
       .get('year')
-      ?.valueChanges.subscribe((selectedYear: number) => {
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedYear: number) => {
         if (selectedYear) {
           const { university } = this.additionalDataForm.value;
           this.additionalDataForm.get('studyProgram')?.enable();
@@ -119,8 +119,7 @@ export class StudentInfoPageComponent {
           student: {
             index: index,
             year: year,
-            studyProgram: studyProgram,
-            userId,
+            studyProgramId: studyProgram,
           },
         })
       );

@@ -7,7 +7,7 @@ export class UniversitiesController {
   constructor(private readonly universitiesService: UniversitiesService) {}
 
   @Get()
-  findAll(): Promise<University[]> {
+  getAllUniversities(): Promise<University[]> {
     return this.universitiesService.getAllUniversities();
   }
 }

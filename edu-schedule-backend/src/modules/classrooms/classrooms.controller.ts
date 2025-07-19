@@ -6,9 +6,9 @@ import { Classroom } from './classroom.entity';
 export class ClassroomsController {
   constructor(private readonly classroomsService: ClassroomsService) {}
   @Get('university')
-  getClassroomsByUniversityId(
+  getAllClassroomsByUniversityId(
     @Query('universityId') universityId: number,
   ): Promise<Classroom[]> {
-    return this.classroomsService.getClassroomsByUniversityId(universityId);
+    return this.classroomsService.getAllClassroomsByUniversityId(universityId);
   }
 }

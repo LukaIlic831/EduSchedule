@@ -15,7 +15,7 @@ export const selectClassEntities = createSelector(
 
 export const selectSelectedClass = createSelector(
   selectClassState,
-  (state: ClassState) => state.selectedClass
+  (state: ClassState) => state.selectedClass ?? null
 );
 
 export const selectSearchQuery = createSelector(
@@ -25,12 +25,12 @@ export const selectSearchQuery = createSelector(
 
 export const selectSelectedYear = createSelector(
   selectClassState,
-  (state) => state.selectedYear
+  (state) => state.selectedYear ?? null
 );
 
 export const selectSelectedSubjectId = createSelector(
   selectClassState,
-  (state) => state.selectedSubjectId
+  (state) => state.selectedSubjectId ?? null
 );
 
 export const selectFilteredClasses = createSelector(

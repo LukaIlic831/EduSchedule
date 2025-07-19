@@ -8,20 +8,20 @@ export const selectEducationDataState =
 
 export const selectEducationDataUniversities = createSelector(
   selectEducationDataState,
-  (state) => state.universities!
+  (state) => state.universities
 );
 
 export const selectEducationDataStudyPrograms = createSelector(
   selectEducationDataState,
-  (state) => state.studyPrograms!
+  (state) => state.studyPrograms
 );
 
 export const selectEducationDataSubjects = createSelector(
   selectEducationDataState,
-  (state) => state.subjects!
+  (state) => state.subjects
 );
 
 export const selectEducationDataClassrooms = createSelector(
   selectEducationDataState,
-  (state) => state.classrooms!
+  (state) => state.classrooms
 );

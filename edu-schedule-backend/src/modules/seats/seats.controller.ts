@@ -11,7 +11,7 @@ export class SeatsController {
     return this.seatsService.createSeat(createSeatDto);
   }
 
-  @Delete('remove')
+  @Delete('delete')
   removeSeats(@Body() reservedSeatIds: number[]): Promise<void> {
     return this.seatsService.removeSeats(reservedSeatIds);
   }

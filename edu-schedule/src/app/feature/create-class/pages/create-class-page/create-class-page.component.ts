@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
-import { filter, Observable, of, take } from 'rxjs';
+import { filter, Observable, of, take, tap } from 'rxjs';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
 import {
   loadAllClassroomsByUniversityId,
@@ -35,6 +35,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Subject } from '../../../../state/education-data/models/subject.model';
 import { createClass } from '../../../../state/class/class.actions';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-class-page',
@@ -57,9 +58,10 @@ export class CreateClassPageComponent implements OnInit {
   studyPrograms: Observable<StudyProgram[]> = of([]);
   classrooms: Observable<Classroom[]> = of([]);
   subjects: Observable<Subject[]> = of([]);
-  professorId: Observable<number | null> = of(null);
+  professorId: Observable<number | null> = of(0);
   universityId = 0;
   minDate = new Date();
+  private destroyRef = inject(DestroyRef);
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createClassDataForm = this.fb.group({
@@ -72,7 +74,7 @@ export class CreateClassPageComponent implements OnInit {
       classroom: new FormControl(0, [notZeroOrNullValidator()]),
       classDate: new FormControl(null, [Validators.required]),
       startTime: new FormControl(null, [Validators.required]),
-      classDuration: new FormControl(45, [Validators.required]),
+      classDuration: new FormControl(45, [notZeroOrNullValidator()]),
     });
   }
 
@@ -93,14 +95,14 @@ export class CreateClassPageComponent implements OnInit {
         take(1)
       )
       .subscribe((universityId) => {
-        this.universityId = universityId;
+        this.universityId = universityId!;
         this.store.dispatch(
           loadAllStudyProgramsByUniversityId({
-            universityId: universityId,
+            universityId: this.universityId,
           })
         );
         this.store.dispatch(
-          loadAllClassroomsByUniversityId({ universityId: universityId })
+          loadAllClassroomsByUniversityId({ universityId: this.universityId })
         );
       });
   }
@@ -108,7 +110,8 @@ export class CreateClassPageComponent implements OnInit {
   handleOnChangeStudyProgram() {
     this.createClassDataForm
       .get('studyProgram')
-      ?.valueChanges.subscribe((selectedStudyProgramId: number) => {
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((selectedStudyProgramId: number) => {
         if (selectedStudyProgramId) {
           this.createClassDataForm.get('subject')?.enable();
           this.createClassDataForm.get('subject')?.reset();
@@ -144,7 +147,7 @@ export class CreateClassPageComponent implements OnInit {
       );
       this.store.dispatch(
         createClass({
-          classDto: {
+          classForCreate: {
             classroomId: classroom,
             lectureDesc: description,
             lectureTitle: title,

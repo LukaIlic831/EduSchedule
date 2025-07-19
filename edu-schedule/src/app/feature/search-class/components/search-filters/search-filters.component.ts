@@ -26,8 +26,8 @@ import {
 export class SearchFiltersComponent implements OnInit {
   years = YEARS;
   subjects: Observable<Subject[]> = of([]);
-  selectedSubjectId: Observable<number | null> = of(null);
-  selectedYear: Observable<number | null> = of(null);
+  selectedSubjectId: Observable<number | null> = of(0);
+  selectedYear: Observable<number | null> = of(0);
   @Input() universityId!: number;
   @Input() studyProgramId!: number;
 

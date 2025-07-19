@@ -9,7 +9,6 @@ import { Classroom } from '../classrooms/classroom.entity';
 import { Professor } from '../professors/professor.entity';
 import { Subject } from '../subjects/subject.entity';
 import { University } from '../universities/university.entity';
-import { StudyProgram } from '../study-programs/study-program.entity';
 
 @Entity('classes')
 export class Class {

@@ -15,14 +15,15 @@ import { DeleteClassBlockComponent } from './components/delete-class-block/delet
   styleUrl: './dashboard-classes.component.scss',
 })
 export class DashboardClassesComponent implements OnInit {
-  @Input() professorId = 0;
+  @Input() professorId: number | null = null;
   professorClasses: Observable<ClassModel[]> = of([]);
   isDeleteClassBlockVisible = false;
   constructor(private store: Store) {}
   ngOnInit() {
-    this.store.dispatch(
-      loadProfessorClasses({ professorId: this.professorId })
-    );
+    this.professorId &&
+      this.store.dispatch(
+        loadProfessorClasses({ professorId: this.professorId })
+      );
     this.professorClasses = this.store.select(selectAllClasses);
   }
 

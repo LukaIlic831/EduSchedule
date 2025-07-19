@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { StudyProgramsService } from './study-programs.service';
 import { StudyProgram } from './study-program.entity';
 
@@ -7,21 +7,21 @@ export class StudyProgramsController {
   constructor(private readonly studyProgramsService: StudyProgramsService) {}
 
   @Get('university/year')
-  getStudyProgramsByUniversityIdAndYear(
+  getAllStudyProgramsByUniversityIdAndYear(
     @Query('universityId') universityId: number,
     @Query('year') year: number,
   ): Promise<StudyProgram[]> {
-    return this.studyProgramsService.getStudyProgramsByUniversityIdAndYear(
+    return this.studyProgramsService.getAllStudyProgramsByUniversityIdAndYear(
       universityId,
       year,
     );
   }
 
   @Get('university')
-  getStudyProgramsByUniversityId(
+  getAllStudyProgramsByUniversityId(
     @Query('universityId') universityId: number,
   ): Promise<StudyProgram[]> {
-    return this.studyProgramsService.getStudyProgramsByUniversityId(
+    return this.studyProgramsService.getAllStudyProgramsByUniversityId(
       universityId,
     );
   }

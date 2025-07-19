@@ -1,0 +1,28 @@
+<div class="dashboard__professor--info">
+  <div class="dashboard__professor--info-container">
+    <div class="dashboard__professor--info-title">
+      <h1>My profile</h1>
+    </div>
+    <button
+      class="dashboard__professor--info-sign-out"
+      (click)="handleSignOut()"
+    >
+      Sign out
+    </button>
+  </div>
+  <div class="dashboard__professor--info-field">
+    <p>
+      Email: <span>{{ currentUser.email }}</span>
+    </p>
+  </div>
+  <div class="dashboard__professor--info-field">
+    <p>
+      University: <span>{{ currentUser.university?.name }}</span>
+    </p>
+  </div>
+  <div class="dashboard__professor--info-field">
+    <p>
+      Title: <span>{{ currentUser.professor?.title }}</span>
+    </p>
+  </div>
+</div>

@@ -1,5 +1,4 @@
-
-export interface ClassDto {
+export interface CreateClassDto {
   lectureTitle: string;
   lectureDesc: string;
   startTime: string;

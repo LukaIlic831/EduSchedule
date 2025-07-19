@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Seat } from './seat.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { Student } from '../students/student.entity';
 import { Classroom } from '../classrooms/classroom.entity';
 import { createSeatDto } from './dto/create-seat.dto';
 import { SeatDto } from './dto/seat.dto';
+import { AppException } from 'src/app-exception/app-exception';
 
 @Injectable()
 export class SeatsService {
@@ -28,10 +29,10 @@ export class SeatsService {
       userId: userId,
     });
     if (!classroom) {
-      throw new NotFoundException('Classroom not found');
+      throw new AppException('Classroom not found', HttpStatus.NOT_FOUND);
     }
     if (!student) {
-      throw new NotFoundException('Student not found');
+      throw new AppException('Student not found', HttpStatus.NOT_FOUND);
     }
     const reservedSeat = this.seatRepository.create({
       classroom,
@@ -52,7 +53,7 @@ export class SeatsService {
   }
 
   async removeSeats(reservedSeatIds: number[]): Promise<void> {
-    console.log(reservedSeatIds);
-    await this.seatRepository.delete(reservedSeatIds);
+    reservedSeatIds.length > 0 &&
+      (await this.seatRepository.delete(reservedSeatIds));
   }
 }

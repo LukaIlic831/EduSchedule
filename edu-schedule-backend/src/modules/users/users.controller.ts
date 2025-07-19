@@ -6,7 +6,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) {}
   @Put(':userId/university')
-  async updateUniversity(
+  updateUserUniversity(
     @Param('userId') userId: number,
     @Body('universityId') universityId: number,
   ): Promise<University> {

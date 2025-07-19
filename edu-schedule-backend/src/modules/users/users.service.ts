@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { AppException } from 'src/app-exception/app-exception';
 import { University } from '../universities/university.entity';
+import { UserDto } from './dto/user.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -22,13 +23,13 @@ export class UsersService {
     return this.userRepository.findOne({ where: { username } });
   }
 
-  async findUserById(userId: number): Promise<Omit<User, 'password'>> {
+  async findUserById(userId: number): Promise<UserDto> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: ['university', 'professor', 'student', 'student.studyProgram'],
     });
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new AppException('User not found', HttpStatus.NOT_FOUND);
     }
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
@@ -57,8 +58,7 @@ export class UsersService {
       ...createUserDto,
       password: hashedPassword,
     });
-    await this.userRepository.save(user);
-    return user;
+    return this.userRepository.save(user);
   }
 
   async updateUserUniversity(
@@ -71,7 +71,7 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new AppException('User not found', HttpStatus.NOT_FOUND);
     }
 
     const university = await this.universityRepository.findOneBy({
@@ -79,7 +79,7 @@ export class UsersService {
     });
 
     if (!university) {
-      throw new NotFoundException('University not found');
+      throw new AppException('University not found', HttpStatus.NOT_FOUND);
     }
 
     user.university = university;
