@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment.development';
   providedIn: 'root',
 })
 export class SeatService {
-private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
   createSeat(seatForReservation: createSeatDto): Observable<Seat> {
@@ -20,8 +20,14 @@ private apiUrl = environment.apiUrl;
   }
 
   deleteReservedSeats(reservedSeatsIds: number[]): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/seats/delete`, {
+    return this.http.delete<void>(`${this.apiUrl}/seats/delete-seats`, {
       body: reservedSeatsIds,
+    });
+  }
+
+  cancelReservedSeat(seatId: number, classId: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/seats/delete`, {
+      params: { seatId, classId },
     });
   }
 }
