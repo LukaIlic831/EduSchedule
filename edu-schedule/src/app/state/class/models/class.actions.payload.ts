@@ -91,3 +91,10 @@ export interface CancelReservedSeatSuccessPayload {
   canceledSeatId: number;
 }
 
+export interface LoadClassesWithStudentReservedSeatPayload {
+  userId: number;
+  index: number;
+}
+export interface LoadClassesWithStudentReservedSeatSuccessPayload {
+  classes: ClassModel[];
+}

@@ -7,6 +7,7 @@ import {
   createClassSuccess,
   deleteProfessorClassSuccess,
   loadClassByClassIdSuccess,
+  LoadClassesWithStudentReservedSeatSuccess,
   loadProfessorClassesSuccess,
   loadUniveristyClassesSuccess,
   reserveSeatInClassSuccess,
@@ -96,5 +97,8 @@ export const classReducer = createReducer(
       ),
       availableSeats: state.selectedClass!.availableSeats + 1,
     },
-  }))
+  })),
+  on(LoadClassesWithStudentReservedSeatSuccess, (state, { classes }) =>
+    classAdapter.setAll(classes, { ...state })
+  )
 );

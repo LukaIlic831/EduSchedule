@@ -12,6 +12,8 @@ import {
   deleteProfessorClassSuccess,
   loadClassByClassId,
   loadClassByClassIdSuccess,
+  LoadClassesWithStudentReservedSeat,
+  LoadClassesWithStudentReservedSeatSuccess,
   loadProfessorClasses,
   loadProfessorClassesSuccess,
   loadUniveristyClasses,
@@ -93,6 +95,26 @@ export class ClassEffects {
           ),
           catchError((errorResponse) => this.errorHandling(errorResponse))
         )
+      )
+    )
+  );
+
+  LoadClassesWithStudentReservedSeat$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LoadClassesWithStudentReservedSeat),
+      switchMap(({ userId, index }) =>
+        this.classService
+          .getAllClassesWithStudentReservedSeat(userId, index)
+          .pipe(
+            map((studentClasses) =>
+              LoadClassesWithStudentReservedSeatSuccess({
+                classes: studentClasses.map((studentClass) =>
+                  this.handleFormatingDateAndTime(studentClass)
+                ),
+              })
+            ),
+            catchError((errorResponse) => this.errorHandling(errorResponse))
+          )
       )
     )
   );

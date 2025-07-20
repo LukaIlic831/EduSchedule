@@ -8,6 +8,8 @@ import {
   DeleteProfessorClassPayload,
   LoadClassByClassIdPayload,
   LoadClassByClassIdSuccessPayload,
+  LoadClassesWithStudentReservedSeatPayload,
+  LoadClassesWithStudentReservedSeatSuccessPayload,
   LoadProfessorClassesPayload,
   LoadProfessorClassesSuccessPayload,
   LoadUniversityClassesPayload,
@@ -110,4 +112,14 @@ export const cancelReservedSeat = createAction(
 export const cancelReservedSeatSuccess = createAction(
   '[Class] Cancel Reserved Seat Success',
   props<CancelReservedSeatSuccessPayload>()
+);
+
+export const LoadClassesWithStudentReservedSeat = createAction(
+  '[Class] Load Classes With Student Reserved Seat',
+  props<LoadClassesWithStudentReservedSeatPayload>()
+);
+
+export const LoadClassesWithStudentReservedSeatSuccess = createAction(
+  '[Class] Load Classes With Student Reserved Seat Success',
+  props<LoadClassesWithStudentReservedSeatSuccessPayload>()
 );
