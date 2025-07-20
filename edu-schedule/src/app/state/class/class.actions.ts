@@ -1,5 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import {
+  CancelReservedSeatPayload,
+  CancelReservedSeatSuccessPayload,
   ClassFailurePayload,
   CreateClassPayload,
   CreateClassSuccessPayload,
@@ -98,4 +100,14 @@ export const reserveSeatInClassSuccess = createAction(
 export const classFailure = createAction(
   '[Class] Class Failure',
   props<ClassFailurePayload>()
+);
+
+export const cancelReservedSeat = createAction(
+  '[Class] Cancel Reserved Seat',
+  props<CancelReservedSeatPayload>()
+);
+
+export const cancelReservedSeatSuccess = createAction(
+  '[Class] Cancel Reserved Seat Success',
+  props<CancelReservedSeatSuccessPayload>()
 );

@@ -3,6 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import {
+  cancelReservedSeat,
+  cancelReservedSeatSuccess,
   classFailure,
   createClass,
   createClassSuccess,
@@ -181,6 +183,39 @@ export class ClassEffects {
             verticalPosition: 'top',
             panelClass: ['snackbar-success'],
           });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  cancelReservedSeat$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(cancelReservedSeat),
+      switchMap(({ seatId, classId }) =>
+        this.seatService.cancelReservedSeat(seatId, classId).pipe(
+          map((canceledSeatId) =>
+            cancelReservedSeatSuccess({ canceledSeatId })
+          ),
+          catchError((errorResponse) => this.errorHandling(errorResponse))
+        )
+      )
+    )
+  );
+
+  cancelReservedSeatSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(cancelReservedSeatSuccess),
+        tap(() => {
+          this._snackBar.open(
+            'Reserved seat canceled successfully!',
+            'Dismiss',
+            {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['snackbar-success'],
+            }
+          );
         })
       ),
     { dispatch: false }

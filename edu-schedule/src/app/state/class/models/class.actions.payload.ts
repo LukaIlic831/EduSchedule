@@ -81,3 +81,13 @@ export interface ReserveSeatInClassSuccessPayload {
 export interface ClassFailurePayload {
   error: { status: number; message: string };
 }
+
+export interface CancelReservedSeatPayload {
+  seatId: number;
+  classId: number;
+}
+
+export interface CancelReservedSeatSuccessPayload {
+  canceledSeatId: number;
+}
+

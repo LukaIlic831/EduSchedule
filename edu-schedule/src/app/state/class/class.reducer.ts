@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ClassModel } from './models/class.model';
 import {
+  cancelReservedSeatSuccess,
   classFailure,
   createClassSuccess,
   deleteProfessorClassSuccess,
@@ -84,6 +85,16 @@ export const classReducer = createReducer(
       ...state.selectedClass!,
       reservedSeats: [...state.selectedClass?.reservedSeats!, reservedSeat],
       availableSeats: state.selectedClass?.availableSeats! - 1,
+    },
+  })),
+  on(cancelReservedSeatSuccess, (state, { canceledSeatId }) => ({
+    ...state,
+    selectedClass: {
+      ...state.selectedClass!,
+      reservedSeats: state.selectedClass!.reservedSeats.filter(
+        (seat) => seat.id !== canceledSeatId
+      ),
+      availableSeats: state.selectedClass!.availableSeats + 1,
     },
   }))
 );
