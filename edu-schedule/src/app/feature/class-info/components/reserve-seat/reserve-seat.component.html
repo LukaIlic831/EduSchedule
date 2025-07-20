@@ -14,7 +14,7 @@
     </div>
   </div>
   <app-reserve-legend />
-  <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit($event)">
     <div class="class-reserve__wrapper">
       <div
         class="class-reserve__seats"
@@ -32,7 +32,7 @@
           [class.blocked]="isThisClassReservedByThisUser() || isProfessor"
           (click)="selectSeat(seat)"
         >
-          <p>{{ seat.seatNumber }}</p>
+          <p>{{ seat.numberOfSeat }}</p>
         </div>
       </div>
     </div>
@@ -42,12 +42,22 @@
         <div class="class-reserve__stage--stand"></div>
       </div>
     </div>
-    <div
-      class="class-reserve__button"
-      *ngIf="!isThisClassReservedByThisUser() && !isProfessor"
-    >
-      <button class="class-reserve__button--confirm" type="submit">
+    <div class="class-reserve__button" *ngIf="!isProfessor">
+      <button
+        class="class-reserve__button--confirm"
+        type="submit"
+        value="confirm"
+        *ngIf="!isThisClassReservedByThisUser()"
+      >
         Confirm
+      </button>
+      <button
+        class="class-reserve__button--cancel"
+        type="submit"
+        value="cancel"
+        *ngIf="isThisClassReservedByThisUser()"
+      >
+        Cancel Your Seat
       </button>
     </div>
   </form>

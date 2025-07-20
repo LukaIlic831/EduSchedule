@@ -114,6 +114,16 @@
       max-width: 200px;
       @include button-style();
     }
+    &--cancel {
+      max-width: 200px;
+      @include button-style();
+      background-color: red !important;
+      border-color: red !important;
+      &:hover {
+        color: red !important;
+        background-color: transparent !important;
+      }
+    }
   }
 
   &__legend {

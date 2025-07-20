@@ -6,16 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Student } from '../../../../state/auth/models/student.model';
 import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
-import { reserveSeatInClass } from '../../../../state/class/class.actions';
+import {
+  cancelReservedSeat,
+  reserveSeatInClass,
+} from '../../../../state/class/class.actions';
 import { selectSelectedClass } from '../../../../state/class/class.selectors';
 import { ReserveLegendComponent } from './reserve-legend/reserve-legend.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-interface DisplaySeat {
-  seatNumber: number;
-  status: 'selected' | 'reserved' | 'available';
-  studentIndex: number | null;
-}
 
 @Component({
   selector: 'app-reserve-seat',
@@ -25,9 +22,9 @@ interface DisplaySeat {
 })
 export class ReserveSeatComponent implements OnInit {
   reserveSeatForm: FormGroup;
-  firstGroupOfSeats: DisplaySeat[] = [];
-  secondGroupOfSeats: DisplaySeat[] = [];
-  numberOfGroups: DisplaySeat[][] = [];
+  firstGroupOfSeats: Seat[] = [];
+  secondGroupOfSeats: Seat[] = [];
+  numberOfGroups: Seat[][] = [];
   selectedClass: ClassModel | null = null;
   @Input() isProfessor!: boolean;
   @Input() currentStudent: Student | null = null;
@@ -57,7 +54,7 @@ export class ReserveSeatComponent implements OnInit {
         (num, index) =>
           (this.firstGroupOfSeats[index] = {
             ...this.firstGroupOfSeats[index],
-            seatNumber: num.seatNumber - 6,
+            numberOfSeat: num.numberOfSeat - 6,
           })
       );
     }
@@ -77,27 +74,27 @@ export class ReserveSeatComponent implements OnInit {
       ));
   }
 
-  setSeatsStatusAndIndex(
-    GroupOfSeats: DisplaySeat[],
-    reservedSeats: Seat[]
-  ): DisplaySeat[] {
+  setSeatsStatusAndIndex(GroupOfSeats: Seat[], reservedSeats: Seat[]): Seat[] {
     return GroupOfSeats.map((seat) => ({
       ...seat,
-      status: reservedSeats!.find((s) => s.numberOfSeat == seat.seatNumber)
+      id:
+        reservedSeats!.find((s) => s.numberOfSeat === seat.numberOfSeat)?.id ??
+        0,
+      status: reservedSeats!.find((s) => s.numberOfSeat === seat.numberOfSeat)
         ? 'reserved'
         : 'available',
       studentIndex:
-        reservedSeats!.find((s) => s.numberOfSeat == seat.seatNumber)
+        reservedSeats!.find((s) => s.numberOfSeat === seat.numberOfSeat)
           ?.studentIndex ?? 0,
     }));
   }
 
-  selectSeat(selectedSeat: DisplaySeat) {
-    this.reserveSeatForm.patchValue({ seatNumber: selectedSeat.seatNumber });
+  selectSeat(selectedSeat: Seat) {
+    this.reserveSeatForm.patchValue({ seatNumber: selectedSeat.numberOfSeat });
     this.numberOfGroups = this.numberOfGroups.map((group) =>
       group.map((seat) => {
         if (seat.status === 'reserved') return seat;
-        if (seat.seatNumber === selectedSeat.seatNumber) {
+        if (seat.numberOfSeat === selectedSeat.numberOfSeat) {
           return { ...seat, status: 'selected' };
         }
 
@@ -106,7 +103,16 @@ export class ReserveSeatComponent implements OnInit {
     );
   }
 
-  onSubmit() {
+  onSubmit(event: SubmitEvent): void {
+    const clickedButton = event.submitter as HTMLButtonElement;
+    const buttonAction = clickedButton.value;
+
+    buttonAction === 'confirm'
+      ? this.confirmSeatReservation()
+      : this.cancelYourSeatReservation();
+  }
+
+  confirmSeatReservation() {
     if (this.reserveSeatForm.valid) {
       const { seatNumber } = this.reserveSeatForm.value;
       this.store.dispatch(
@@ -123,7 +129,21 @@ export class ReserveSeatComponent implements OnInit {
     }
   }
 
-  isThisClassReservedByThisUser(): DisplaySeat | undefined {
+  cancelYourSeatReservation() {
+    const reservedSeat = this.findCurrentStudentReservedSeat();
+    this.store.dispatch(
+      cancelReservedSeat({
+        seatId: reservedSeat?.id!,
+        classId: this.selectedClass?.id!,
+      })
+    );
+  }
+
+  isThisClassReservedByThisUser(): boolean {
+    return !!this.findCurrentStudentReservedSeat();
+  }
+
+  findCurrentStudentReservedSeat(): Seat | undefined {
     return this.numberOfGroups
       .flat()
       .find((seat) => seat.studentIndex === this.currentStudent?.index);
@@ -141,8 +161,8 @@ export class ReserveSeatComponent implements OnInit {
     rows: number,
     columns: number,
     startSeatNumber: number
-  ): DisplaySeat[] {
-    const seatNumbers: DisplaySeat[] = [];
+  ): Seat[] {
+    const seatNumbers: Seat[] = [];
     let offset = 24;
 
     for (let row = rows - 1; row >= 0; row--) {
@@ -150,9 +170,10 @@ export class ReserveSeatComponent implements OnInit {
         let seatNumber = row * columns + col + startSeatNumber;
         if (startSeatNumber !== 1) seatNumber += offset;
         seatNumbers.push({
-          seatNumber,
+          id: 0,
+          numberOfSeat: seatNumber,
           status: 'available',
-          studentIndex: null,
+          studentIndex: 0,
         });
       }
       offset -= 6;
