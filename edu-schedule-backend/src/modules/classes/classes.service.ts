@@ -217,6 +217,43 @@ export class ClassesService {
     return this.findByClassId(newClass.id);
   }
 
+  async getAllClassesWithStudentReservedSeat(
+    userId: number,
+    index: number,
+  ): Promise<ClassDto[]> {
+    const classes = await this.classRepository.find({
+      where: {
+        reservedSeats: {
+          student: {
+            index,
+            userId,
+          },
+        },
+      },
+      relations: [
+        'reservedSeats',
+        'reservedSeats.student',
+        'subject.studyProgram',
+        'professor.user',
+        'university',
+        'classroom',
+      ],
+    });
+    return classes.map((cls) => ({
+      ...cls,
+      professor: {
+        id: cls.professor.id,
+        title: cls.professor.title,
+        username: cls.professor.user.username,
+      },
+      reservedSeats: cls.reservedSeats.map((seat) => ({
+        id: seat.id,
+        numberOfSeat: seat.numberOfSeat,
+        studentIndex: seat.student.index,
+      })),
+    }));
+  }
+
   async findOverlapingClasses(
     classroomId: number,
     newEndTime: Date,

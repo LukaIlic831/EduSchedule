@@ -39,4 +39,15 @@ export class ClassesController {
   getClassById(@Query('classId') classId: number): Promise<ClassDto> {
     return this.classesService.findByClassId(classId);
   }
+
+  @Get('student-reserved')
+  getAllClassesWithStudentReservedSeat(
+    @Query('userId') userId: number,
+    @Query('index') index: number,
+  ): Promise<ClassDto[]> {
+    return this.classesService.getAllClassesWithStudentReservedSeat(
+      userId,
+      index,
+    );
+  }
 }
