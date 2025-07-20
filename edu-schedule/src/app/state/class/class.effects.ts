@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { of, zip } from 'rxjs';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import {
   classFailure,
   createClass,
@@ -118,11 +118,9 @@ export class ClassEffects {
   deleteProfessorClass$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteProfessorClass),
-      switchMap(({ classId, reservedSeatsIds }) =>
-        zip(
-          this.classService.deleteProfessorClass(classId),
-          this.seatService.deleteReservedSeats(reservedSeatsIds)
-        ).pipe(
+      concatMap(({ classId, reservedSeatsIds }) =>
+        this.seatService.deleteReservedSeats(reservedSeatsIds).pipe(
+          concatMap(() => this.classService.deleteProfessorClass(classId)),
           map(() => deleteProfessorClassSuccess()),
           catchError((errorResponse) => this.errorHandling(errorResponse))
         )
