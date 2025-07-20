@@ -7,10 +7,16 @@ import { Observable, of } from 'rxjs';
 import { ClassModel } from '../../../../state/class/models/class.model';
 import { CommonModule } from '@angular/common';
 import { DeleteClassBlockComponent } from './components/delete-class-block/delete-class-block.component';
+import { NoClassesComponent } from '../../../../shared/components/no-classes/no-classes.component';
 
 @Component({
   selector: 'app-dashboard-classes',
-  imports: [ClassComponent, CommonModule, DeleteClassBlockComponent],
+  imports: [
+    ClassComponent,
+    CommonModule,
+    DeleteClassBlockComponent,
+    NoClassesComponent,
+  ],
   templateUrl: './dashboard-classes.component.html',
   styleUrl: './dashboard-classes.component.scss',
 })

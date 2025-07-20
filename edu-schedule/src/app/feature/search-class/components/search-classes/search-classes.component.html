@@ -10,8 +10,6 @@
       *ngFor="let universityClass of classes"
       [loadedClass]="universityClass"
     />
-    <div *ngIf="classes.length === 0">
-      <p>No classes found.</p>
-    </div>
+    <app-no-classes *ngIf="classes.length === 0" />
   </div>
 </div>

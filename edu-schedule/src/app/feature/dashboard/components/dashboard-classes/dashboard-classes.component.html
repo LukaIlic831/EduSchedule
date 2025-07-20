@@ -12,9 +12,7 @@
       (handleClassDeleteClick)="handleOnClickClassDelete()"
       [canBeDeleted]="true"
     />
-    <div *ngIf="classes.length === 0">
-      <p>No classes found.</p>
-    </div>
+    <app-no-classes *ngIf="classes.length === 0" />
   </div>
 </div>
 <app-delete-class-block
