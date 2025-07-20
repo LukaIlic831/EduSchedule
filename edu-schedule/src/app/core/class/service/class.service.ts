@@ -30,20 +30,20 @@ export class ClassService {
     return this.http.get<ClassModel[]>(
       `${this.apiUrl}/classes/university/study-program`,
       {
-        params: { universityId: universityId, studyProgramId: studyProgramId },
+        params: { universityId, studyProgramId },
       }
     );
   }
 
   deleteProfessorClass(classId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/classes/delete`, {
-      params: { classId: classId },
+      params: { classId },
     });
   }
 
   getClass(classId: number): Observable<ClassModel> {
     return this.http.get<ClassModel>(`${this.apiUrl}/classes/class`, {
-      params: { classId: classId },
+      params: { classId },
     });
   }
 }

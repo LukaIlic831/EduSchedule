@@ -11,7 +11,7 @@ import { environment } from '../../../../environments/environment.development';
   providedIn: 'root',
 })
 export class EducationDataServiceService {
-private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
   getAllUniversities(): Observable<University[]> {
     return this.http.get<University[]>(this.apiUrl + '/universities');
@@ -23,7 +23,7 @@ private apiUrl = environment.apiUrl;
     return this.http.get<StudyProgram[]>(
       `${this.apiUrl}/study-programs/university/year`,
       {
-        params: { universityId: universityId, year: selectedYear },
+        params: { universityId, year: selectedYear },
       }
     );
   }
@@ -33,7 +33,7 @@ private apiUrl = environment.apiUrl;
     return this.http.get<StudyProgram[]>(
       `${this.apiUrl}/study-programs/university`,
       {
-        params: { universityId: universityId },
+        params: { universityId },
       }
     );
   }
@@ -42,7 +42,7 @@ private apiUrl = environment.apiUrl;
     studyProgramId: number
   ): Observable<Subject[]> {
     return this.http.get<Subject[]>(`${this.apiUrl}/subjects/study-program`, {
-      params: { studyProgramId: studyProgramId },
+      params: { studyProgramId },
     });
   }
 
@@ -50,7 +50,7 @@ private apiUrl = environment.apiUrl;
     universityId: number
   ): Observable<Classroom[]> {
     return this.http.get<Classroom[]>(`${this.apiUrl}/classrooms/university`, {
-      params: { universityId: universityId },
+      params: { universityId },
     });
   }
 
@@ -61,7 +61,7 @@ private apiUrl = environment.apiUrl;
     return this.http.get<Subject[]>(
       `${this.apiUrl}/subjects/university/study-program`,
       {
-        params: { universityId: universityId, studyProgramId: studyProgramId },
+        params: { universityId, studyProgramId },
       }
     );
   }
