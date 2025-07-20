@@ -35,6 +35,18 @@ export class ClassService {
     );
   }
 
+  getAllClassesWithStudentReservedSeat(
+    userId: number,
+    index: number
+  ): Observable<ClassModel[]> {
+    return this.http.get<ClassModel[]>(
+      `${this.apiUrl}/classes/student-reserved`,
+      {
+        params: { userId, index },
+      }
+    );
+  }
+
   deleteProfessorClass(classId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/classes/delete`, {
       params: { classId },

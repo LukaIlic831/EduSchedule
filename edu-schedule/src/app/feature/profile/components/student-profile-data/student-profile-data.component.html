@@ -1,0 +1,43 @@
+<div class="student-profile__data--info">
+  <div class="student-profile__data--info-container">
+    <div class="student-profile__data--info-title">
+      <h1>My profile</h1>
+    </div>
+    <button
+      class="student-profile__data--info-sign-out"
+      (click)="handleSignOut()"
+    >
+      Sign out
+    </button>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      Username: <span>{{ currentUser.username }}</span>
+    </p>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      Email: <span>{{ currentUser.email }}</span>
+    </p>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      University: <span>{{ currentUser.university?.name }}</span>
+    </p>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      Study Program: <span>{{ currentUser.student?.studyProgram?.name }}</span>
+    </p>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      Index: <span>{{ currentUser.student?.index }}</span>
+    </p>
+  </div>
+  <div class="student-profile__data--info-field">
+    <p>
+      Year: <span>{{ currentUser.student?.year }}</span>
+    </p>
+  </div>
+</div>

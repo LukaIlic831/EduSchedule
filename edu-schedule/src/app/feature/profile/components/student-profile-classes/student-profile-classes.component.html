@@ -1,0 +1,14 @@
+<div class="student-profile__classes">
+  <div class="student-profile__classes--title">
+    <h1>Classes with my reserved seat</h1>
+  </div>
+  <div
+    class="student-profile__classes--wrapper"
+    *ngIf="studentClasses | async as classes"
+  >
+    <app-class
+      *ngFor="let studentClass of classes"
+      [loadedClass]="studentClass"
+    />
+  </div>
+</div>
