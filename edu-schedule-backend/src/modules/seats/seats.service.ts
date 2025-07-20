@@ -60,8 +60,24 @@ export class SeatsService {
     };
   }
 
-  async removeSeats(reservedSeatIds: number[]): Promise<void> {
+  async deleteClassSeats(reservedSeatIds: number[]): Promise<void> {
     reservedSeatIds.length > 0 &&
       (await this.seatRepository.delete(reservedSeatIds));
+  }
+
+  async deleteSeat(seatId: number, classId: number): Promise<number> {
+    const foundClass = await this.ClassRepository.findOneBy({
+      id: classId,
+    });
+    if (!foundClass) {
+      throw new AppException('Class not found', HttpStatus.NOT_FOUND);
+    }
+    await this.seatRepository.delete(seatId);
+    await this.ClassRepository.increment(
+      { id: foundClass.id },
+      'availableSeats',
+      1,
+    );
+    return seatId;
   }
 }
