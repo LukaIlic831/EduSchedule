@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../../../state/auth/models/user.model';
 import { SignInUserDto } from '../../../dto/auth/sign-in-user.dto';
 import { AuthSuccessDto } from '../../../dto/auth/auth-success.dto';
 import { SignUpUserDto } from '../../../dto/auth/sign-up-user.dto';
 import { environment } from '../../../../environments/environment.development';
+import { authUser } from '../../../dto/auth/user.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +34,8 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.http.get<User>(this.apiUrl + '/auth/user', {
+  getCurrentUser(): Observable<authUser> {
+    return this.http.get<authUser>(this.apiUrl + '/auth/user', {
       withCredentials: true,
     });
   }

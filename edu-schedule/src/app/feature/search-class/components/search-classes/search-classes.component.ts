@@ -4,9 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { ClassModel } from '../../../../state/class/models/class.model';
 import { loadUniveristyClasses } from '../../../../state/class/class.actions';
-import {
-  selectFilteredClasses,
-} from '../../../../state/class/class.selectors';
+import { selectFilteredClasses } from '../../../../state/class/class.selectors';
 import { CommonModule } from '@angular/common';
 import { NoClassesComponent } from '../../../../shared/components/no-classes/no-classes.component';
 
