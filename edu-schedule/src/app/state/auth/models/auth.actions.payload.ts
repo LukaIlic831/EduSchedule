@@ -24,6 +24,7 @@ export interface SignUpSuccessPayload extends SignInSuccessPayload {}
 
 export interface LoadUserSuccessPayload {
   user: User;
+  token:string;
 }
 
 export interface UpdateUserAndCreateProfessorPayload {

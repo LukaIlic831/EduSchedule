@@ -14,9 +14,8 @@ import {
   updateUserAndCreateProfessorSuccess,
   updateUserAndCreateStudent,
   updateUserAndCreateStudentSuccess,
-  updateUserFailure,
 } from './auth.actions';
-import { catchError, filter, map, of, switchMap, take, tap, zip } from 'rxjs';
+import { catchError, filter, map, of, switchMap, tap, zip } from 'rxjs';
 import { AuthService } from '../../core/auth/service/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -79,7 +78,9 @@ export class AuthEffects {
       ofType(loadUser),
       switchMap(() =>
         this.authService.getCurrentUser().pipe(
-          map((user) => loadUserSuccess({ user })),
+          map((response) =>
+            loadUserSuccess({ user: response.user, token: response.token })
+          ),
           catchError((errorResponse) => this.errorHandling(errorResponse))
         )
       )
@@ -91,6 +92,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(authFailure),
         tap(({ error }) => {
+          error.status === 401 && this.router.navigate(['/sign-in']);
           this._snackBar.open(error!.message, 'Dismiss', {
             duration: 5000,
             verticalPosition: 'top',
@@ -137,24 +139,6 @@ export class AuthEffects {
         })
       ),
     { dispatch: false }
-  );
-
-  afterAuthLoadUser$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(signUpSuccess, signInSuccess),
-      filter(({ token }) => !!token),
-      map(() => loadUser())
-    )
-  );
-
-  afterUserInfoUpdate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        updateUserAndCreateStudentSuccess,
-        updateUserAndCreateProfessorSuccess
-      ),
-      map(() => loadUser())
-    )
   );
 
   signOut$ = createEffect(() =>
@@ -246,22 +230,6 @@ export class AuthEffects {
             panelClass: ['snackbar-success'],
           });
           this.router.navigate(['/professor-dashboard']);
-        })
-      ),
-    { dispatch: false }
-  );
-
-  updateUserFailure$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(updateUserFailure),
-        filter(({ error }) => !!error && error.status !== 404),
-        tap(({ error }) => {
-          this._snackBar.open(error!.message, 'Dismiss', {
-            duration: 5000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
         })
       ),
     { dispatch: false }

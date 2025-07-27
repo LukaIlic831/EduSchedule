@@ -60,8 +60,3 @@ export const updateUserAndCreateStudentSuccess = createAction(
   '[Auth] Update User And Create Student Success',
   props<UpdateUserAndCreateStudentSuccessPayload>()
 );
-
-export const updateUserFailure = createAction(
-  '[Auth] Update User Failure',
-  props<{ error: { status: number; message: string } }>()
-);
