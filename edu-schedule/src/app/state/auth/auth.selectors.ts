@@ -15,7 +15,7 @@ export const selectAuthToken = createSelector(
   (state) => state.token
 );
 
-export const selectAuthRole = createSelector(
+export const selectAuthUserRole = createSelector(
   selectAuthState,
   (state) => state.role
 );
@@ -65,4 +65,9 @@ export const selectAuthUserUniversityId = createSelector(
 export const selectAuthUser = createSelector(
   selectAuthState,
   (state) => state.user ?? null
+);
+
+export const selectAuthLoading = createSelector(
+  selectAuthState,
+  (state) => state.loading
 );

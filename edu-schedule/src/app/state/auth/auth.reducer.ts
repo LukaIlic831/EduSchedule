@@ -1,13 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
 import {
   authFailure,
+  loadUser,
   loadUserSuccess,
   signInSuccess,
   signOutSuccess,
   signUpSuccess,
   updateUserAndCreateProfessorSuccess,
   updateUserAndCreateStudentSuccess,
-  updateUserFailure,
 } from './auth.actions';
 import { User } from './models/user.model';
 
@@ -16,6 +16,7 @@ export interface AuthState {
   role: string;
   error: { status: number; message: string } | null;
   user: User | null;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
@@ -23,15 +24,21 @@ const initialState: AuthState = {
   role: '',
   error: null,
   user: null,
+  loading: false,
 };
 
 export const authReducer = createReducer(
   initialState,
   on(signInSuccess, (state, { token, role }) => ({ ...state, token, role })),
   on(authFailure, (state, { error }) => ({ ...state, error })),
-  on(updateUserFailure, (state, { error }) => ({ ...state, error })),
   on(signUpSuccess, (state, { token, role }) => ({ ...state, token, role })),
-  on(loadUserSuccess, (state, { user }) => ({ ...state, user })),
+  on(loadUser, (state) => ({ ...state, loading: true })),
+  on(loadUserSuccess, (state, { user, token }) => ({
+    ...state,
+    user,
+    token,
+    loading: false,
+  })),
   on(signOutSuccess, () => initialState),
   on(
     updateUserAndCreateProfessorSuccess,
