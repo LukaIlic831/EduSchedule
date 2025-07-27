@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   educationDataFailure,
@@ -17,16 +17,16 @@ import {
 } from './education-data.actions';
 import { EducationDataServiceService } from '../../core/education-data/service/education-data-service.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../../shared/services/snackbar.service';
 
 @Injectable()
 export class EducationDataEffects {
   constructor(
     private actions$: Actions,
-    private educationDataService: EducationDataServiceService
+    private educationDataService: EducationDataServiceService,
+    private snackbarService: SnackbarService
   ) {}
-  private _snackBar = inject(MatSnackBar);
   loadAllUniversities$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAllUniversities),
@@ -132,6 +132,9 @@ export class EducationDataEffects {
           .pipe(
             map((classrooms) =>
               loadAllClassroomsByUniversityIdSuccess({ classrooms })
+            ),
+            catchError((errorResponse: HttpErrorResponse) =>
+              this.errorHandling(errorResponse)
             )
           )
       )
@@ -143,11 +146,7 @@ export class EducationDataEffects {
       this.actions$.pipe(
         ofType(educationDataFailure),
         tap(({ error }) => {
-          this._snackBar.open(error!.message, 'Dismiss', {
-            duration: 5000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.snackbarService.showError(error!.message);
         })
       ),
     { dispatch: false }

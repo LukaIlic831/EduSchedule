@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   authFailure,
@@ -18,20 +18,20 @@ import {
 import { catchError, filter, map, of, switchMap, tap, zip } from 'rxjs';
 import { AuthService } from '../../core/auth/service/auth.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../../core/user/service/user.service';
 import { UserInfoService } from '../../feature/user-info/services/user-info.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../../shared/services/snackbar.service';
 
 @Injectable()
 export class AuthEffects {
-  private _snackBar = inject(MatSnackBar);
   constructor(
     private actions$: Actions,
     private authService: AuthService,
     private userService: UserService,
     private userInfoService: UserInfoService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackbarService
   ) {}
   signIn$ = createEffect(() =>
     this.actions$.pipe(
@@ -93,11 +93,7 @@ export class AuthEffects {
         ofType(authFailure),
         tap(({ error }) => {
           error.status === 401 && this.router.navigate(['/sign-in']);
-          this._snackBar.open(error!.message, 'Dismiss', {
-            duration: 5000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.snackbarService.showError(error!.message);
         })
       ),
     { dispatch: false }
@@ -109,11 +105,7 @@ export class AuthEffects {
         ofType(signUpSuccess),
         filter(({ token }) => !!token),
         tap(({ role }) => {
-          this._snackBar.open('Signup successful!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Sign up successful!');
           this.router.navigate([
             role === 'S' ? '/student-info' : '/professor-info',
           ]);
@@ -128,11 +120,7 @@ export class AuthEffects {
         ofType(signInSuccess),
         filter(({ token }) => !!token),
         tap(({ role }) => {
-          this._snackBar.open('Signin successful!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Sign in successful!');
           this.router.navigate([
             role === 'S' ? '/student-info' : '/professor-info',
           ]);
@@ -159,11 +147,7 @@ export class AuthEffects {
         ofType(signOutSuccess),
         tap(() => {
           this.router.navigate(['/sign-in']);
-          this._snackBar.open('Signed out successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Sign out successfully!');
         })
       ),
     { dispatch: false }
@@ -208,11 +192,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(updateUserAndCreateStudentSuccess),
         tap(() => {
-          this._snackBar.open('Data saved successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Data saved successfully!');
           this.router.navigate(['/search']);
         })
       ),
@@ -224,11 +204,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(updateUserAndCreateProfessorSuccess),
         tap(() => {
-          this._snackBar.open('Data saved successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Data saved successfully!');
           this.router.navigate(['/professor-dashboard']);
         })
       ),

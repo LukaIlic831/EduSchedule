@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
-import { filter, Observable, of, take, tap } from 'rxjs';
+import { filter, Observable, of, take } from 'rxjs';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
 import {
   loadAllClassroomsByUniversityId,

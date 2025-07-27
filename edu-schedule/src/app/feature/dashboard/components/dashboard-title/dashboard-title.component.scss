@@ -1,0 +1,15 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.dashboard {
+  &__title {
+    text-align: center;
+    @include nav-style();
+
+    h1 {
+      font-weight: bold;
+      color: $primary-text;
+      margin: 0px;
+    }
+  }
+}

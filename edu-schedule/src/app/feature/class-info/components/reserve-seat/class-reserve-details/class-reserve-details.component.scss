@@ -1,0 +1,19 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.class-reserve {
+  @include sub-title();
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__available-seats {
+    p {
+      font-size: 18px;
+    }
+  }
+}

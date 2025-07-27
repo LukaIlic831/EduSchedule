@@ -1,12 +1,8 @@
 <div *ngIf="user | async as currentUser">
-  <div class="dashboard__title">
-    <h1>Welcome {{ currentUser.username }}!</h1>
-  </div>
+  <app-dashboard-title [username]="currentUser.username" />
   <div class="main__wrapper">
     <app-professor-info-details [currentUser]="currentUser" />
     <app-dashboard-classes [professorId]="currentUser.professor?.id ?? null" />
-    <div class="dashboard__create-class">
-      <button routerLink="/create-class">Create Class</button>
-    </div>
+    <app-dashboard-submit-button />
   </div>
 </div>

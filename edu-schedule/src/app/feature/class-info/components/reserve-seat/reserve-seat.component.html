@@ -1,18 +1,8 @@
 <div class="class-reserve">
-  <div class="class-reserve__title">
-    <h1>{{ isProfessor ? "All seats" : "Reserve your seat" }}</h1>
-  </div>
-  <div class="class-reserve-header">
-    <div class="class-reserve__sub-title">
-      <p>Classroom: {{ selectedClass?.classroom?.name! }}</p>
-    </div>
-    <div class="class-reserve__available-seats">
-      <p>
-        {{ selectedClass?.availableSeats! }} /
-        {{ selectedClass?.classroom?.numberOfSeats! }}
-      </p>
-    </div>
-  </div>
+  <app-class-reserve-details
+    [isProfessor]="isProfessor"
+    [selectedClass]="selectedClass!"
+  />
   <app-reserve-legend />
   <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit($event)">
     <div class="class-reserve__wrapper">

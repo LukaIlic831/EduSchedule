@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -23,19 +23,19 @@ import {
 } from './class.actions';
 import { ClassService } from '../../core/class/service/class.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClassModel } from './models/class.model';
 import { SeatService } from '../../core/seat/service/seat.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SnackbarService } from '../../shared/services/snackbar.service';
 
 @Injectable()
 export class ClassEffects {
-  private _snackBar = inject(MatSnackBar);
   constructor(
     private actions$: Actions,
     private classService: ClassService,
     private seatService: SeatService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackbarService
   ) {}
 
   createClass$ = createEffect(() =>
@@ -55,11 +55,7 @@ export class ClassEffects {
       this.actions$.pipe(
         ofType(createClassSuccess),
         tap(() => {
-          this._snackBar.open('Class created successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Class created successfully!');
           this.router.navigate(['/professor-dashboard']);
         })
       ),
@@ -71,11 +67,7 @@ export class ClassEffects {
       this.actions$.pipe(
         ofType(classFailure),
         tap(({ error }) => {
-          this._snackBar.open(error!.message, 'Dismiss', {
-            duration: 5000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-error'],
-          });
+          this.snackbarService.showError(error!.message);
         })
       ),
     { dispatch: false }
@@ -173,11 +165,7 @@ export class ClassEffects {
       this.actions$.pipe(
         ofType(deleteProfessorClassSuccess),
         tap(() => {
-          this._snackBar.open('Class deleted successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Class deleted successfully!');
         })
       ),
     { dispatch: false }
@@ -200,11 +188,7 @@ export class ClassEffects {
       this.actions$.pipe(
         ofType(reserveSeatInClassSuccess),
         tap(() => {
-          this._snackBar.open('Seat reserved successfully!', 'Dismiss', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
+          this.snackbarService.showSuccess('Seat reserved successfully!');
         })
       ),
     { dispatch: false }
@@ -229,14 +213,8 @@ export class ClassEffects {
       this.actions$.pipe(
         ofType(cancelReservedSeatSuccess),
         tap(() => {
-          this._snackBar.open(
-            'Reserved seat canceled successfully!',
-            'Dismiss',
-            {
-              duration: 3000,
-              verticalPosition: 'top',
-              panelClass: ['snackbar-success'],
-            }
+          this.snackbarService.showSuccess(
+            'Reserved seat canceled successfully!'
           );
         })
       ),

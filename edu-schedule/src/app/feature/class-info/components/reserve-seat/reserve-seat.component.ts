@@ -13,10 +13,16 @@ import {
 import { selectSelectedClass } from '../../../../state/class/class.selectors';
 import { ReserveLegendComponent } from './reserve-legend/reserve-legend.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ClassReserveDetailsComponent } from './class-reserve-details/class-reserve-details.component';
 
 @Component({
   selector: 'app-reserve-seat',
-  imports: [CommonModule, ReactiveFormsModule, ReserveLegendComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ReserveLegendComponent,
+    ClassReserveDetailsComponent,
+  ],
   templateUrl: './reserve-seat.component.html',
   styleUrl: './reserve-seat.component.scss',
 })
