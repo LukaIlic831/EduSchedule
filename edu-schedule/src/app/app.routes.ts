@@ -8,19 +8,57 @@ import { CreateClassPageComponent } from './feature/create-class/pages/create-cl
 import { SearchClassPageComponent } from './feature/search-class/pages/search-class-page/search-class-page.component';
 import { StudentProfilePageComponent } from './feature/profile/pages/student-profile-page/student-profile-page.component';
 import { ClassInfoPageComponent } from './feature/class-info/pages/class-info-page/class-info-page.component';
+import { authGuard } from './guards/auth/auth.guard';
+import { professorGuard } from './guards/professor/professor.guard';
+import { studentGuard } from './guards/student/student.guard';
+import { infoGuard } from './guards/info-guard/info.guard';
+import { authPageGuard } from './guards/auth-page/auth-page.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
   {
     path: 'sign-in',
     component: SignInPageComponent,
+    canActivate: [authPageGuard],
   },
-  { path: 'sign-up', component: SignUpPageComponent },
-  { path: 'professor-info', component: ProfessorInfoPageComponent },
-  { path: 'student-info', component: StudentInfoPageComponent },
-  { path: 'professor-dashboard', component: ProfessorDashboardPageComponent },
-  { path: 'create-class', component: CreateClassPageComponent },
-  { path: 'search', component: SearchClassPageComponent },
-  { path: 'student-profile', component: StudentProfilePageComponent },
-  { path: 'class-info/:id', component: ClassInfoPageComponent },
+  {
+    path: 'sign-up',
+    component: SignUpPageComponent,
+    canActivate: [authPageGuard],
+  },
+  {
+    path: 'professor-info',
+    component: ProfessorInfoPageComponent,
+    canActivate: [authGuard, infoGuard],
+  },
+  {
+    path: 'student-info',
+    component: StudentInfoPageComponent,
+    canActivate: [authGuard, infoGuard],
+  },
+  {
+    path: 'professor-dashboard',
+    component: ProfessorDashboardPageComponent,
+    canActivate: [authGuard, professorGuard],
+  },
+  {
+    path: 'create-class',
+    component: CreateClassPageComponent,
+    canActivate: [authGuard, professorGuard],
+  },
+  {
+    path: 'search',
+    component: SearchClassPageComponent,
+    canActivate: [authGuard, studentGuard],
+  },
+  {
+    path: 'student-profile',
+    component: StudentProfilePageComponent,
+    canActivate: [authGuard, studentGuard],
+  },
+  {
+    path: 'class-info/:id',
+    component: ClassInfoPageComponent,
+    canActivate: [authGuard],
+  },
 ];
