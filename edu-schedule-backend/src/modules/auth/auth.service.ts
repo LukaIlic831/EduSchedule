@@ -51,7 +51,7 @@ export class AuthService {
     };
   }
 
-  getUser(userId: number): Promise<UserDto> {
-    return this.usersService.findUserById(userId);
+  async getUser(userId: number): Promise<UserDto> {
+    return await this.usersService.findUserById(userId);
   }
 }

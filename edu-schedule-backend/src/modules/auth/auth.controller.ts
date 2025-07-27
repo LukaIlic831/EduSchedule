@@ -12,6 +12,8 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { Response } from 'express';
+import { AuthSuccess } from './dto/auth-success';
+import { AuthUser } from './dto/auth-user';
 
 @Controller('auth')
 export class AuthController {
@@ -19,7 +21,10 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('sign-in')
-  async signIn(@Request() req, @Res({ passthrough: true }) res: Response) {
+  async signIn(
+    @Request() req,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AuthSuccess> {
     const { token, role } = await this.authService.signIn(req.user);
     this.setTokenInCookies(token, res);
     return { token, role };
@@ -29,7 +34,7 @@ export class AuthController {
   async signUp(
     @Body() createUserDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
-  ) {
+  ): Promise<AuthSuccess> {
     const { token, role } = await this.authService.signUp(createUserDto);
     this.setTokenInCookies(token, res);
     return { token, role };
@@ -37,8 +42,13 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('user')
-  getUser(@Request() req) {
-    return this.authService.getUser(req.user.id);
+  async getUser(@Request() req): Promise<AuthUser> {
+    const user = await this.authService.getUser(req.user.id);
+    const token = req.cookies?.jwt;
+    return {
+      user,
+      token,
+    };
   }
 
   setTokenInCookies(token: string, res: Response) {
