@@ -1,7 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { LoadingOverlayComponent } from './shared/components/loading-overlay/loading-overlay.component';
 import {
   combineLatest,
   delayWhen,
@@ -18,10 +17,11 @@ import { selectEducationDataLoading } from './state/education-data/education-dat
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { loadAllUniversities } from './state/education-data/education-data.actions';
+import { LoadingComponent } from './core/loading-overlay/components/loading/loading.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoadingOverlayComponent, CommonModule],
+  imports: [RouterOutlet, LoadingComponent, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

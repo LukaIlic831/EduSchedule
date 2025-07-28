@@ -13,9 +13,9 @@ import { professorGuard } from './guards/professor/professor.guard';
 import { studentGuard } from './guards/student/student.guard';
 import { infoGuard } from './guards/info-guard/info.guard';
 import { authPageGuard } from './guards/auth-page/auth-page.guard';
+import { NotFoundComponent } from './core/not-found/components/not-found/not-found.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
   {
     path: 'sign-in',
     component: SignInPageComponent,
@@ -61,4 +61,7 @@ export const routes: Routes = [
     component: ClassInfoPageComponent,
     canActivate: [authGuard],
   },
+  { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '404' },
 ];

@@ -26,7 +26,7 @@ import { Router } from '@angular/router';
 import { ClassModel } from './models/class.model';
 import { SeatService } from '../../core/seat/service/seat.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SnackbarService } from '../../shared/services/snackbar.service';
+import { SnackbarService } from '../../core/snackbar/service/snackbar.service';
 
 @Injectable()
 export class ClassEffects {

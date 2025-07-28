@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../core/user/service/user.service';
 import { UserInfoService } from '../../feature/user-info/services/user-info.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SnackbarService } from '../../shared/services/snackbar.service';
+import { SnackbarService } from '../../core/snackbar/service/snackbar.service';
 
 @Injectable()
 export class AuthEffects {

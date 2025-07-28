@@ -18,7 +18,7 @@ import {
 import { EducationDataServiceService } from '../../core/education-data/service/education-data-service.service';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SnackbarService } from '../../shared/services/snackbar.service';
+import { SnackbarService } from '../../core/snackbar/service/snackbar.service';
 
 @Injectable()
 export class EducationDataEffects {
