@@ -54,3 +54,8 @@ export const selectFilteredClasses = createSelector(
     });
   }
 );
+
+export const selectClassLoading = createSelector(
+  selectClassState,
+  (state) => state.loading
+);

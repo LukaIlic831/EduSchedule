@@ -10,5 +10,6 @@
       *ngFor="let studentClass of classes"
       [loadedClass]="studentClass"
     />
+    <app-no-classes *ngIf="classes.length === 0" />
   </div>
 </div>

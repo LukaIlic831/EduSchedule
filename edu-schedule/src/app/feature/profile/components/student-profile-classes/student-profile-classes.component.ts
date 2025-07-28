@@ -6,10 +6,11 @@ import { Store } from '@ngrx/store';
 import { LoadClassesWithStudentReservedSeat } from '../../../../state/class/class.actions';
 import { selectAllClasses } from '../../../../state/class/class.selectors';
 import { CommonModule } from '@angular/common';
+import { NoClassesComponent } from '../../../../shared/components/no-classes/no-classes.component';
 
 @Component({
   selector: 'app-student-profile-classes',
-  imports: [ClassComponent, CommonModule],
+  imports: [ClassComponent, CommonModule, NoClassesComponent],
   templateUrl: './student-profile-classes.component.html',
   styleUrl: './student-profile-classes.component.scss',
 })

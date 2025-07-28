@@ -61,7 +61,7 @@ export class CreateClassPageComponent implements OnInit {
   professorId: Observable<number | null> = of(0);
   universityId = 0;
   minDate = new Date();
-  private destroyRef = inject(DestroyRef);
+  destroyRef = inject(DestroyRef);
 
   constructor(private store: Store, private fb: FormBuilder) {
     this.createClassDataForm = this.fb.group({
@@ -85,6 +85,7 @@ export class CreateClassPageComponent implements OnInit {
     this.professorId = this.store.select(selectAuthUserProfessorId);
     this.handleUniversityIdSelect();
     this.handleOnChangeStudyProgram();
+    
   }
 
   handleUniversityIdSelect() {

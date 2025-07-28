@@ -2,7 +2,6 @@
 @use "mixins" as *;
 
 .class-reserve {
-  @include sub-title();
   &__wrapper {
     @include flex-center();
     justify-content: space-evenly;
@@ -10,19 +9,6 @@
     padding: 20px 0;
     background: $background-card;
     margin-top: $spacing-md;
-  }
-
-  &-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__available-seats {
-    p {
-      font-size: 18px;
-    }
   }
 
   &__seats {

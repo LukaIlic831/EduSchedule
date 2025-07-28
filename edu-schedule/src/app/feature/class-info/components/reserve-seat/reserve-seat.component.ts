@@ -14,6 +14,7 @@ import { selectSelectedClass } from '../../../../state/class/class.selectors';
 import { ReserveLegendComponent } from './reserve-legend/reserve-legend.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClassReserveDetailsComponent } from './class-reserve-details/class-reserve-details.component';
+import { filter, Observable, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-reserve-seat',
@@ -31,10 +32,11 @@ export class ReserveSeatComponent implements OnInit {
   firstGroupOfSeats: Seat[] = [];
   secondGroupOfSeats: Seat[] = [];
   numberOfGroups: Seat[][] = [];
-  selectedClass: ClassModel | null = null;
+  selectedClass: Observable<ClassModel | null> = of(null);
   @Input() isProfessor!: boolean;
   @Input() currentStudent: Student | null = null;
-  private destroyRef = inject(DestroyRef);
+  destroyRef = inject(DestroyRef);
+
   constructor(private store: Store, private fb: FormBuilder) {
     this.reserveSeatForm = this.fb.group({
       seatNumber: [0, notZeroOrNullValidator()],
@@ -42,20 +44,20 @@ export class ReserveSeatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store
-      .select(selectSelectedClass)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((selectedClass) => {
-        this.selectedClass = selectedClass;
+    this.selectedClass = this.store.select(selectSelectedClass).pipe(
+      filter((selectedClass) => !!selectedClass),
+      tap((selectedClass) => {
         this.initializeGroups();
-        this.updateGroups();
-        this.updateStatus();
-        this.buildNumberOfGroups();
-      });
+        this.updateGroups(selectedClass);
+        this.updateStatus(selectedClass);
+        this.buildNumberOfGroups(selectedClass);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    );
   }
 
-  updateGroups() {
-    if (this.selectedClass?.classroom.numberOfSeats! > 30) {
+  updateGroups(selectedClass: ClassModel) {
+    if (selectedClass?.classroom.numberOfSeats! > 30) {
       this.secondGroupOfSeats.forEach(
         (num, index) =>
           (this.firstGroupOfSeats[index] = {
@@ -66,14 +68,14 @@ export class ReserveSeatComponent implements OnInit {
     }
   }
 
-  updateStatus() {
-    const reservedSeats = this.selectedClass?.reservedSeats!;
+  updateStatus(selectedClass: ClassModel) {
+    const reservedSeats = selectedClass.reservedSeats!;
     this.firstGroupOfSeats = this.setSeatsStatusAndIndex(
       this.firstGroupOfSeats,
       reservedSeats
     );
 
-    this.selectedClass?.classroom.numberOfSeats! > 30 &&
+    selectedClass.classroom.numberOfSeats! > 30 &&
       (this.secondGroupOfSeats = this.setSeatsStatusAndIndex(
         this.secondGroupOfSeats,
         reservedSeats
@@ -109,38 +111,44 @@ export class ReserveSeatComponent implements OnInit {
     );
   }
 
-  onSubmit(event: SubmitEvent): void {
+  onSubmit(event: SubmitEvent, selectedClass: ClassModel): void {
     const clickedButton = event.submitter as HTMLButtonElement;
     const buttonAction = clickedButton.value;
 
     buttonAction === 'confirm'
-      ? this.confirmSeatReservation()
-      : this.cancelYourSeatReservation();
+      ? this.confirmSeatReservation(selectedClass)
+      : this.cancelYourSeatReservation(selectedClass);
   }
 
-  confirmSeatReservation() {
-    if (this.reserveSeatForm.valid) {
-      const { seatNumber } = this.reserveSeatForm.value;
-      this.store.dispatch(
-        reserveSeatInClass({
-          seatForReservation: {
-            numberOfSeat: seatNumber,
-            classroomId: this.selectedClass?.classroom.id!,
-            studentIndex: this.currentStudent?.index!,
-            userId: this.currentStudent?.userId!,
-            classId: this.selectedClass?.id!,
-          },
-        })
-      );
-    }
+  showButtons() {
+    return (
+      this.reserveSeatForm.get('seatNumber')?.valid ||
+      this.isThisClassReservedByThisUser()
+    );
   }
 
-  cancelYourSeatReservation() {
+  confirmSeatReservation(selectedClass: ClassModel) {
+    const { seatNumber } = this.reserveSeatForm.value;
+    this.store.dispatch(
+      reserveSeatInClass({
+        seatForReservation: {
+          numberOfSeat: seatNumber,
+          classroomId: selectedClass.classroom.id!,
+          studentIndex: this.currentStudent?.index!,
+          userId: this.currentStudent?.userId!,
+          classId: selectedClass.id!,
+        },
+      })
+    );
+  }
+
+  cancelYourSeatReservation(selectedClass: ClassModel) {
+    this.reserveSeatForm.get('seatNumber')?.reset();
     const reservedSeat = this.findCurrentStudentReservedSeat();
     this.store.dispatch(
       cancelReservedSeat({
         seatId: reservedSeat?.id!,
-        classId: this.selectedClass?.id!,
+        classId: selectedClass.id!,
       })
     );
   }
@@ -187,9 +195,9 @@ export class ReserveSeatComponent implements OnInit {
     return seatNumbers;
   }
 
-  buildNumberOfGroups() {
+  buildNumberOfGroups(selectedClass: ClassModel) {
     this.numberOfGroups.push(this.firstGroupOfSeats);
-    if (this.selectedClass?.classroom.numberOfSeats! > 30) {
+    if (selectedClass.classroom.numberOfSeats! > 30) {
       this.numberOfGroups.push(this.secondGroupOfSeats);
     }
   }

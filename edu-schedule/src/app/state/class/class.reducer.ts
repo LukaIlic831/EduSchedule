@@ -6,9 +6,13 @@ import {
   classFailure,
   createClassSuccess,
   deleteProfessorClassSuccess,
+  loadClassByClassId,
   loadClassByClassIdSuccess,
+  LoadClassesWithStudentReservedSeat,
   LoadClassesWithStudentReservedSeatSuccess,
+  loadProfessorClasses,
   loadProfessorClassesSuccess,
+  loadUniveristyClasses,
   loadUniveristyClassesSuccess,
   reserveSeatInClassSuccess,
   selectProfessorClassForDelete,
@@ -23,6 +27,7 @@ export interface ClassState extends EntityState<ClassModel> {
   searchQuery: string;
   selectedYear: number | null;
   selectedSubjectId: number | null;
+  loading: boolean;
 }
 
 export const classAdapter = createEntityAdapter<ClassModel>({
@@ -36,6 +41,7 @@ export const initialState: ClassState = classAdapter.getInitialState({
   searchQuery: '',
   selectedYear: null,
   selectedSubjectId: null,
+  loading: false,
 });
 
 export const classReducer = createReducer(
@@ -43,12 +49,24 @@ export const classReducer = createReducer(
   on(createClassSuccess, (state, { createdClass }) =>
     classAdapter.addOne(createdClass, { ...state })
   ),
+  on(
+    loadProfessorClasses,
+    loadClassByClassId,
+    loadUniveristyClasses,
+    LoadClassesWithStudentReservedSeat,
+    (state) => ({ ...state, loading: true })
+  ),
   on(classFailure, (state, { error }) => ({
     ...state,
     error,
+    loading: false
   })),
-  on(loadProfessorClassesSuccess, (state, { classes }) =>
-    classAdapter.setAll(classes, { ...state })
+  on(
+    loadProfessorClassesSuccess,
+    loadUniveristyClassesSuccess,
+    LoadClassesWithStudentReservedSeatSuccess,
+    (state, { classes }) =>
+      classAdapter.setAll(classes, { ...state, loading: false })
   ),
   on(deleteProfessorClassSuccess, (state) =>
     classAdapter.removeOne(state.selectedClass?.id!, {
@@ -63,10 +81,8 @@ export const classReducer = createReducer(
   on(loadClassByClassIdSuccess, (state, { loadedClass }) => ({
     ...state,
     selectedClass: loadedClass,
+    loading: false,
   })),
-  on(loadUniveristyClassesSuccess, (state, { classes }) =>
-    classAdapter.setAll(classes, { ...state })
-  ),
   on(setSearchQuery, (state, { searchQuery }) => ({
     ...state,
     searchQuery,
@@ -97,8 +113,5 @@ export const classReducer = createReducer(
       ),
       availableSeats: state.selectedClass!.availableSeats + 1,
     },
-  })),
-  on(LoadClassesWithStudentReservedSeatSuccess, (state, { classes }) =>
-    classAdapter.setAll(classes, { ...state })
-  )
+  }))
 );

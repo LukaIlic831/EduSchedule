@@ -1,10 +1,11 @@
-<div class="class-reserve">
+<div class="class-reserve" *ngIf="selectedClass | async as class">
   <app-class-reserve-details
     [isProfessor]="isProfessor"
-    [selectedClass]="selectedClass!"
+    [selectedClass]="class!"
   />
   <app-reserve-legend />
-  <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit($event)">
+
+  <form [formGroup]="reserveSeatForm" (ngSubmit)="onSubmit($event, class)">
     <div class="class-reserve__wrapper">
       <div
         class="class-reserve__seats"
@@ -32,7 +33,7 @@
         <div class="class-reserve__stage--stand"></div>
       </div>
     </div>
-    <div class="class-reserve__button" *ngIf="!isProfessor">
+    <div class="class-reserve__button" *ngIf="!isProfessor && showButtons()">
       <button
         class="class-reserve__button--confirm"
         type="submit"

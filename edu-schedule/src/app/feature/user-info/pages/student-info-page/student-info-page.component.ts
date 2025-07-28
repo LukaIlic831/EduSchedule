@@ -51,7 +51,7 @@ export class StudentInfoPageComponent {
   filteredStudyPrograms: Observable<StudyProgram[]> = of([]);
   years = YEARS;
   userId: Observable<number | null> = of(0);
-  private destroyRef = inject(DestroyRef);
+  destroyRef = inject(DestroyRef);
   constructor(private store: Store, private fb: FormBuilder) {
     this.additionalDataForm = this.fb.group({
       university: new FormControl(0, [notZeroOrNullValidator()]),

@@ -25,3 +25,8 @@ export const selectEducationDataClassrooms = createSelector(
   selectEducationDataState,
   (state) => state.classrooms
 );
+
+export const selectEducationDataLoading = createSelector(
+  selectEducationDataState,
+  (state) => state.loading
+);

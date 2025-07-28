@@ -1,0 +1,47 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.loading-overlay {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-color: $background-light;
+  z-index: 1000;
+  @include flex-center();
+}
+
+.spinner {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  animation: spinner-plncf9 3s infinite;
+
+  &::before,
+  &::after {
+    content: "";
+    grid-area: 1 / 1;
+    border: 9px solid;
+    border-radius: 50%;
+    mix-blend-mode: darken;
+    animation: spinner-plncf9 1s infinite linear;
+  }
+
+  &::before {
+    border-color: $primary-color $primary-color transparent transparent;
+  }
+
+  &::after {
+    border-color: transparent transparent $background-light $background-light;
+    animation-direction: reverse;
+  }
+}
+
+@keyframes spinner-plncf9 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
