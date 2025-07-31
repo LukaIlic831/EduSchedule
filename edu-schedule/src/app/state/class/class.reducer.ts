@@ -88,9 +88,9 @@ export const classReducer = createReducer(
   on(
     selectProfessorClassForDelete,
     selectProfessorClassForEdit,
-    (state, { selectedClass }) => ({
+    (state, { classId }) => ({
       ...state,
-      selectedClass,
+      selectedClass: state.entities[classId] ?? null,
     })
   ),
   on(loadClassByClassIdSuccess, (state, { loadedClass }) => ({

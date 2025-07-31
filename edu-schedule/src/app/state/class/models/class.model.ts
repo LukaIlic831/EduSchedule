@@ -16,7 +16,7 @@ export interface ClassModel {
   subject: Subject & { studyProgram: StudyProgram };
   professor: Professor & Pick<User, 'username'>;
   university: University;
-  dateAndTimeFormatted: string;
+  dateAndTimeFormatted?: string;
   reservedSeats: Seat[];
   availableSeats: number;
 }

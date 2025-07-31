@@ -32,11 +32,11 @@ export interface DeleteProfessorClassPayload {
 }
 
 export interface SelectProfessorClassForDeletePayload {
-  selectedClass: ClassModel;
+  classId: number;
 }
 
 export interface SelectProfessorClassForEditPayload {
-  selectedClass: ClassModel;
+  classId: number;
 }
 
 export interface LoadClassByClassIdPayload {

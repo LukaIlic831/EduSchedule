@@ -9,12 +9,12 @@ import { ClassModel } from '../../../../state/class/models/class.model';
 })
 export class ClassDeleteComponent {
   @Input() selectedClass!: ClassModel;
-  @Input() onDeleteFn!: (selectedClass: ClassModel) => void;
+  @Input() onDeleteFn!: (selectedClassId: number) => void;
 
   handleClick(event: MouseEvent) {
     event.stopPropagation();
     if (this.onDeleteFn && this.selectedClass) {
-      this.onDeleteFn(this.selectedClass);
+      this.onDeleteFn(this.selectedClass.id);
     }
   }
 }

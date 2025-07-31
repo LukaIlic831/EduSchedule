@@ -10,12 +10,12 @@ import { ClassModel } from '../../../../state/class/models/class.model';
 })
 export class ClassEditComponent {
   @Input() selectedClass!: ClassModel;
-  @Input() onEditFn!: (selectedClass: ClassModel) => void;
+  @Input() onEditFn!: (selectedClassId: number) => void;
 
   handleClick(event: MouseEvent) {
     event.stopPropagation();
     if (this.onEditFn && this.selectedClass) {
-      this.onEditFn(this.selectedClass);
+      this.onEditFn(this.selectedClass.id);
     }
   }
 }

@@ -29,6 +29,7 @@ import { ClassModel } from './models/class.model';
 import { SeatService } from '../../core/seat/service/seat.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarService } from '../../core/snackbar/service/snackbar.service';
+import { handleFormatingDateAndTime } from '../../core/utils/date-time.utils';
 
 @Injectable()
 export class ClassEffects {
@@ -95,7 +96,7 @@ export class ClassEffects {
           map((professorClasses) =>
             loadProfessorClassesSuccess({
               classes: professorClasses.map((professorClass) =>
-                this.handleFormatingDateAndTime(professorClass)
+                handleFormatingDateAndTime(professorClass)
               ),
             })
           ),
@@ -115,7 +116,7 @@ export class ClassEffects {
             map((studentClasses) =>
               LoadClassesWithStudentReservedSeatSuccess({
                 classes: studentClasses.map((studentClass) =>
-                  this.handleFormatingDateAndTime(studentClass)
+                  handleFormatingDateAndTime(studentClass)
                 ),
               })
             ),
@@ -135,7 +136,7 @@ export class ClassEffects {
             map((universityClasses) =>
               loadUniveristyClassesSuccess({
                 classes: universityClasses.map((universityClass) =>
-                  this.handleFormatingDateAndTime(universityClass)
+                  handleFormatingDateAndTime(universityClass)
                 ),
               })
             ),
@@ -179,7 +180,7 @@ export class ClassEffects {
         this.classService.getClass(classId).pipe(
           map((loadedClass) =>
             loadClassByClassIdSuccess({
-              loadedClass: this.handleFormatingDateAndTime(loadedClass),
+              loadedClass: handleFormatingDateAndTime(loadedClass),
             })
           ),
           catchError((errorResponse) => this.errorHandling(errorResponse))
@@ -248,19 +249,6 @@ export class ClassEffects {
       ),
     { dispatch: false }
   );
-
-  handleFormatingDateAndTime(loadedClass: ClassModel) {
-    const formattedDate = new Date(loadedClass.startTime).toLocaleDateString();
-    const formattedStartTime = new Date(
-      loadedClass.startTime
-    ).toLocaleTimeString();
-    const formattedEndTime = new Date(loadedClass.endTime).toLocaleTimeString();
-
-    return {
-      ...loadedClass,
-      dateAndTimeFormatted: `${formattedDate} | ${formattedStartTime} - ${formattedEndTime}`,
-    };
-  }
 
   errorHandling(errorResponse: HttpErrorResponse) {
     return of(

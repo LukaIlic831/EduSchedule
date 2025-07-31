@@ -23,13 +23,17 @@ export class ClassComponent {
 
   constructor(private store: Store, private router: Router) {}
 
-  onDeleteClass(selectedClass: ClassModel) {
-    this.store.dispatch(selectProfessorClassForDelete({ selectedClass }));
+  onDeleteClass(selectedClassId: number) {
+    this.store.dispatch(
+      selectProfessorClassForDelete({ classId: selectedClassId })
+    );
     this.handleClassDeleteClick.emit();
   }
 
-  onEditClass(selectedClass: ClassModel) {
-    this.store.dispatch(selectProfessorClassForEdit({ selectedClass }));
-    this.router.navigate(['/edit-class', selectedClass.id]);
+  onEditClass(selectedClassId: number) {
+    this.store.dispatch(
+      selectProfessorClassForEdit({ classId: selectedClassId })
+    );
+    this.router.navigate(['/edit-class', selectedClassId]);
   }
 }
