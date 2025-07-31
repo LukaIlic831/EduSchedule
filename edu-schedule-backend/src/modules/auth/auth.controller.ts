@@ -21,11 +21,11 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('sign-in')
-  async signIn(
+  signIn(
     @Request() req,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthSuccess> {
-    const { token, role } = await this.authService.signIn(req.user);
+  ): AuthSuccess {
+    const { token, role } = this.authService.signIn(req.user);
     this.setTokenInCookies(token, res);
     return { token, role };
   }

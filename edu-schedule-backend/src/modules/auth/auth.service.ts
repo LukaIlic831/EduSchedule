@@ -4,9 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../users/user.entity';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthPayload } from './dto/auth-payload';
 import { AuthSuccess } from './dto/auth-success';
 import { UserDto } from '../users/dto/user.dto';
+import { AuthFormData } from './formdata/auth-formdata';
 
 @Injectable()
 export class AuthService {
@@ -24,8 +24,8 @@ export class AuthService {
     return null;
   }
 
-  async signIn(user: User): Promise<AuthSuccess> {
-    const payload: AuthPayload = {
+  signIn(user: User): AuthSuccess {
+    const payload: AuthFormData = {
       email: user.email,
       sub: user.id,
       role: user.role,
@@ -39,7 +39,7 @@ export class AuthService {
 
   async signUp(createUserDto: CreateUserDto): Promise<AuthSuccess> {
     const user = await this.usersService.createUser(createUserDto);
-    const payload: AuthPayload = {
+    const payload: AuthFormData = {
       email: user.email,
       sub: user.id,
       role: user.role,
@@ -51,7 +51,7 @@ export class AuthService {
     };
   }
 
-  async getUser(userId: number): Promise<UserDto> {
-    return await this.usersService.findUserById(userId);
+  getUser(userId: number): Promise<UserDto> {
+    return this.usersService.findUserById(userId);
   }
 }

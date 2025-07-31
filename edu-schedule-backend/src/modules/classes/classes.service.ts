@@ -10,6 +10,8 @@ import { CreateClassDto } from './dto/create-class.dto';
 import { AppException } from 'src/app-exception/app-exception';
 import { ClassDto } from './dto/class.dto';
 import { StudyProgram } from '../study-programs/study-program.entity';
+import { UpdateClassDto } from './dto/update-class.dto';
+import { SeatsService } from '../seats/seats.service';
 
 @Injectable()
 export class ClassesService {
@@ -26,6 +28,7 @@ export class ClassesService {
     private universityRepository: Repository<University>,
     @InjectRepository(StudyProgram)
     private studyProgramRepository: Repository<StudyProgram>,
+    private readonly seatsService: SeatsService,
   ) {}
 
   async findByClassId(classId: number): Promise<ClassDto> {
@@ -168,7 +171,7 @@ export class ClassesService {
       professorId,
       universityId,
       endTime,
-    } = createClassDto;
+    } = createClassDto.classForCreate;
     const classroom = await this.classroomRepository.findOneBy({
       id: classroomId,
     });
@@ -217,6 +220,83 @@ export class ClassesService {
     return this.findByClassId(newClass.id);
   }
 
+  async updateClass(updateClassDto: UpdateClassDto): Promise<ClassDto> {
+    const {
+      lectureTitle,
+      lectureDesc,
+      startTime,
+      classroomId,
+      subjectId,
+      professorId,
+      universityId,
+      endTime,
+      classId,
+    } = updateClassDto.classForUpdate;
+    const reservedSeatsIds = updateClassDto.reservedSeatsIds;
+    const classroom = await this.classroomRepository.findOneBy({
+      id: classroomId,
+    });
+    const subject = await this.subjectRepository.findOne({
+      where: { id: subjectId },
+      relations: ['studyProgram'],
+    });
+    const professor = await this.professorRepository.findOneBy({
+      id: professorId,
+    });
+    const university = await this.universityRepository.findOneBy({
+      id: universityId,
+    });
+
+    if (!classroom || !subject || !professor || !university) {
+      throw new AppException(
+        'One or more related entities not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    if (
+      await this.findOverlapingClasses(
+        classroomId,
+        new Date(endTime),
+        new Date(startTime),
+        classId!,
+      )
+    ) {
+      throw new AppException(
+        'Class overlaps with existing schedule',
+        HttpStatus.CONFLICT,
+      );
+    }
+
+    const existingClass = await this.classRepository.findOneOrFail({
+      where: { id: classId },
+      relations: ['classroom', 'subject.studyProgram'],
+    });
+    const classroomChangeRequired = classroom.id !== existingClass.classroom.id;
+    const subjectChangeRequired = subject.id !== existingClass.subject.id;
+    const studyProgramChangeRequired =
+      subject.studyProgram.id !== existingClass.subject.studyProgram.id;
+    const changeRequired =
+      classroomChangeRequired ||
+      subjectChangeRequired ||
+      studyProgramChangeRequired;
+    changeRequired && this.seatsService.deleteClassSeats(reservedSeatsIds);
+
+    existingClass.lectureTitle = lectureTitle;
+    existingClass.lectureDesc = lectureDesc;
+    existingClass.startTime = new Date(startTime);
+    existingClass.endTime = new Date(endTime);
+    existingClass.classroom = classroom,
+    existingClass.subject = subject,
+    existingClass.professor = professor,
+    existingClass.university = university,
+    existingClass.availableSeats = changeRequired
+        ? classroom.numberOfSeats
+        : existingClass.availableSeats;
+
+    await this.classRepository.save(existingClass);
+    return this.findByClassId(existingClass.id);
+  }
+
   async getAllClassesWithStudentReservedSeat(
     userId: number,
     index: number,
@@ -258,13 +338,16 @@ export class ClassesService {
     classroomId: number,
     newEndTime: Date,
     newStartTime: Date,
+    classId?: number,
   ): Promise<boolean> {
-    const overlappingClasses = await this.classRepository
+    const overlappingClassesQuery = this.classRepository
       .createQueryBuilder('cls')
       .where('cls.classroom_id = :classroomId', { classroomId: classroomId })
       .andWhere('cls.startTime < :newEnd', { newEnd: newEndTime })
-      .andWhere('cls.endTime > :newStart', { newStart: newStartTime })
-      .getCount();
-    return overlappingClasses > 0;
+      .andWhere('cls.endTime > :newStart', { newStart: newStartTime });
+    classId &&
+      overlappingClassesQuery.andWhere('cls.id != :classId', { classId });
+    const overlappingClassesCount = await overlappingClassesQuery.getCount();
+    return overlappingClassesCount > 0;
   }
 }

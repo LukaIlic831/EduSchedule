@@ -1,4 +1,4 @@
-export interface AuthPayload {
+export interface AuthFormData {
   email: string;
   sub: number;
   role: string;

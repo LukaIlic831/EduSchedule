@@ -27,6 +27,7 @@ export class ProfessorsService {
       title: title,
       user,
     });
-    return await this.professorRepository.save(professor);
+    await this.professorRepository.save(professor);
+    return professor;
   }
 }

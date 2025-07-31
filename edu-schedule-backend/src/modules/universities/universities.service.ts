@@ -10,7 +10,7 @@ export class UniversitiesService {
     private readonly universityRepository: Repository<University>,
   ) {}
 
-  getAllUniversities(): Promise<University[]> {
-    return this.universityRepository.find();
+  async getAllUniversities(): Promise<University[]> {
+    return await this.universityRepository.find();
   }
 }

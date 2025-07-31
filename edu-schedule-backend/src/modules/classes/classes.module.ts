@@ -8,6 +8,7 @@ import { Professor } from '../professors/professor.entity';
 import { University } from '../universities/university.entity';
 import { Subject } from '../subjects/subject.entity';
 import { StudyProgram } from '../study-programs/study-program.entity';
+import { SeatsModule } from '../seats/seats.module';
 
 @Module({
   providers: [ClassesService],
@@ -21,6 +22,7 @@ import { StudyProgram } from '../study-programs/study-program.entity';
       University,
       StudyProgram
     ]),
+    SeatsModule
   ],
 })
 export class ClassesModule {}

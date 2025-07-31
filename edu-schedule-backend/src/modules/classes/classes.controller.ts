@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { ClassDto } from './dto/class.dto';
+import { UpdateClassDto } from './dto/update-class.dto';
 
 @Controller('classes')
 export class ClassesController {
@@ -50,4 +59,10 @@ export class ClassesController {
       index,
     );
   }
+
+  @Put('update')
+  updateClass(@Body() updateClassDto: UpdateClassDto): Promise<ClassDto> {
+    return this.classesService.updateClass(updateClassDto);
+  }
+  
 }

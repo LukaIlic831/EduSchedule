@@ -11,5 +11,6 @@ import { Class } from '../classes/class.entity';
   providers: [SeatsService],
   controllers: [SeatsController],
   imports: [TypeOrmModule.forFeature([Seat, Student, Classroom, Class])],
+  exports: [SeatsService]
 })
 export class SeatsModule {}
