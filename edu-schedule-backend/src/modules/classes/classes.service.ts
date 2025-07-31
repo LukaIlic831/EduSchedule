@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Class } from './class.entity';
-import { In, Repository } from 'typeorm';
+import { In, MoreThan, Repository } from 'typeorm';
 import { Classroom } from '../classrooms/classroom.entity';
 import { Subject } from '../subjects/subject.entity';
 import { Professor } from '../professors/professor.entity';
@@ -74,7 +74,7 @@ export class ClassesService {
       throw new AppException('Professor not found', HttpStatus.NOT_FOUND);
     }
     const classes = await this.classRepository.find({
-      where: { professor: professor },
+      where: { professor: professor, startTime: MoreThan(new Date()) },
       relations: [
         'reservedSeats',
         'reservedSeats.student',
@@ -135,6 +135,7 @@ export class ClassesService {
       where: {
         university: university,
         subject: { studyProgram: In(studyPrograms) },
+        startTime: MoreThan(new Date()),
       },
       relations: [
         'reservedSeats',
@@ -202,7 +203,6 @@ export class ClassesService {
         HttpStatus.CONFLICT,
       );
     }
-
     const newClass = this.classRepository.create({
       lectureTitle,
       lectureDesc,
@@ -285,13 +285,13 @@ export class ClassesService {
     existingClass.lectureDesc = lectureDesc;
     existingClass.startTime = new Date(startTime);
     existingClass.endTime = new Date(endTime);
-    existingClass.classroom = classroom,
-    existingClass.subject = subject,
-    existingClass.professor = professor,
-    existingClass.university = university,
-    existingClass.availableSeats = changeRequired
+    ((existingClass.classroom = classroom),
+      (existingClass.subject = subject),
+      (existingClass.professor = professor),
+      (existingClass.university = university),
+      (existingClass.availableSeats = changeRequired
         ? classroom.numberOfSeats
-        : existingClass.availableSeats;
+        : existingClass.availableSeats));
 
     await this.classRepository.save(existingClass);
     return this.findByClassId(existingClass.id);
@@ -309,6 +309,7 @@ export class ClassesService {
             userId,
           },
         },
+        startTime: MoreThan(new Date()),
       },
       relations: [
         'reservedSeats',
@@ -340,11 +341,13 @@ export class ClassesService {
     newStartTime: Date,
     classId?: number,
   ): Promise<boolean> {
+    const currentDate = new Date();
     const overlappingClassesQuery = this.classRepository
       .createQueryBuilder('cls')
       .where('cls.classroom_id = :classroomId', { classroomId: classroomId })
       .andWhere('cls.startTime < :newEnd', { newEnd: newEndTime })
-      .andWhere('cls.endTime > :newStart', { newStart: newStartTime });
+      .andWhere('cls.endTime > :newStart', { newStart: newStartTime })
+      .andWhere('cls.startTime > :current', { current: currentDate });
     classId &&
       overlappingClassesQuery.andWhere('cls.id != :classId', { classId });
     const overlappingClassesCount = await overlappingClassesQuery.getCount();
