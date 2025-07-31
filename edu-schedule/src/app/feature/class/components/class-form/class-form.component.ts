@@ -40,6 +40,13 @@ import {
   createClass,
   updateClass,
 } from '../../../../state/class/class.actions';
+import {
+  addMinutes,
+  combineDateAndTime,
+  getDurationInMinutes,
+} from '../../../../core/utils/date-time.utils';
+import { startTimeNotInPastValidator } from '../../../../core/validators/start-time-not-in-past.validator';
+import { SnackbarService } from '../../../../core/snackbar/service/snackbar.service';
 
 @Component({
   selector: 'app-class-form',
@@ -72,19 +79,26 @@ export class ClassFormComponent {
   @Input() formTitle!: string;
   @Input() mode!: string;
 
-  constructor(private store: Store, private fb: FormBuilder) {
-    this.classForm = this.fb.group({
-      title: new FormControl('', [Validators.required]),
-      description: new FormControl(''),
-      studyProgram: new FormControl(0, [notZeroOrNullValidator()]),
-      subject: new FormControl({ value: 0, disabled: true }, [
-        notZeroOrNullValidator(),
-      ]),
-      classroom: new FormControl(0, [notZeroOrNullValidator()]),
-      classDate: new FormControl(null, [Validators.required]),
-      startTime: new FormControl(null, [Validators.required]),
-      classDuration: new FormControl(45, [notZeroOrNullValidator()]),
-    });
+  constructor(
+    private store: Store,
+    private fb: FormBuilder,
+    private snackbarService: SnackbarService
+  ) {
+    this.classForm = this.fb.group(
+      {
+        title: new FormControl('', [Validators.required]),
+        description: new FormControl(''),
+        studyProgram: new FormControl(0, [notZeroOrNullValidator()]),
+        subject: new FormControl({ value: 0, disabled: true }, [
+          notZeroOrNullValidator(),
+        ]),
+        classroom: new FormControl(0, [notZeroOrNullValidator()]),
+        classDate: new FormControl(null, [Validators.required]),
+        startTime: new FormControl(null, [Validators.required]),
+        classDuration: new FormControl(45, [notZeroOrNullValidator()]),
+      },
+      { validators: [startTimeNotInPastValidator()] }
+    );
   }
 
   ngOnInit() {
@@ -112,7 +126,7 @@ export class ClassFormComponent {
       classroom: selectedClass.classroom.id,
       classDate: classDate,
       startTime: classDate,
-      classDuration: this.getDurationInMinutes(
+      classDuration: getDurationInMinutes(
         selectedClass.startTime,
         selectedClass.endTime
       ),
@@ -159,6 +173,7 @@ export class ClassFormComponent {
   }
 
   onSubmit(professorId: number) {
+    this.handleFormErrors();
     if (this.classForm.valid) {
       const {
         title,
@@ -169,11 +184,8 @@ export class ClassFormComponent {
         startTime,
         classDuration,
       } = this.classForm.getRawValue();
-      const combinedStartDateAndTime = this.combineDateAndTime(
-        classDate,
-        startTime
-      );
-      const combinedEndDateAndTime = this.addMinutes(
+      const combinedStartDateAndTime = combineDateAndTime(classDate, startTime);
+      const combinedEndDateAndTime = addMinutes(
         combinedStartDateAndTime,
         classDuration
       );
@@ -251,21 +263,8 @@ export class ClassFormComponent {
     );
   }
 
-  combineDateAndTime(date: Date, time: Date): Date {
-    const combinedDate = new Date(date);
-    combinedDate.setHours(time.getHours(), time.getMinutes(), 0, 0);
-    return combinedDate;
-  }
-
-  addMinutes(date: Date, minutes: number): Date {
-    return new Date(date.getTime() + minutes * 60000);
-  }
-
-  getDurationInMinutes(startTime: string, endTime: string): number {
-    const startTimeDate = new Date(startTime);
-    const endTimeDate = new Date(endTime);
-    return Math.floor(
-      (endTimeDate.getTime() - startTimeDate.getTime()) / 60000
-    );
+  handleFormErrors() {
+    this.classForm.errors?.['startTimeInPast'] &&
+      this.snackbarService.showError("Class can't start in the past");
   }
 }
