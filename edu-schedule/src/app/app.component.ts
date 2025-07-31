@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(loadAllUniversities());
     this.loading = this.loadingService
-      .getGlobalLoading()
+      .getLoading()
       .pipe(takeUntilDestroyed(this.destroyRef));
   }
 }

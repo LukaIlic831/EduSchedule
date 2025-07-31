@@ -19,6 +19,7 @@ import {
   SelectProfessorClassForDeletePayload,
   SelectProfessorClassForEditPayload,
   SetSearchQueryPayload,
+  SetSelectedClassroomPayload,
   SetSelectedSubjectPayload,
   SetSelectedYearPayload,
   UpdateClassPayload,
@@ -106,6 +107,12 @@ export const setSelectedSubject = createAction(
   '[Class] Set Selected Subject',
   props<SetSelectedSubjectPayload>()
 );
+
+export const setSelectedClassroom = createAction(
+  '[Class] Set Selected Classroom',
+  props<SetSelectedClassroomPayload>()
+);
+
 export const reserveSeatInClass = createAction(
   '[Class] Reserve Seat In Class',
   props<ReserveSeatInClassPayload>()

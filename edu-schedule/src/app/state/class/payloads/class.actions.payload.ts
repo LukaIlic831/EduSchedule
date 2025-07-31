@@ -68,6 +68,10 @@ export interface SetSelectedSubjectPayload {
   selectedSubjectId: number;
 }
 
+export interface SetSelectedClassroomPayload{
+  selectedClassroomId: number;
+}
+
 export interface ReserveSeatInClassPayload {
   seatForReservation: {
     numberOfSeat: number;

@@ -33,5 +33,22 @@
         >
       </mat-form-field>
     </div>
+    <div class="search__filter--select">
+      <mat-form-field>
+        <mat-label>Classroom</mat-label>
+        <mat-select
+          matNativeControl
+          [value]="selectedClassroomId | async"
+          (selectionChange)="handleOnClassroomSelect($event.value)"
+        >
+          <mat-option
+            *ngFor="let classroom of classrooms | async"
+            [value]="classroom.id"
+          >
+            {{ classroom.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 </div>

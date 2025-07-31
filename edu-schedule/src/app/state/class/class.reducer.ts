@@ -18,6 +18,7 @@ import {
   selectProfessorClassForDelete,
   selectProfessorClassForEdit,
   setSearchQuery,
+  setSelectedClassroom,
   setSelectedSubject,
   setSelectedYear,
   updateClassSuccess,
@@ -29,6 +30,7 @@ export interface ClassState extends EntityState<ClassModel> {
   searchQuery: string;
   selectedYear: number | null;
   selectedSubjectId: number | null;
+  selectedClassroomId: number | null;
   loading: boolean;
 }
 
@@ -44,6 +46,7 @@ export const initialState: ClassState = classAdapter.getInitialState({
   selectedYear: null,
   selectedSubjectId: null,
   loading: false,
+  selectedClassroomId: null,
 });
 
 export const classReducer = createReducer(
@@ -110,6 +113,10 @@ export const classReducer = createReducer(
   on(setSelectedSubject, (state, { selectedSubjectId }) => ({
     ...state,
     selectedSubjectId,
+  })),
+  on(setSelectedClassroom, (state, { selectedClassroomId }) => ({
+    ...state,
+    selectedClassroomId,
   })),
   on(reserveSeatInClassSuccess, (state, { reservedSeat }) => ({
     ...state,

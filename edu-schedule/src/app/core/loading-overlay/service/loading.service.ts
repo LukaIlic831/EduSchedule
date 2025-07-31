@@ -20,7 +20,7 @@ import { selectEducationDataLoading } from '../../../state/education-data/educat
 export class LoadingService {
   constructor(private store: Store) {}
 
-  getGlobalLoading(): Observable<boolean> {
+  getLoading(): Observable<boolean> {
     return combineLatest([
       this.store.select(selectAuthLoading),
       this.store.select(selectClassLoading),
