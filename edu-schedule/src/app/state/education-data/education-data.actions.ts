@@ -12,7 +12,7 @@ import {
   LoadAllSubjectsByUniversityIdAndStudyProgramIdPayload,
   LoadAllSubjectsByUniversityIdAndStudyProgramIdSuccessPayload,
   LoadAllUniversitiesSuccessPayload,
-} from './models/education-data.actions.payload';
+} from './payloads/education-data.actions.payload';
 
 export const loadAllUniversities = createAction(
   '[Education Data] Load All Universities'

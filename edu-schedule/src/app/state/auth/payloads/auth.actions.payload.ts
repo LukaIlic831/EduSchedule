@@ -1,7 +1,7 @@
 import { University } from '../../education-data/models/university.model';
-import { Professor } from './professor.model';
-import { Student } from './student.model';
-import { User } from './user.model';
+import { Professor } from '../models/professor.model';
+import { Student } from '../models/student.model';
+import { User } from '../models/user.model';
 
 export interface SignInPayload {
   email: string;

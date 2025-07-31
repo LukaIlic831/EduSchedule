@@ -17,10 +17,13 @@ import {
   ReserveSeatInClassPayload,
   ReserveSeatInClassSuccessPayload,
   SelectProfessorClassForDeletePayload,
+  SelectProfessorClassForEditPayload,
   SetSearchQueryPayload,
   SetSelectedSubjectPayload,
   SetSelectedYearPayload,
-} from './models/class.actions.payload';
+  UpdateClassPayload,
+  UpdateClassSuccessPayload,
+} from './payloads/class.actions.payload';
 
 export const createClass = createAction(
   '[Class] Create Class',
@@ -29,6 +32,15 @@ export const createClass = createAction(
 export const createClassSuccess = createAction(
   '[Class] Create Class Success',
   props<CreateClassSuccessPayload>()
+);
+
+export const updateClass = createAction(
+  '[Class] Update Class',
+  props<UpdateClassPayload>()
+);
+export const updateClassSuccess = createAction(
+  '[Class] Update Class Success',
+  props<UpdateClassSuccessPayload>()
 );
 
 export const loadProfessorClasses = createAction(
@@ -53,6 +65,11 @@ export const deleteProfessorClassSuccess = createAction(
 export const selectProfessorClassForDelete = createAction(
   '[Class] Select Professor Class For Delete',
   props<SelectProfessorClassForDeletePayload>()
+);
+
+export const selectProfessorClassForEdit = createAction(
+  '[Class] Select Professor Class For Edit',
+  props<SelectProfessorClassForEditPayload>()
 );
 
 export const loadClassByClassId = createAction(

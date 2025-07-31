@@ -1,21 +1,21 @@
 import { Seat } from '../../education-data/models/seat.model';
-import { ClassModel } from './class.model';
+import { ClassFormData } from '../formdata/class.formdata';
+import { ClassModel } from '../models/class.model';
 
 export interface CreateClassPayload {
-  classForCreate: {
-    lectureTitle: string;
-    lectureDesc: string;
-    startTime: string;
-    endTime: string;
-    classroomId: number;
-    subjectId: number;
-    professorId: number;
-    universityId: number;
-  };
+  classForCreate: ClassFormData;
 }
 
+export interface UpdateClassPayload {
+  classForUpdate: ClassFormData;
+  reservedSeatsIds: number[];
+}
 export interface CreateClassSuccessPayload {
   createdClass: ClassModel;
+}
+
+export interface UpdateClassSuccessPayload {
+  updatedClass: ClassModel;
 }
 
 export interface LoadProfessorClassesPayload {
@@ -32,6 +32,10 @@ export interface DeleteProfessorClassPayload {
 }
 
 export interface SelectProfessorClassForDeletePayload {
+  selectedClass: ClassModel;
+}
+
+export interface SelectProfessorClassForEditPayload {
   selectedClass: ClassModel;
 }
 

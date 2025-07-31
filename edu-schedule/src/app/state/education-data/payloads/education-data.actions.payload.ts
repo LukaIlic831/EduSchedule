@@ -1,7 +1,8 @@
-import { Classroom } from './classrooms.model';
-import { StudyProgram } from './study-program.model';
-import { Subject } from './subject.model';
-import { University } from './university.model';
+import { Classroom } from "../models/classrooms.model";
+import { StudyProgram } from "../models/study-program.model";
+import { Subject } from "../models/subject.model";
+import { University } from "../models/university.model";
+
 
 export interface LoadAllUniversitiesSuccessPayload {
   universities: University[];

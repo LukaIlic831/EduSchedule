@@ -10,7 +10,7 @@ import {
   UpdateUserAndCreateProfessorSuccessPayload,
   UpdateUserAndCreateStudentPayload,
   UpdateUserAndCreateStudentSuccessPayload,
-} from './models/auth.actions.payload';
+} from './payloads/auth.actions.payload';
 
 export const signIn = createAction('[Auth] Sign In', props<SignInPayload>());
 

@@ -16,9 +16,11 @@ import {
   loadUniveristyClassesSuccess,
   reserveSeatInClassSuccess,
   selectProfessorClassForDelete,
+  selectProfessorClassForEdit,
   setSearchQuery,
   setSelectedSubject,
   setSelectedYear,
+  updateClassSuccess,
 } from './class.actions';
 
 export interface ClassState extends EntityState<ClassModel> {
@@ -59,7 +61,7 @@ export const classReducer = createReducer(
   on(classFailure, (state, { error }) => ({
     ...state,
     error,
-    loading: false
+    loading: false,
   })),
   on(
     loadProfessorClassesSuccess,
@@ -74,10 +76,23 @@ export const classReducer = createReducer(
       selectedClass: null,
     })
   ),
-  on(selectProfessorClassForDelete, (state, { selectedClass }) => ({
-    ...state,
-    selectedClass,
-  })),
+  on(updateClassSuccess, (state, { updatedClass }) =>
+    classAdapter.updateOne(
+      {
+        id: updatedClass.id,
+        changes: updatedClass,
+      },
+      { ...state, selectedClass: null }
+    )
+  ),
+  on(
+    selectProfessorClassForDelete,
+    selectProfessorClassForEdit,
+    (state, { selectedClass }) => ({
+      ...state,
+      selectedClass,
+    })
+  ),
   on(loadClassByClassIdSuccess, (state, { loadedClass }) => ({
     ...state,
     selectedClass: loadedClass,

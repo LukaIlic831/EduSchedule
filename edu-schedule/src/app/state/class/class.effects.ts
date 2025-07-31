@@ -20,6 +20,8 @@ import {
   loadUniveristyClassesSuccess,
   reserveSeatInClass,
   reserveSeatInClassSuccess,
+  updateClass,
+  updateClassSuccess,
 } from './class.actions';
 import { ClassService } from '../../core/class/service/class.service';
 import { Router } from '@angular/router';
@@ -42,7 +44,7 @@ export class ClassEffects {
     this.actions$.pipe(
       ofType(createClass),
       switchMap(({ classForCreate }) =>
-        this.classService.createClass(classForCreate).pipe(
+        this.classService.createClass({ classForCreate }).pipe(
           map((createdClass) => createClassSuccess({ createdClass })),
           catchError((errorResponse) => this.errorHandling(errorResponse))
         )
@@ -56,6 +58,18 @@ export class ClassEffects {
         ofType(createClassSuccess),
         tap(() => {
           this.snackbarService.showSuccess('Class created successfully!');
+          this.router.navigate(['/professor-dashboard']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  classUpdateSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateClassSuccess),
+        tap(() => {
+          this.snackbarService.showSuccess('Class updated successfully!');
           this.router.navigate(['/professor-dashboard']);
         })
       ),
@@ -140,6 +154,20 @@ export class ClassEffects {
           map(() => deleteProfessorClassSuccess()),
           catchError((errorResponse) => this.errorHandling(errorResponse))
         )
+      )
+    )
+  );
+
+  updateClass$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateClass),
+      switchMap(({ classForUpdate, reservedSeatsIds }) =>
+        this.classService
+          .updateClass({ classForUpdate, reservedSeatsIds })
+          .pipe(
+            map((updatedClass) => updateClassSuccess({ updatedClass })),
+            catchError((errorResponse) => this.errorHandling(errorResponse))
+          )
       )
     )
   );
