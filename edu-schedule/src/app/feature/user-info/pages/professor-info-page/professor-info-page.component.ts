@@ -21,7 +21,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
+import { notZeroOrNullValidator } from '../../../../core/validators/not-zero-or-null.validator';
 
 @Component({
   selector: 'app-professor-info-page',

@@ -10,7 +10,7 @@
       *ngFor="let professorClass of classes"
       [loadedClass]="professorClass"
       (handleClassDeleteClick)="handleOnClickClassDelete()"
-      [canBeDeleted]="true"
+      [canBeModified]="true"
     />
     <app-no-classes *ngIf="classes.length === 0" />
   </div>

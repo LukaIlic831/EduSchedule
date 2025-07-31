@@ -1,8 +1,8 @@
-<div *ngIf="user | async as currentUser">
+<ng-container *ngIf="user | async as currentUser">
   <app-dashboard-title [username]="currentUser.username" />
   <div class="main__wrapper">
     <app-professor-info-details [currentUser]="currentUser" />
     <app-dashboard-classes [professorId]="currentUser.professor?.id ?? null" />
     <app-dashboard-submit-button />
   </div>
-</div>
+</ng-container>

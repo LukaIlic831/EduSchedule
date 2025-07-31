@@ -1,0 +1,73 @@
+@use "variables" as *;
+@use "mixins" as *;
+mat-form-field {
+  width: 100%;
+
+  div {
+    background-color: $input-background;
+  }
+}
+
+.class-form__block {
+  margin-top: 200px !important;
+  margin-bottom: 20px !important;
+  width: 600px !important;
+  @include mid-block();
+  @include block-shadow();
+
+  &--wrapper {
+    @include mid-block-wrapper();
+    @include flex-center();
+    overflow-y: scroll;
+  }
+
+  &--fields {
+    @include flex-center();
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &--select,
+  &--title,
+  &--desc,
+  &--time-picker,
+  &--class-duration {
+    width: 100%;
+  }
+
+  &--desc textarea {
+    resize: vertical;
+    max-height: 140px;
+  }
+
+  &--confirm {
+    max-width: 200px;
+    @include button-style();
+    margin-left: $spacing-sm;
+  }
+
+  &--cancel {
+    max-width: 200px;
+    @include cancel-button-style();
+  }
+}
+
+mat-card-header {
+  @include flex-center();
+}
+
+mat-card-footer {
+  margin-bottom: $spacing-xs;
+  @include flex-center();
+}
+
+mat-label {
+  color: $primary-text !important;
+}
+
+mat-card-title {
+  font-size: 24px !important;
+  font-weight: bold;
+  color: $primary-text;
+  margin-bottom: $spacing-xxl;
+}

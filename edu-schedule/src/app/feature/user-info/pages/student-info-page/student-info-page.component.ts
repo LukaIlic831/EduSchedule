@@ -24,9 +24,9 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { YEARS } from '../../../../data/data';
+import { YEARS } from '../../../../core/data/data';
 import { StudyProgram } from '../../../../state/education-data/models/study-program.model';
-import { notZeroOrNullValidator } from '../../../../validators/not-zero-or-null.validator';
+import { notZeroOrNullValidator } from '../../../../core/validators/not-zero-or-null.validator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({

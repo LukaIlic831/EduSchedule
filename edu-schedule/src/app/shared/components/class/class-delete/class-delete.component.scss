@@ -1,0 +1,15 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.edu-class {
+  &__delete {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 50%;
+  }
+}

@@ -4,16 +4,17 @@ import { SignUpPageComponent } from './feature/auth/pages/sign-up-page/sign-up-p
 import { ProfessorInfoPageComponent } from './feature/user-info/pages/professor-info-page/professor-info-page.component';
 import { StudentInfoPageComponent } from './feature/user-info/pages/student-info-page/student-info-page.component';
 import { ProfessorDashboardPageComponent } from './feature/dashboard/pages/professor-dashboard-page/professor-dashboard-page.component';
-import { CreateClassPageComponent } from './feature/create-class/pages/create-class-page/create-class-page.component';
-import { SearchClassPageComponent } from './feature/search-class/pages/search-class-page/search-class-page.component';
+import { CreateClassPageComponent } from './feature/class/pages/create-class-page/create-class-page.component';
 import { StudentProfilePageComponent } from './feature/profile/pages/student-profile-page/student-profile-page.component';
-import { ClassInfoPageComponent } from './feature/class-info/pages/class-info-page/class-info-page.component';
+import { ClassInfoPageComponent } from './feature/class/pages/class-info-page/class-info-page.component';
 import { authGuard } from './guards/auth/auth.guard';
 import { professorGuard } from './guards/professor/professor.guard';
 import { studentGuard } from './guards/student/student.guard';
 import { infoGuard } from './guards/info-guard/info.guard';
 import { authPageGuard } from './guards/auth-page/auth-page.guard';
 import { NotFoundComponent } from './core/not-found/components/not-found/not-found.component';
+import { EditClassPageComponent } from './feature/class/pages/edit-class-page/edit-class-page.component';
+import { SearchClassPageComponent } from './feature/class/pages/search-class-page/search-class-page.component';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,11 @@ export const routes: Routes = [
   {
     path: 'create-class',
     component: CreateClassPageComponent,
+    canActivate: [authGuard, professorGuard],
+  },
+  {
+    path: 'edit-class/:id',
+    component: EditClassPageComponent,
     canActivate: [authGuard, professorGuard],
   },
   {

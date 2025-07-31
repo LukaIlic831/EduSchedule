@@ -1,0 +1,7 @@
+<ng-container *ngIf="selectedClass | async as class"
+  ><app-class-form
+    [formTitle]="formTitle"
+    [classId]="classId"
+    [selectedClass]="class"
+    [mode]="'edit'"
+/></ng-container>

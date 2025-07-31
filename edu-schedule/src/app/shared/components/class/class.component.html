@@ -1,26 +1,32 @@
-<div class="card" [routerLink]="['/class-info', loadedClass.id]">
+<div class="edu-class" [routerLink]="['/class-info', loadedClass.id]">
+  <app-class-delete
+    [onDeleteFn]="onDeleteClass.bind(this)"
+    *ngIf="canBeModified"
+    [selectedClass]="loadedClass"
+  />
+  <app-class-edit
+    *ngIf="canBeModified"
+    [onEditFn]="onEditClass.bind(this)"
+    [selectedClass]="loadedClass"
+  />
   <div
-    class="card__delete"
-    *ngIf="canBeDeleted"
-    (click)="handleDeleteClass(loadedClass, $event)"
+    class="edu-class__title"
+    [ngClass]="{ 'edu-class__title--padding': canBeModified }"
   >
-    x
-  </div>
-  <div class="card__title" [ngClass]="{ 'card__title--padding': canBeDeleted }">
     <h1>
       {{ loadedClass.lectureTitle }}
     </h1>
   </div>
-  <div class="card__sub-title">
+  <div class="edu-class__sub-title">
     <p>{{ loadedClass.subject.name }}</p>
   </div>
-  <div class="card__content">
+  <div class="edu-class__content">
     <p>{{ loadedClass.lectureDesc }}</p>
   </div>
-  <div class="card__date">
+  <div class="edu-class__date">
     <p>{{ loadedClass.dateAndTimeFormatted }}</p>
   </div>
-  <div class="card__arrow">
+  <div class="edu-class__arrow">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

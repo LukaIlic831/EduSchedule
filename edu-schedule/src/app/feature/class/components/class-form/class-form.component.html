@@ -1,0 +1,125 @@
+<div class="class-form__block--wrapper">
+  <mat-card class="class-form__block" *ngIf="professorId | async as id">
+    <mat-card-header>
+      <mat-card-title>{{ formTitle }}</mat-card-title>
+    </mat-card-header>
+    <form [formGroup]="classForm" (ngSubmit)="onSubmit(id)">
+      <mat-card-content>
+        <div class="class-form__block--fields">
+          <div class="class-form__block--title">
+            <mat-form-field>
+              <mat-label>Enter title</mat-label>
+              <input matInput type="text" required formControlName="title" />
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--desc">
+            <mat-form-field>
+              <mat-label>Enter description</mat-label>
+              <textarea
+                matInput
+                placeholder="This class is about..."
+                formControlName="description"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--select">
+            <mat-form-field>
+              <mat-label>Study Program</mat-label>
+              <mat-select
+                matNativeControl
+                required
+                formControlName="studyProgram"
+              >
+                <mat-option
+                  *ngFor="let studyProgram of studyPrograms | async"
+                  [value]="studyProgram.id"
+                >
+                  {{ studyProgram.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--select">
+            <mat-form-field>
+              <mat-label>Subject</mat-label>
+              <mat-select matNativeControl required formControlName="subject">
+                <mat-option
+                  *ngFor="let subject of subjects | async"
+                  [value]="subject.id"
+                >
+                  {{ subject.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--select">
+            <mat-form-field>
+              <mat-label>Classroom</mat-label>
+              <mat-select matNativeControl required formControlName="classroom">
+                <mat-option
+                  *ngFor="let classroom of classrooms | async"
+                  [value]="classroom.id"
+                >
+                  {{ classroom.name }} (number of seats:
+                  {{ classroom.numberOfSeats
+                  }}<span *ngIf="classroom.hasProjector">, has projector</span>)
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--time-picker">
+            <mat-form-field>
+              <mat-label>Class date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="datepicker"
+                [min]="minDate"
+                required
+                formControlName="classDate"
+              />
+              <mat-datepicker #datepicker />
+              <mat-datepicker-toggle [for]="datepicker" matSuffix />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Class start time</mat-label>
+              <input
+                matInput
+                [matTimepicker]="timepicker"
+                required
+                formControlName="startTime"
+              />
+              <mat-timepicker #timepicker interval="15min" />
+              <mat-timepicker-toggle [for]="timepicker" matSuffix />
+            </mat-form-field>
+          </div>
+          <div class="class-form__block--class-duration">
+            <mat-form-field>
+              <mat-label>Class duration in minutes (max 180)</mat-label>
+              <input
+                matInput
+                type="number"
+                pattern="[0-9]*"
+                max="180"
+                min="45"
+                inputmode="numeric"
+                formControlName="classDuration"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-footer>
+        <button
+          class="class-form__block--cancel"
+          routerLink="/professor-dashboard"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button class="class-form__block--confirm" type="submit">
+          Confirm
+        </button>
+      </mat-card-footer>
+    </form>
+  </mat-card>
+</div>
