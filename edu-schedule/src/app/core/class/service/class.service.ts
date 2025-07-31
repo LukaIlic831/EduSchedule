@@ -4,16 +4,25 @@ import { Observable } from 'rxjs';
 import { ClassModel } from '../../../state/class/models/class.model';
 import { CreateClassDto } from '../../../dto/class/create-class.dto';
 import { environment } from '../../../../environments/environment.development';
+import { UpdateClassDto } from '../../../dto/class/update-class.dto';
 
 @Injectable({ providedIn: 'root' })
 export class ClassService {
   private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
-  createClass(classData: CreateClassDto): Observable<ClassModel> {
+  createClass(classForCreate: CreateClassDto): Observable<ClassModel> {
     return this.http.post<ClassModel>(
       `${this.apiUrl}/classes/create`,
-      classData
+      classForCreate
+    );
+  }
+
+  updateClass(
+    classForUpdate: UpdateClassDto,
+  ): Observable<ClassModel> {
+    return this.http.put<ClassModel>(`${this.apiUrl}/classes/update`, 
+      classForUpdate,
     );
   }
 

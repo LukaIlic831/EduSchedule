@@ -1,10 +1,5 @@
+import { ClassFormData } from '../../state/class/formdata/class.formdata';
+
 export interface CreateClassDto {
-  lectureTitle: string;
-  lectureDesc: string;
-  startTime: string;
-  endTime: string;
-  classroomId: number;
-  subjectId: number;
-  professorId: number;
-  universityId: number;
+  classForCreate: ClassFormData;
 }
